@@ -4,65 +4,216 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Abhilash Saji | Unity Developer</title>
+    
     <link href="https://api.fontshare.com/v2/css?f[]=clash-display@200,400,600,700&f[]=satoshi@300,400,500,700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://unpkg.com/split-type"></script>
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
 
     <style>
-        :root { --bg: #050505; --text: #e1e1e1; --accent: #ff3333; --font-head: 'Clash Display', sans-serif; --font-body: 'Satoshi', sans-serif; --font-code: 'Space Mono', monospace; --font-italic: 'Playfair Display', serif; }
+        /* --- 1. CORE VARIABLES --- */
+        :root {
+            --bg: #050505;
+            --text: #e1e1e1;
+            --accent: #ff3333; /* The Brand Red */
+            --dim: #444;
+            --font-head: 'Clash Display', sans-serif;
+            --font-body: 'Satoshi', sans-serif;
+            --font-code: 'Space Mono', monospace; /* NEW FONT */
+            --font-italic: 'Playfair Display', serif;
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
         ::selection { background: var(--accent); color: #000; }
-        body { background-color: var(--bg); color: var(--text); font-family: var(--font-body); overflow-x: hidden; }
+        html { scroll-behavior: auto; }
 
-        /* CURSOR */
-        .cursor { position: fixed; width: 12px; height: 12px; background: var(--accent); border-radius: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 10000; mix-blend-mode: difference; }
-        .cursor-follower { position: fixed; width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.3); border-radius: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 9999; transition: width 0.3s, height 0.3s; }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- 2. ASSETS --- */
+        .cursor {
+            position: fixed; top: 0; left: 0; width: 12px; height: 12px;
+            background: var(--accent); border-radius: 50%; transform: translate(-50%, -50%);
+            pointer-events: none; z-index: 10000; mix-blend-mode: difference;
+        }
+        .cursor-follower {
+            position: fixed; top: 0; left: 0; width: 40px; height: 40px;
+            border: 1px solid rgba(255,255,255,0.3); border-radius: 50%; transform: translate(-50%, -50%);
+            pointer-events: none; z-index: 9999; transition: width 0.3s, height 0.3s;
+        }
+
+        /* --- 3. LAYOUT --- */
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 5vw; }
         
-        /* NAV */
-        nav { position: fixed; top: 0; width: 100%; padding: 2rem 5vw; display: flex; justify-content: space-between; align-items: center; z-index: 100; background: rgba(5,5,5,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.05); }
+        /* Navigation */
+        nav { 
+            position: fixed; top: 0; width: 100%; padding: 2rem 5vw; 
+            display: flex; justify-content: space-between; align-items: center; 
+            z-index: 100; background: rgba(5,5,5,0.85); backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
         .logo { font-weight: 700; font-family: var(--font-head); text-transform: uppercase; letter-spacing: 1px; font-size: 1.2rem; }
         .nav-links { display: flex; gap: 2rem; }
         .nav-links a { font-family: var(--font-head); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; transition: color 0.3s; color: #999; }
-        .nav-links a:hover { color: var(--accent); }
+        .nav-links a:hover, .nav-links a.active { color: var(--accent); }
 
-        /* HERO */
-        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; width: 100%; }
-        #hero-intro { position: absolute; width: 100%; max-width: 1400px; padding: 0 5vw; top: 50%; transform: translateY(-50%); z-index: 2; text-align: left; left: 0; right: 0; margin: auto; }
-        #hero-intro h1 { font-family: var(--font-head); font-size: clamp(3rem, 8vw, 8rem); line-height: 0.9; text-transform: uppercase; font-weight: 600; letter-spacing: -2px; }
+        /* Typography */
+        .section-header {
+            border-bottom: 1px solid #333; padding-bottom: 1.5rem; margin-bottom: 4rem;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .section-title { font-family: var(--font-head); font-size: clamp(2rem, 4vw, 3rem); color: var(--accent); text-transform: uppercase; }
+        .section-num { font-family: monospace; color: #555; font-size: 1rem; }
+
+        /* --- 4. HERO SECTION --- */
+        .hero { 
+            height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            position: relative; 
+            width: 100%;
+        }
+
+        /* Technical Intro (Phase 1) */
+        #hero-intro {
+            position: absolute; 
+            width: 100%; 
+            max-width: 1400px; 
+            padding: 0 5vw;
+            top: 50%; 
+            transform: translateY(-50%);
+            z-index: 2;
+            left: 0; right: 0; margin: auto;
+        }
+        #hero-intro h1 {
+            font-family: var(--font-head); 
+            font-size: clamp(3rem, 8vw, 8rem); 
+            line-height: 0.9; text-transform: uppercase; font-weight: 600; letter-spacing: -2px;
+        }
+
+        /* Personal Intro (Phase 2) */
+        #hero-personal {
+            position: absolute; 
+            width: 100%; 
+            top: 50%; 
+            transform: translateY(-50%);
+            opacity: 0; 
+            z-index: 1; 
+            text-align: center;
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center;
+        }
+
+        /* UPDATED HELLO BADGE */
+        .hello-badge {
+            font-family: var(--font-code); /* New Code Font */
+            font-size: 0.8rem; 
+            margin-bottom: 1.5rem; /* Adjusted Spacing */
+            margin-top: 1rem;      /* Pushed down slightly */
+            border: 1px solid #333; 
+            padding: 8px 20px; 
+            border-radius: 50px;
+            color: #888; 
+            text-transform: uppercase; 
+            letter-spacing: 3px;   /* Wider spacing for "Cinematic" look */
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.03); /* Subtle background */
+        }
+
+        .personal-text {
+            font-family: var(--font-head);
+            font-size: clamp(2rem, 5vw, 4.5rem); 
+            line-height: 1.2;
+            font-weight: 500;
+            max-width: 1100px;
+            color: #fff;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .highlight-italic {
+            font-family: var(--font-italic);
+            font-style: italic;
+            font-weight: 400;
+            color: var(--accent);
+            padding: 0 8px;
+        }
+
+        .hero-btn-group {
+            margin-top: 3.5rem; 
+            display: flex; 
+            gap: 1.5rem;
+            justify-content: center;
+            align-items: center;
+        }
         
-        #hero-personal { position: absolute; width: 100%; top: 50%; transform: translateY(-50%); opacity: 0; z-index: 1; text-align: center; display: flex; flex-direction: column; align-items: center; }
-        .hello-badge { font-family: var(--font-code); font-size: 0.8rem; margin-bottom: 1.5rem; margin-top: 1rem; border: 1px solid #333; padding: 8px 20px; border-radius: 50px; color: #888; text-transform: uppercase; letter-spacing: 3px; background: rgba(255, 255, 255, 0.03); }
-        .personal-text { font-family: var(--font-head); font-size: clamp(2rem, 5vw, 4.5rem); line-height: 1.2; font-weight: 500; max-width: 1100px; color: #fff; margin: 0 auto; text-align: center; }
-        .highlight-italic { font-family: var(--font-italic); font-style: italic; font-weight: 400; color: var(--accent); padding: 0 8px; }
-
-        /* BUTTONS */
-        .btn-primary { margin-top: 2rem; background: var(--accent); color: #fff; padding: 16px 45px; border-radius: 100px; font-family: var(--font-head); text-transform: uppercase; font-weight: 600; letter-spacing: 1px; font-size: 0.85rem; transition: transform 0.3s, background 0.3s; border: 1px solid var(--accent); display: inline-block; }
+        .btn-primary {
+            background: var(--accent);
+            color: #fff;
+            padding: 16px 45px;
+            border-radius: 100px;
+            font-family: var(--font-head);
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+            transition: transform 0.3s, background 0.3s;
+            border: 1px solid var(--accent);
+            display: inline-block;
+        }
         .btn-primary:hover { transform: scale(1.05); background: #cc2929; }
 
-        /* ABOUT & RESUME */
-        .container { max-width: 1400px; margin: 0 auto; padding: 0 5vw; }
-        .about-section { padding: 8rem 0; }
+        /* --- 5. SECTIONS --- */
+        .about-section, .projects-section { padding: 8rem 0; }
+        
         .reading-text { font-size: clamp(1.2rem, 2.5vw, 2rem); line-height: 1.5; color: #888; max-width: 90%; }
         .reading-text .word.active { color: #fff; }
-        
-        /* RESUME MARQUEE SYSTEM */
-        .resume-section { padding: 0; overflow: hidden; background: var(--accent); cursor: pointer; position: relative; transition: background 0.3s; }
-        .resume-section:hover { background: #fff; }
-        .resume-section:hover .marquee-text { color: var(--accent); }
-        .marquee-container { display: flex; white-space: nowrap; padding: 4rem 0; animation: scroll 15s linear infinite; }
-        .marquee-text { font-family: var(--font-head); font-size: 5rem; font-weight: 700; text-transform: uppercase; color: #000; margin-right: 2rem; transition: color 0.3s; display: flex; align-items: center; gap: 20px; }
-        @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 5rem; }
+        .stat-box { border-top: 1px solid #333; padding-top: 1.5rem; }
+        .stat-box h4 { font-size: 3.5rem; color: var(--accent); font-family: var(--font-head); line-height: 1; margin-bottom: 0.5rem; }
+        .stat-box p { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: #666; }
 
-        /* PROJECTS GATEWAY */
-        .projects-gateway { text-align: center; padding: 10rem 0; border-top: 1px solid #222; }
-        .projects-gateway h2 { font-family: var(--font-head); font-size: clamp(3rem, 8vw, 6rem); text-transform: uppercase; margin-bottom: 2rem; line-height: 1; }
+        .project-card { margin-bottom: 8rem; display: grid; grid-template-columns: 1.5fr 1fr; gap: 5rem; align-items: center; perspective: 1000px; }
+        .project-card:nth-child(even) { direction: rtl; }
+        .project-card:nth-child(even) .project-info { direction: ltr; }
+        .project-img-wrap { height: 55vh; width: 100%; overflow: hidden; border-radius: 6px; position: relative; background: #111; }
+        .project-img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; transition: opacity 0.5s; }
+        .project-card:hover .project-img { opacity: 1; }
         
-        footer { height: 50vh; display: flex; flex-direction: column; justify-content: center; align-items: center; border-top: 1px solid #222; }
+        .project-info h3 { font-family: var(--font-head); font-size: 2.5rem; margin-bottom: 1rem; }
+        .project-info p { color: #888; line-height: 1.6; margin-bottom: 1.5rem; }
+        .tech-tag { border: 1px solid #333; padding: 6px 14px; border-radius: 50px; font-size: 0.75rem; text-transform: uppercase; margin-right: 8px; color: #777; display: inline-block; }
+        .btn-view { display: inline-block; margin-top: 2rem; font-family: var(--font-head); text-transform: uppercase; font-weight: 600; border-bottom: 1px solid var(--accent); padding-bottom: 5px; color: var(--accent); font-size: 0.9rem; }
+
+        footer { height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; border-top: 1px solid #222; }
+        .footer-cta { font-size: clamp(3rem, 9vw, 10rem); font-family: var(--font-head); text-transform: uppercase; line-height: 0.9; transition: color 0.3s; }
+        .footer-cta:hover { color: var(--accent); }
+
         .preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #fff; color: #000; z-index: 99999; display: flex; justify-content: space-between; align-items: flex-end; padding: 2rem; font-family: var(--font-head); }
         .preloader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: var(--bg); z-index: 99998; transform: translateY(100%); }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hero-btn-group { flex-direction: column; gap: 1rem; margin-top: 2rem; width: 100%; padding: 0 2rem; }
+            .btn-primary { width: 100%; text-align: center; padding: 14px 0; }
+            .project-card, .project-card:nth-child(even) { grid-template-columns: 1fr; direction: ltr; gap: 2rem; margin-bottom: 6rem; }
+            .project-img-wrap { height: 35vh; }
+            .stats-grid { grid-template-columns: 1fr; gap: 3rem; }
+            #hero-intro h1 { font-size: 3.2rem; }
+            .personal-text { font-size: 2.2rem; }
+        }
     </style>
 </head>
 <body>
@@ -77,94 +228,233 @@
     <div class="preloader-overlay"></div>
 
     <nav>
-        <a href="index.html" class="logo magnetic">Abhilash Saji.</a>
+        <a href="#home" class="logo magnetic">Abhilash Saji.</a>
         <div class="nav-links">
-            <a href="index.html" class="magnetic" style="color: var(--accent);">Home</a>
-            <a href="projects.html" class="magnetic">Projects</a>
+            <a href="#home" class="magnetic active">Home</a>
+            <a href="#about" class="magnetic">About</a>
+            <a href="#work" class="magnetic">Projects</a>
             <a href="#contact" class="magnetic">Contact</a>
         </div>
     </nav>
 
     <section id="home" class="hero">
+        
         <div id="hero-intro">
             <div style="display: flex; gap: 2rem; margin-bottom: 2rem; font-family: var(--font-head); text-transform: uppercase; color: var(--accent); font-size: 0.9rem; letter-spacing: 2px;">
                 <span>Unity 3D</span><span>///</span><span>Creative Dev</span>
             </div>
-            <h1 id="hero-text-tech">Crafting<br><span style="color: var(--accent);">Immersive</span><br>Realities</h1>
-            <p style="margin-top: 2rem; max-width: 400px; color: #888; line-height: 1.6;" id="hero-sub">Bridging the gap between technical code and artistic vision.</p>
+            <h1 id="hero-text-tech">
+                Crafting<br>
+                <span style="color: var(--accent);">Immersive</span><br>
+                Realities
+            </h1>
+            <p style="margin-top: 2rem; max-width: 400px; color: #888; line-height: 1.6;" id="hero-sub">
+                Bridging the gap between technical code and artistic vision.
+            </p>
         </div>
+
         <div id="hero-personal">
             <span class="hello-badge">Hello</span>
+            
             <div class="personal-text" id="hero-text-personal">
                 I’m Abhilash Saji, a Unity Developer who loves building <span class="highlight-italic">worlds</span> and crafting immersive <span class="highlight-italic">experiences.</span>
             </div>
-            <a href="projects.html" class="btn-primary magnetic">See My Projects</a>
-        </div>
-    </section>
-
-    <section class="container about-section">
-        <p class="reading-text">I engineer feelings. My background in <span style="color: var(--accent);">Technical Art</span> and <span style="color: var(--accent);">Game Design</span> ensures every frame rendered is optimized for <span style="color: var(--accent);">Performance</span> without sacrificing artistic vision.</p>
-    </section>
-
-    <a href="resume.pdf" download class="resume-section magnetic-area">
-        <div class="marquee-container">
-            <div class="marquee-text">
-                DOWNLOAD RESUME <span>↓</span> GET MY CV <span>↓</span> DOWNLOAD RESUME <span>↓</span> GET MY CV <span>↓</span> DOWNLOAD RESUME <span>↓</span> GET MY CV <span>↓</span>
+            
+            <div class="hero-btn-group">
+                <a href="#work" class="btn-primary magnetic">View Projects</a>
             </div>
         </div>
-    </a>
 
-    <section class="projects-gateway">
-        <div class="container">
-            <h2 style="color: #555; font-size: 1rem; letter-spacing: 2px; margin-bottom: 1rem;">MY PORTFOLIO</h2>
-            <h2>Selected Works<br><span style="color: var(--accent);">2024-2025</span></h2>
-            <a href="projects.html" class="btn-primary magnetic">Open Project Gallery</a>
+    </section>
+
+    <section class="container about-section" id="about">
+        <div class="section-header">
+            <h2 class="section-title">Profile</h2>
+            <span class="section-num">01 / ABOUT</span>
         </div>
+        <div>
+            <p class="reading-text">
+                I don't just write scripts; I engineer feelings. My background in 
+                <span style="color: var(--accent);">Technical Art</span> and 
+                <span style="color: var(--accent);">Game Design</span> ensures that every frame rendered is optimized for 
+                <span style="color: var(--accent);">Performance</span> without sacrificing the artistic vision. 
+                From mobile 2D puzzles to complex PC VR simulations, my workflow is adaptable, scalable, and modern.
+            </p>
+            <div class="stats-grid">
+                <div class="stat-box"><h4>4+</h4><p>Years Experience</p></div>
+                <div class="stat-box"><h4>15+</h4><p>Shipped Projects</p></div>
+                <div class="stat-box"><h4>100%</h4><p>Satisfaction</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container projects-section" id="work">
+        <div class="section-header">
+            <h2 class="section-title">Selected Works</h2>
+            <span class="section-num">02 / PROJECTS</span>
+        </div>
+        
+        <article class="project-card">
+            <div class="project-img-wrap magnetic-area">
+                <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2670&auto=format&fit=crop" class="project-img">
+            </div>
+            <div class="project-info">
+                <h3>Pixel Odyssey</h3>
+                <p>A precision-based 2D platformer. Implemented tight character controllers, wall-jumps, and a custom particle system.</p>
+                <div>
+                    <span class="tech-tag">Unity 2D</span><span class="tech-tag">C#</span><span class="tech-tag">URP 2D</span>
+                </div>
+                <a href="#" class="btn-view magnetic">VIEW CASE STUDY</a>
+            </div>
+        </article>
+
+        <article class="project-card">
+            <div class="project-img-wrap magnetic-area">
+                <img src="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2670&auto=format&fit=crop" class="project-img">
+            </div>
+            <div class="project-info">
+                <h3>Cyber Dash</h3>
+                <p>High-speed mobile runner. Features object pooling for infinite terrain and procedural obstacle placement.</p>
+                <div>
+                    <span class="tech-tag">Mobile Opt</span><span class="tech-tag">Object Pooling</span>
+                </div>
+                <a href="#" class="btn-view magnetic">VIEW CASE STUDY</a>
+            </div>
+        </article>
+
+        <article class="project-card">
+            <div class="project-img-wrap magnetic-area">
+                <img src="https://images.unsplash.com/photo-1599434868477-8339c148e67a?q=80&w=2574&auto=format&fit=crop" class="project-img">
+            </div>
+            <div class="project-info">
+                <h3>Titan Strike</h3>
+                <p>Tactical FPS with robust Raycast shooting, weapon sway, and FSM Enemy AI.</p>
+                <div>
+                    <span class="tech-tag">Raycasting</span><span class="tech-tag">State Machines</span>
+                </div>
+                <a href="#" class="btn-view magnetic">VIEW CASE STUDY</a>
+            </div>
+        </article>
+        
+        <article class="project-card">
+            <div class="project-img-wrap magnetic-area">
+                <img src="https://images.unsplash.com/photo-1627855331309-409c9e88d1d8?q=80&w=2671&auto=format&fit=crop" class="project-img">
+            </div>
+            <div class="project-info">
+                <h3>Covert Ops</h3>
+                <p>TPS cover shooter using Cinemachine for camera blending and Inverse Kinematics for aiming.</p>
+                <div>
+                    <span class="tech-tag">Cinemachine</span><span class="tech-tag">IK Rigging</span>
+                </div>
+                <a href="#" class="btn-view magnetic">VIEW CASE STUDY</a>
+            </div>
+        </article>
+
+        <article class="project-card">
+            <div class="project-img-wrap magnetic-area">
+                <img src="https://images.unsplash.com/photo-1616782352136-2244243b7135?q=80&w=2574&auto=format&fit=crop" class="project-img">
+            </div>
+            <div class="project-info">
+                <h3>Drift Horizon</h3>
+                <p>Physics-based vehicle simulation using Unity Wheel Colliders, friction curves, and manual transmission logic.</p>
+                <div>
+                    <span class="tech-tag">Physics</span><span class="tech-tag">Wheel Colliders</span>
+                </div>
+                <a href="#" class="btn-view magnetic">VIEW CASE STUDY</a>
+            </div>
+        </article>
     </section>
 
     <footer id="contact">
+        <div class="section-header" style="width: 100%; max-width: 1400px; padding: 0 5vw; border: none; margin-bottom: 2rem;">
+            <h2 class="section-title">Collaboration</h2>
+            <span class="section-num">03 / CONTACT</span>
+        </div>
         <p style="letter-spacing: 2px; margin-bottom: 2rem; color: #555;">READY TO START?</p>
-        <a href="mailto:email@example.com" style="font-family: var(--font-head); font-size: 3rem; text-transform: uppercase;">Let's Talk</a>
+        <a href="mailto:email@example.com" class="footer-cta magnetic-area">LET'S <span style="color: var(--accent);">BUILD</span><br>THE FUTURE.</a>
+        <div style="margin-top: 4rem; display: flex; gap: 3rem;">
+            <a href="#" class="magnetic">LINKEDIN</a>
+            <a href="#" class="magnetic">GITHUB</a>
+            <a href="#" class="magnetic">TWITTER</a>
+        </div>
     </footer>
 
     <script>
-        const lenis = new Lenis({ duration: 1.2, smooth: true });
+        // INIT LENIS
+        const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smooth: true });
         function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
         requestAnimationFrame(raf);
+
         gsap.registerPlugin(ScrollTrigger);
 
-        // CURSOR
+        // TEXT REVEAL
+        const readingText = new SplitType('.reading-text', { types: 'words' });
+        gsap.fromTo(readingText.words, { opacity: 0.2, color: "#333" }, {
+            opacity: 1, color: "#e1e1e1", stagger: 0.05,
+            scrollTrigger: { trigger: ".reading-text", start: "top 85%", end: "bottom 65%", scrub: true }
+        });
+
+        // ANIMATION SEQUENCE
+        const tl = gsap.timeline();
+        let count = 0; const counterElement = document.querySelector('.counter');
+        const interval = setInterval(() => {
+            count += Math.floor(Math.random() * 10) + 1;
+            if (count > 100) count = 100;
+            counterElement.textContent = count + "%";
+            if (count === 100) clearInterval(interval);
+        }, 15);
+
+        const techText = new SplitType('#hero-text-tech', { types: 'words, chars' });
+        const personalText = new SplitType('#hero-text-personal', { types: 'words' });
+
+        tl.to(".preloader", { delay: 1.5, y: "-100%", duration: 1, ease: "expo.inOut" })
+          .to(".preloader-overlay", { y: "-100%", duration: 1, ease: "expo.inOut" }, "-=0.8")
+          
+          // PHASE 1
+          .from(techText.chars, { y: 100, opacity: 0, rotateZ: 5, duration: 0.8, stagger: 0.02, ease: "back.out(1.7)" }, "-=0.5")
+          .from("#hero-sub", { opacity: 0, y: 10, duration: 0.5 }, "-=0.3")
+          
+          .to({}, { duration: 0.5 }) // Wait
+
+          // PHASE 2 TRANSITION
+          .to("#hero-intro", { filter: "blur(20px)", opacity: 0, scale: 0.9, duration: 0.5, ease: "power2.in" })
+          
+          .to("#hero-personal", { opacity: 1, duration: 0.1 })
+          
+          .from("#hero-personal", { filter: "blur(20px)", scale: 1.1, duration: 0.7, ease: "expo.out" }, "+=0.1")
+          
+          .from(".hello-badge", { opacity: 0, y: -20, duration: 0.5 }, "-=0.5")
+          .from(personalText.words, { y: 40, opacity: 0, duration: 0.6, stagger: 0.02, ease: "power3.out" }, "-=0.5")
+          .from(".hero-btn-group a", { y: 20, opacity: 0, duration: 0.5, stagger: 0.1 }, "-=0.3");
+
+
+        // TILT
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const rotateX = ((e.clientY - rect.top - rect.height/2) / rect.height/2) * -5;
+                const rotateY = ((e.clientX - rect.left - rect.width/2) / rect.width/2) * 5;
+                gsap.to(card.querySelector('.project-img-wrap'), { transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`, duration: 0.4 });
+            });
+            card.addEventListener('mouseleave', () => {
+                gsap.to(card.querySelector('.project-img-wrap'), { transform: `perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)`, duration: 0.5 });
+            });
+        });
+
+        // MOUSE
         const cursor = document.querySelector('.cursor');
         const follower = document.querySelector('.cursor-follower');
         window.addEventListener('mousemove', (e) => {
             gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1 });
             gsap.to(follower, { x: e.clientX, y: e.clientY, duration: 0.3 });
         });
-
-        // HERO ANIMATIONS
-        const tl = gsap.timeline();
-        const techText = new SplitType('#hero-text-tech', { types: 'words, chars' });
-        const personalText = new SplitType('#hero-text-personal', { types: 'words' });
-
-        // Preloader & Intro
-        let count = 0; const counter = document.querySelector('.counter');
-        const interval = setInterval(() => { count += 10; if(count>100) count=100; counter.textContent = count+"%"; if(count===100) clearInterval(interval); }, 50);
-
-        tl.to(".preloader", { delay: 1, y: "-100%", duration: 1, ease: "expo.inOut" })
-          .to(".preloader-overlay", { y: "-100%", duration: 1, ease: "expo.inOut" }, "-=0.8")
-          .from(techText.chars, { y: 100, opacity: 0, rotateZ: 5, duration: 0.8, stagger: 0.02, ease: "back.out(1.7)" }, "-=0.5")
-          .from("#hero-sub", { opacity: 0, y: 10, duration: 0.5 }, "-=0.3")
-          .to({}, { duration: 0.5 }) // Wait
-          .to("#hero-intro", { filter: "blur(20px)", opacity: 0, scale: 0.9, duration: 0.5, ease: "power2.in" })
-          .to("#hero-personal", { opacity: 1, duration: 0.1 })
-          .from("#hero-personal", { filter: "blur(20px)", scale: 1.1, duration: 0.7, ease: "expo.out" }, "+=0.1")
-          .from(".hello-badge", { opacity: 0, y: -20, duration: 0.5 }, "-=0.5")
-          .from(personalText.words, { y: 40, opacity: 0, duration: 0.6, stagger: 0.02, ease: "power3.out" }, "-=0.5")
-          .from(".btn-primary", { y: 20, opacity: 0, duration: 0.5 }, "-=0.3");
-          
-        // About Text Reveal
-        const readingText = new SplitType('.reading-text', { types: 'words' });
-        gsap.fromTo(readingText.words, { opacity: 0.2, color: "#333" }, { opacity: 1, color: "#e1e1e1", stagger: 0.05, scrollTrigger: { trigger: ".reading-text", start: "top 85%", end: "bottom 65%", scrub: true }});
+        document.querySelectorAll('.magnetic').forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                gsap.to(btn, { x: (e.clientX - rect.left - rect.width/2) * 0.4, y: (e.clientY - rect.top - rect.height/2) * 0.4, duration: 0.3 });
+            });
+            btn.addEventListener('mouseleave', () => { gsap.to(btn, { x: 0, y: 0, duration: 0.5, ease: "elastic.out(1, 0.3)" }); });
+        });
     </script>
 </body>
 </html>

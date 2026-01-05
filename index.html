@@ -27,24 +27,10 @@
         /* NAVIGATION */
         nav { position: fixed; top: 0; width: 100%; padding: 2rem 5vw; display: flex; justify-content: space-between; align-items: center; z-index: 100; background: rgba(5,5,5,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.05); }
         .logo { font-weight: 700; font-family: var(--font-head); text-transform: uppercase; letter-spacing: 1px; font-size: 1.2rem; text-decoration: none; color: #fff; }
-        
-        .nav-links { display: flex; gap: 2rem; align-items: center; }
+        .nav-links { display: flex; gap: 2rem; }
+        /* Resume button now shares the exact same style as other links */
         .nav-links a { font-family: var(--font-head); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; transition: color 0.3s; color: #999; text-decoration: none; }
         .nav-links a:hover { color: var(--accent); }
-
-        /* NAV RESUME BUTTON STYLE */
-        .nav-resume-btn {
-            border: 1px solid rgba(255,255,255,0.3);
-            padding: 10px 24px;
-            border-radius: 50px;
-            color: #fff !important;
-            transition: 0.3s;
-        }
-        .nav-resume-btn:hover {
-            background: var(--accent);
-            border-color: var(--accent);
-            color: #fff !important;
-        }
 
         /* HERO SECTION */
         .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; width: 100%; }
@@ -55,12 +41,24 @@
         
         /* Phase 2: I'M ABHILASH SAJI */
         #hero-personal { position: absolute; width: 100%; top: 50%; transform: translateY(-50%); opacity: 0; z-index: 1; text-align: center; display: flex; flex-direction: column; align-items: center; }
-        .hello-badge { font-family: var(--font-code); font-size: 0.8rem; margin-bottom: 1.5rem; border: 1px solid #333; padding: 8px 20px; border-radius: 50px; color: #888; text-transform: uppercase; letter-spacing: 3px; background: rgba(255, 255, 255, 0.03); }
+        
+        /* MOVED DOWN: Increased margin-top to push it lower */
+        .hello-badge { 
+            font-family: var(--font-code); 
+            font-size: 0.8rem; 
+            margin-bottom: 1.5rem; 
+            margin-top: 8rem; /* PUSHED DOWN HERE */
+            border: 1px solid #333; 
+            padding: 8px 20px; 
+            border-radius: 50px; 
+            color: #888; 
+            text-transform: uppercase; 
+            letter-spacing: 3px; 
+            background: rgba(255, 255, 255, 0.03); 
+        }
+        
         .personal-text { font-family: var(--font-head); font-size: clamp(2rem, 5vw, 4.5rem); line-height: 1.2; font-weight: 500; max-width: 1100px; color: #fff; margin: 0 auto; text-align: center; }
         .highlight-italic { font-family: var(--font-italic); font-style: italic; font-weight: 400; color: var(--accent); padding: 0 8px; }
-
-        .btn-primary { margin-top: 2rem; background: var(--accent); color: #fff; padding: 16px 45px; border-radius: 100px; font-family: var(--font-head); text-transform: uppercase; font-weight: 600; letter-spacing: 1px; font-size: 0.85rem; transition: transform 0.3s, background 0.3s; border: 1px solid var(--accent); display: inline-block; text-decoration: none; }
-        .btn-primary:hover { transform: scale(1.05); background: #cc2929; }
 
         /* ABOUT SECTION */
         .container { max-width: 1400px; margin: 0 auto; padding: 0 5vw; }
@@ -74,7 +72,7 @@
         .stat-box h4 { font-size: 4rem; color: var(--accent); font-family: var(--font-head); line-height: 1; margin-bottom: 0.5rem; }
         .stat-box p { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: #666; }
 
-        /* PROJECT GATEWAY */
+        /* PROJECT GATEWAY (Big Image Link) */
         .project-gateway {
             position: relative; height: 80vh; width: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden; margin-top: 5rem; text-decoration: none;
         }
@@ -89,13 +87,12 @@
         .gateway-title { font-family: var(--font-head); font-size: clamp(3rem, 10vw, 8rem); color: #fff; text-transform: uppercase; font-weight: 700; line-height: 0.9; margin-bottom: 2rem; }
         .gateway-btn { display: inline-block; border: 1px solid rgba(255,255,255,0.5); padding: 15px 40px; border-radius: 50px; color: #fff; font-family: var(--font-code); text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); }
 
-        /* CONTACT & FOOTER */
+        /* CONTACT SECTION */
         footer { padding: 8rem 5vw; border-top: 1px solid #222; background: #080808; }
         .footer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: end; }
         .footer-headline { font-family: var(--font-head); font-size: clamp(3rem, 6vw, 5rem); line-height: 1; text-transform: uppercase; color: #fff; margin-bottom: 2rem; }
         .footer-links { display: flex; flex-direction: column; gap: 1.5rem; align-items: flex-start; }
         
-        /* FOOTER RESUME BUTTON */
         .resume-btn { background: #fff; color: #000; font-family: var(--font-head); font-weight: 600; text-transform: uppercase; padding: 15px 30px; border-radius: 4px; text-decoration: none; display: flex; align-items: center; gap: 10px; transition: 0.3s; }
         .resume-btn:hover { background: var(--accent); color: #fff; }
 
@@ -126,7 +123,7 @@
             <a href="#about" class="magnetic">About</a>
             <a href="projects.html" class="magnetic">Projects</a>
             <a href="#contact" class="magnetic">Contact</a>
-            <a href="resume.pdf" download class="nav-resume-btn magnetic">Resume</a>
+            <a href="resume.pdf" download class="magnetic">Resume</a>
         </div>
     </nav>
 
@@ -138,12 +135,12 @@
             <h1 id="hero-text-tech">Crafting<br><span style="color: var(--accent);">Immersive</span><br>Realities</h1>
             <p style="margin-top: 2rem; max-width: 400px; color: #888; line-height: 1.6;" id="hero-sub">Bridging the gap between technical code and artistic vision.</p>
         </div>
+        
         <div id="hero-personal">
             <span class="hello-badge">Hello</span>
             <div class="personal-text" id="hero-text-personal">
                 I’m Abhilash Saji, a Unity Developer who loves building <span class="highlight-italic">worlds</span> and crafting immersive <span class="highlight-italic">experiences.</span>
             </div>
-            <a href="projects.html" class="btn-primary magnetic">See My Projects</a>
         </div>
     </section>
 
@@ -225,9 +222,8 @@
           .to("#hero-personal", { opacity: 1, duration: 0.1 })
           .from("#hero-personal", { filter: "blur(20px)", scale: 1.1, duration: 0.7, ease: "expo.out" }, "+=0.1")
           .from(".hello-badge", { opacity: 0, y: -20, duration: 0.5 }, "-=0.5")
-          .from(personalText.words, { y: 40, opacity: 0, duration: 0.6, stagger: 0.02, ease: "power3.out" }, "-=0.5")
-          .from(".btn-primary", { y: 20, opacity: 0, duration: 0.5 }, "-=0.3");
-          
+          .from(personalText.words, { y: 40, opacity: 0, duration: 0.6, stagger: 0.02, ease: "power3.out" }, "-=0.5");
+
         const readingText = new SplitType('.reading-text', { types: 'words' });
         gsap.fromTo(readingText.words, { opacity: 0.2, color: "#333" }, { opacity: 1, color: "#e1e1e1", stagger: 0.05, scrollTrigger: { trigger: ".reading-text", start: "top 85%", end: "bottom 65%", scrub: true }});
 

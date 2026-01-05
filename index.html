@@ -6,7 +6,7 @@
     <title>Abhilash Saji | Unity Developer</title>
     
     <link href="https://api.fontshare.com/v2/css?f[]=clash-display@200,400,600,700&f[]=satoshi@300,400,500,700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
@@ -15,7 +15,7 @@
 
     <style>
         /* --- CORE --- */
-        :root { --bg: #050505; --text: #e1e1e1; --accent: #ff3333; --font-head: 'Clash Display', sans-serif; --font-body: 'Satoshi', sans-serif; --font-code: 'Space Mono', monospace; --font-italic: 'Playfair Display', serif; }
+        :root { --bg: #050505; --text: #e1e1e1; --accent: #ff3333; --font-head: 'Clash Display', sans-serif; --font-body: 'Satoshi', sans-serif; --font-code: 'Space Mono', monospace; }
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
         ::selection { background: var(--accent); color: #000; }
         html { scroll-behavior: auto; }
@@ -52,71 +52,101 @@
         .stat-box h4 { font-size: 4rem; color: var(--accent); font-family: var(--font-head); line-height: 1; margin-bottom: 0.5rem; }
         .stat-box p { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: #666; }
 
-        /* --- PROJECT GATEWAY (IMAGE) --- */
-        .project-gateway {
+        /* --- NEW: CINEMATIC ACCORDION GATEWAY (THE EXTRAORDINARY PART) --- */
+        .works-area { 
+            margin-top: 8rem; 
+            width: 100%; 
             position: relative;
-            height: 80vh; 
-            width: 100%;
-            display: flex;
+        }
+        
+        .work-header { 
+            margin-bottom: 2rem; 
+            display: flex; 
+            justify-content: center; 
             align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            margin-top: 5rem;
-            text-decoration: none;
+            flex-direction: column;
         }
-        .gateway-bg {
-            position: absolute; top: 0; left: 0; width: 100%; height: 120%;
-            background-image: url('https://images.unsplash.com/photo-1614726365723-49faaa56cf75?q=80&w=2574&auto=format&fit=crop');
-            background-size: cover; background-position: center;
-            filter: brightness(0.4) grayscale(100%); transition: filter 0.5s ease, transform 0.5s ease; z-index: 1;
-        }
-        .project-gateway:hover .gateway-bg { filter: brightness(0.8) grayscale(0%); transform: scale(1.05); }
-        .gateway-content { position: relative; z-index: 2; text-align: center; pointer-events: none; }
-        .gateway-title { font-family: var(--font-head); font-size: clamp(3rem, 10vw, 8rem); color: #fff; text-transform: uppercase; font-weight: 700; line-height: 0.9; margin-bottom: 2rem; }
-        .gateway-btn { display: inline-block; border: 1px solid rgba(255,255,255,0.5); padding: 15px 40px; border-radius: 50px; color: #fff; font-family: var(--font-code); text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); }
+        .work-header h2 { font-family: var(--font-head); font-size: 4rem; text-transform: uppercase; line-height: 1; margin: 0; color: #fff; }
+        .work-header span { font-family: var(--font-code); color: var(--accent); margin-top: 10px; letter-spacing: 2px; }
 
-        /* --- NEW: RESUME BOX --- */
-        .resume-container {
-            margin-top: 2rem;
+        /* The Gateway Container */
+        .work-gateway {
+            display: flex; /* Flexbox enables the accordion effect */
+            height: 70vh;
             width: 100%;
-        }
-        .resume-box {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 4rem;
-            border: 1px solid #222;
+            overflow: hidden;
+            background: #000;
+            gap: 2px;
             text-decoration: none;
-            transition: all 0.4s ease;
+        }
+
+        /* The Columns */
+        .work-col {
+            flex: 1; /* Default: all columns equal width */
+            position: relative;
+            transition: flex 0.6s cubic-bezier(0.25, 1, 0.5, 1), filter 0.4s;
+            overflow: hidden;
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .work-col:last-child { border-right: none; }
+
+        /* The Image inside */
+        .work-col img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%) brightness(0.4); /* Dark/Grey by default */
+            transition: transform 0.8s ease, filter 0.5s ease;
+        }
+
+        /* OVERLAY TEXT */
+        .col-overlay {
+            position: absolute;
+            bottom: 0; left: 0; width: 100%;
+            padding: 2rem;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            transform: translateY(100%); /* Hidden by default */
+            transition: transform 0.5s ease;
+            z-index: 2;
+        }
+        .col-title { font-family: var(--font-head); font-size: 2rem; color: #fff; text-transform: uppercase; }
+        .col-sub { font-family: var(--font-code); color: var(--accent); font-size: 0.8rem; margin-bottom: 5px; display: block; }
+
+        /* --- THE INTERACTION --- */
+        /* When hovering the container... */
+        .work-gateway:hover .work-col { filter: brightness(0.3); } /* Dim others */
+        
+        /* When hovering a specific column... */
+        .work-col:hover {
+            flex: 2.5; /* EXPAND this column */
+            filter: brightness(1) !important; /* Brighten this one */
+            cursor: pointer;
+        }
+        
+        .work-col:hover img {
+            filter: grayscale(0%) brightness(1); /* Full color */
+            transform: scale(1.1); /* Slight zoom */
+        }
+        
+        .work-col:hover .col-overlay {
+            transform: translateY(0); /* Slide up text */
+        }
+
+        /* --- RESUME BOX --- */
+        .resume-container { margin-top: 3rem; width: 100%; }
+        .resume-box {
+            display: flex; justify-content: space-between; align-items: center; padding: 4rem;
+            border: 1px solid #222; text-decoration: none; transition: all 0.4s ease;
             background: rgba(255,255,255,0.02);
         }
-        .resume-box:hover {
-            border-color: var(--accent);
-            background: rgba(255, 51, 51, 0.05);
-        }
-        .resume-info h3 {
-            font-family: var(--font-head);
-            font-size: 2.5rem;
-            text-transform: uppercase;
-            color: #fff;
-            margin-bottom: 0.5rem;
-        }
-        .resume-info p {
-            font-family: var(--font-code);
-            color: #666;
-            font-size: 0.9rem;
-        }
+        .resume-box:hover { border-color: var(--accent); background: rgba(255, 51, 51, 0.05); }
+        .resume-info h3 { font-family: var(--font-head); font-size: 2.5rem; text-transform: uppercase; color: #fff; margin-bottom: 0.5rem; }
+        .resume-info p { font-family: var(--font-code); color: #666; font-size: 0.9rem; }
         .resume-action {
-            background: #fff;
-            color: #000;
-            padding: 15px 30px;
-            border-radius: 50px;
-            font-family: var(--font-head);
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            display: flex; align-items: center; gap: 10px;
-            transition: 0.3s;
+            background: #fff; color: #000; padding: 15px 30px; border-radius: 50px;
+            font-family: var(--font-head); font-weight: 600; text-transform: uppercase; font-size: 0.9rem;
+            display: flex; align-items: center; gap: 10px; transition: 0.3s;
         }
         .resume-box:hover .resume-action { background: var(--accent); color: #fff; }
 
@@ -135,6 +165,10 @@
 
         @media (max-width: 768px) {
             .nav-links { display: none; }
+            /* On mobile, stack them vertically instead of accordion */
+            .work-gateway { flex-direction: column; height: 100vh; }
+            .work-col:hover { flex: 1; } /* Disable expand on touch */
+            .col-overlay { transform: translateY(0); } /* Always show text on mobile */
             .resume-box { flex-direction: column; align-items: flex-start; gap: 2rem; padding: 2rem; }
             .stats-grid { grid-template-columns: 1fr; gap: 3rem; }
         }
@@ -191,13 +225,36 @@
         </div>
     </section>
 
-    <a href="projects.html" class="project-gateway magnetic-area">
-        <div class="gateway-bg"></div>
-        <div class="gateway-content">
-            <div class="gateway-title">Selected<br><span style="color: var(--accent); -webkit-text-stroke: 0px;">Works</span></div>
-            <div class="gateway-btn">Explore Projects ↗</div>
+    <div class="container works-area">
+        <div class="work-header">
+            <h2>Selected Works</h2>
+            <span>02 / PORTFOLIO</span>
         </div>
-    </a>
+        
+        <a href="projects.html" class="work-gateway magnetic-area">
+            <div class="work-col">
+                <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2670&auto=format&fit=crop" alt="Game Dev">
+                <div class="col-overlay">
+                    <span class="col-sub">01 / MOBILE</span>
+                    <div class="col-title">2D Games</div>
+                </div>
+            </div>
+            <div class="work-col">
+                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop" alt="Abstract">
+                <div class="col-overlay">
+                    <span class="col-sub">02 / PC & CONSOLE</span>
+                    <div class="col-title">3D Action</div>
+                </div>
+            </div>
+            <div class="work-col">
+                <img src="https://images.unsplash.com/photo-1622979135228-5118441e9635?q=80&w=2536&auto=format&fit=crop" alt="VR">
+                <div class="col-overlay">
+                    <span class="col-sub">03 / IMMERSIVE</span>
+                    <div class="col-title">VR / AR</div>
+                </div>
+            </div>
+        </a>
+    </div>
 
     <div class="container resume-container">
         <a href="resume.pdf" download class="resume-box magnetic-area">
@@ -238,7 +295,6 @@
             gsap.to(follower, { x: e.clientX, y: e.clientY, duration: 0.3 });
         });
 
-        // HERO ANIMATIONS
         const tl = gsap.timeline();
         const techText = new SplitType('#hero-text-tech', { types: 'words, chars' });
         const personalText = new SplitType('#hero-text-personal', { types: 'words' });
@@ -259,8 +315,6 @@
 
         const readingText = new SplitType('.reading-text', { types: 'words' });
         gsap.fromTo(readingText.words, { opacity: 0.2, color: "#333" }, { opacity: 1, color: "#e1e1e1", stagger: 0.05, scrollTrigger: { trigger: ".reading-text", start: "top 85%", end: "bottom 65%", scrub: true }});
-
-        gsap.to(".gateway-bg", { y: "20%", scrollTrigger: { trigger: ".project-gateway", start: "top bottom", end: "bottom top", scrub: true }});
     </script>
 </body>
 </html>

@@ -25,7 +25,7 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
         ::selection { background: var(--accent); color: #000; }
-        html { scroll-behavior: smooth; }
+        html { scroll-behavior: auto; /* Let Lenis handle scroll */ }
 
         body {
             background-color: var(--bg);
@@ -35,21 +35,20 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- 2. ASSETS --- */
-        .grain {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; z-index: 9999; opacity: 0.04;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-        }
+        /* --- 2. ASSETS (Optimized) --- */
+        /* Removed Grain for Performance */
+        
         .cursor {
             position: fixed; top: 0; left: 0; width: 12px; height: 12px;
             background: var(--accent); border-radius: 50%; transform: translate(-50%, -50%);
             pointer-events: none; z-index: 10000; mix-blend-mode: difference;
+            will-change: transform; /* Performance Boost */
         }
         .cursor-follower {
             position: fixed; top: 0; left: 0; width: 40px; height: 40px;
             border: 1px solid rgba(255,255,255,0.3); border-radius: 50%; transform: translate(-50%, -50%);
-            pointer-events: none; z-index: 9999; transition: all 0.1s ease-out;
+            pointer-events: none; z-index: 9999; transition: width 0.3s, height 0.3s;
+            will-change: transform; /* Performance Boost */
         }
 
         /* --- 3. LAYOUT --- */
@@ -59,7 +58,7 @@
         nav { 
             position: fixed; top: 0; width: 100%; padding: 2rem 5vw; 
             display: flex; justify-content: space-between; align-items: center; 
-            z-index: 100; mix-blend-mode: difference; 
+            z-index: 100; background: rgba(5,5,5,0.8); backdrop-filter: blur(10px);
         }
         .logo { font-weight: 700; font-family: var(--font-head); text-transform: uppercase; letter-spacing: 1px; font-size: 1.2rem; }
         .nav-links { display: flex; gap: 2rem; }
@@ -68,38 +67,50 @@
 
         /* Typography */
         h1 { font-family: var(--font-head); font-size: clamp(3.5rem, 9vw, 9.5rem); line-height: 0.85; text-transform: uppercase; font-weight: 600; letter-spacing: -2px; }
-        h2 { font-family: var(--font-head); font-size: clamp(2rem, 5vw, 4rem); text-transform: uppercase; margin-bottom: 2rem; }
         
+        /* SECTION HEADINGS */
+        .section-header {
+            border-bottom: 1px solid #333;
+            padding-bottom: 2rem;
+            margin-bottom: 4rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .section-title {
+            font-family: var(--font-head);
+            font-size: clamp(2rem, 4vw, 3rem);
+            color: var(--accent);
+            text-transform: uppercase;
+        }
+        .section-num { font-family: monospace; color: #555; font-size: 1.2rem; }
+
         /* --- 4. SECTIONS --- */
         
         /* Hero */
         .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding-top: 10vh; }
         
-        /* Projects (#work) */
-        .projects-section { padding: 10rem 0; }
-        .project-card { margin-bottom: 12rem; display: grid; grid-template-columns: 1.5fr 1fr; gap: 4rem; align-items: center; perspective: 1000px; }
-        .project-card:nth-child(even) { direction: rtl; }
-        .project-card:nth-child(even) .project-info { direction: ltr; }
-        .project-img-wrap { height: 60vh; width: 100%; overflow: hidden; border-radius: 4px; position: relative; transform-style: preserve-3d; }
-        .img-curtain { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 2; transform-origin: top; }
-        .project-img { width: 100%; height: 120%; object-fit: cover; filter: grayscale(100%) contrast(1.2); transition: filter 0.5s; }
-        .project-card:hover .project-img { filter: grayscale(0%) contrast(1); }
-        .tech-tag { border: 1px solid #333; padding: 0.5rem 1rem; border-radius: 50px; font-size: 0.8rem; text-transform: uppercase; margin-right: 10px; margin-bottom: 10px; display: inline-block; transition: 0.3s; }
-        .btn-view { display: inline-block; margin-top: 2rem; font-family: var(--font-head); text-transform: uppercase; font-weight: 600; border-bottom: 1px solid #fff; padding-bottom: 5px; }
-
         /* About (#about) */
-        .about-section { padding: 8rem 0; display: grid; grid-template-columns: 1fr; gap: 4rem; }
+        .about-section { padding: 8rem 0; }
+        .about-grid { display: grid; grid-template-columns: 1fr; gap: 4rem; }
         .reading-text { font-size: clamp(1.5rem, 3vw, 2.5rem); line-height: 1.4; color: #333; }
         .reading-text .word.active { color: #fff; }
-        .highlight-word { position: relative; display: inline-block; color: #fff; }
-        .highlight-word::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0%; height: 2px; background: var(--accent); transition: width 0.8s; }
-        .highlight-word.visible::after { width: 100%; }
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem; margin-top: 4rem; }
         .stat-box { border-top: 1px solid #333; padding-top: 1rem; }
         .stat-box h4 { font-size: 4rem; color: var(--accent); font-family: var(--font-head); line-height: 1; }
 
+        /* Projects (#work) */
+        .projects-section { padding: 8rem 0; }
+        .project-card { margin-bottom: 8rem; display: grid; grid-template-columns: 1.5fr 1fr; gap: 4rem; align-items: center; perspective: 1000px; }
+        .project-card:nth-child(even) { direction: rtl; }
+        .project-card:nth-child(even) .project-info { direction: ltr; }
+        .project-img-wrap { height: 50vh; width: 100%; overflow: hidden; border-radius: 4px; position: relative; }
+        .project-img { width: 100%; height: 100%; object-fit: cover; } /* Removed filter transition for speed */
+        .tech-tag { border: 1px solid #333; padding: 0.5rem 1rem; border-radius: 50px; font-size: 0.8rem; text-transform: uppercase; margin-right: 10px; margin-bottom: 10px; display: inline-block; transition: 0.3s; }
+        .btn-view { display: inline-block; margin-top: 2rem; font-family: var(--font-head); text-transform: uppercase; font-weight: 600; border-bottom: 1px solid #fff; padding-bottom: 5px; }
+
         /* Contact (#contact) */
-        footer { height: 90vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; border-top: 1px solid #222; }
+        footer { height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; border-top: 1px solid #222; }
         .footer-cta { font-size: clamp(3rem, 10vw, 11rem); font-family: var(--font-head); text-transform: uppercase; line-height: 0.9; }
 
         /* Preloader */
@@ -116,7 +127,6 @@
 </head>
 <body>
 
-    <div class="grain"></div>
     <div class="cursor"></div>
     <div class="cursor-follower"></div>
 
@@ -129,8 +139,8 @@
     <nav>
         <a href="#" class="logo magnetic">Abhilash Saji.</a>
         <div class="nav-links">
-            <a href="#work" class="magnetic">Projects</a>
             <a href="#about" class="magnetic">About</a>
+            <a href="#work" class="magnetic">Projects</a>
             <a href="#contact" class="magnetic">Contact</a>
         </div>
     </nav>
@@ -149,15 +159,42 @@
         </p>
     </section>
 
+    <section class="container about-section" id="about">
+        <div class="section-header">
+            <h2 class="section-title">Profile</h2>
+            <span class="section-num">01 / ABOUT</span>
+        </div>
+
+        <div class="about-grid">
+            <div>
+                <p class="reading-text">
+                    I don't just write scripts; I engineer feelings. My background in 
+                    <span style="color: var(--accent);">Technical Art</span> and 
+                    <span style="color: var(--accent);">Game Design</span> ensures that every frame rendered is optimized for 
+                    <span style="color: var(--accent);">Performance</span> without sacrificing the artistic vision. 
+                    From mobile 2D puzzles to complex PC VR simulations, my workflow is adaptable, scalable, and modern.
+                </p>
+                
+                <div class="stats-grid">
+                    <div class="stat-box"><h4>4+</h4><p>Years Experience</p></div>
+                    <div class="stat-box"><h4>15+</h4><p>Shipped Projects</p></div>
+                    <div class="stat-box"><h4>100%</h4><p>Satisfaction</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="container projects-section" id="work">
+        <div class="section-header">
+            <h2 class="section-title">Selected Works</h2>
+            <span class="section-num">02 / PROJECTS</span>
+        </div>
         
         <article class="project-card">
             <div class="project-img-wrap magnetic-area">
-                <div class="img-curtain"></div>
                 <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2670&auto=format&fit=crop" class="project-img">
             </div>
             <div class="project-info">
-                <span style="color: var(--accent); font-weight: 700; display:block; margin-bottom: 10px;">01 — 2D PLATFORMER</span>
                 <h3>Pixel Odyssey</h3>
                 <p>A precision-based 2D platformer. Implemented tight character controllers, wall-jumps, and a custom particle system.</p>
                 <div style="margin: 1.5rem 0;">
@@ -169,11 +206,9 @@
 
         <article class="project-card">
             <div class="project-img-wrap magnetic-area">
-                <div class="img-curtain"></div>
                 <img src="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2670&auto=format&fit=crop" class="project-img">
             </div>
             <div class="project-info">
-                <span style="color: var(--accent); font-weight: 700; display:block; margin-bottom: 10px;">02 — ENDLESS RUNNER</span>
                 <h3>Cyber Dash</h3>
                 <p>High-speed mobile runner. Features object pooling for infinite terrain and procedural obstacle placement.</p>
                 <div style="margin: 1.5rem 0;">
@@ -185,11 +220,9 @@
 
         <article class="project-card">
             <div class="project-img-wrap magnetic-area">
-                <div class="img-curtain"></div>
                 <img src="https://images.unsplash.com/photo-1599434868477-8339c148e67a?q=80&w=2574&auto=format&fit=crop" class="project-img">
             </div>
             <div class="project-info">
-                <span style="color: var(--accent); font-weight: 700; display:block; margin-bottom: 10px;">03 — FIRST PERSON SHOOTER</span>
                 <h3>Titan Strike</h3>
                 <p>Tactical FPS with robust Raycast shooting, weapon sway, and FSM Enemy AI.</p>
                 <div style="margin: 1.5rem 0;">
@@ -201,11 +234,9 @@
 
         <article class="project-card">
             <div class="project-img-wrap magnetic-area">
-                <div class="img-curtain"></div>
                 <img src="https://images.unsplash.com/photo-1627855331309-409c9e88d1d8?q=80&w=2671&auto=format&fit=crop" class="project-img">
             </div>
             <div class="project-info">
-                <span style="color: var(--accent); font-weight: 700; display:block; margin-bottom: 10px;">04 — THIRD PERSON SHOOTER</span>
                 <h3>Covert Ops</h3>
                 <p>TPS cover shooter using Cinemachine for camera blending and Inverse Kinematics for aiming.</p>
                 <div style="margin: 1.5rem 0;">
@@ -217,11 +248,9 @@
 
         <article class="project-card">
             <div class="project-img-wrap magnetic-area">
-                <div class="img-curtain"></div>
                 <img src="https://images.unsplash.com/photo-1616782352136-2244243b7135?q=80&w=2574&auto=format&fit=crop" class="project-img">
             </div>
             <div class="project-info">
-                <span style="color: var(--accent); font-weight: 700; display:block; margin-bottom: 10px;">05 — CAR SIMULATION</span>
                 <h3>Drift Horizon</h3>
                 <p>Physics-based vehicle simulation using Unity Wheel Colliders, friction curves, and manual transmission logic.</p>
                 <div style="margin: 1.5rem 0;">
@@ -233,27 +262,13 @@
 
     </section>
 
-    <section class="container about-section" id="about">
-        <div>
-            <h2>Beyond the Code</h2>
-            <p class="reading-text">
-                I don't just write scripts; I engineer feelings. My background in 
-                <span class="highlight-word">Technical Art</span> and 
-                <span class="highlight-word">Game Design</span> ensures that every frame rendered is optimized for 
-                <span class="highlight-word">Performance</span> without sacrificing the artistic vision. 
-                From mobile 2D puzzles to complex PC VR simulations, my workflow is adaptable, scalable, and modern.
-            </p>
-            
-            <div class="stats-grid">
-                <div class="stat-box"><h4>4+</h4><p>Years Experience</p></div>
-                <div class="stat-box"><h4>15+</h4><p>Shipped Projects</p></div>
-                <div class="stat-box"><h4>100%</h4><p>Satisfaction</p></div>
-            </div>
-        </div>
-    </section>
-
     <footer id="contact">
-        <p style="letter-spacing: 2px; margin-bottom: 2rem; color: var(--accent);">READY TO COLLABORATE?</p>
+        <div class="section-header" style="width: 100%; max-width: 1400px; padding: 0 5vw; border: none; margin-bottom: 2rem;">
+            <h2 class="section-title">Collaboration</h2>
+            <span class="section-num">03 / CONTACT</span>
+        </div>
+        
+        <p style="letter-spacing: 2px; margin-bottom: 2rem; color: #555;">READY TO START?</p>
         <a href="mailto:email@example.com" class="footer-cta magnetic-area">LET'S <span style="color: var(--accent);">BUILD</span><br>THE FUTURE.</a>
         <div style="margin-top: 4rem; display: flex; gap: 3rem;">
             <a href="#" class="magnetic">LINKEDIN</a>
@@ -263,23 +278,18 @@
     </footer>
 
     <script>
-        // INIT LENIS
+        // INIT LENIS (SMOOTH SCROLL)
         const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smooth: true });
         function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
         requestAnimationFrame(raf);
 
         gsap.registerPlugin(ScrollTrigger);
 
-        // TEXT REVEAL
+        // TEXT REVEAL ANIMATION (ABOUT SECTION)
         const readingText = new SplitType('.reading-text', { types: 'words' });
         gsap.fromTo(readingText.words, { opacity: 0.2, color: "#333" }, {
             opacity: 1, color: "#e1e1e1", stagger: 0.1,
             scrollTrigger: { trigger: ".reading-text", start: "top 80%", end: "bottom 60%", scrub: true }
-        });
-
-        // UNDERLINE
-        gsap.utils.toArray('.highlight-word').forEach(word => {
-            ScrollTrigger.create({ trigger: word, start: "top 85%", onEnter: () => word.classList.add('visible') });
         });
 
         // PRELOADER
@@ -298,14 +308,8 @@
           .from(heroText.chars, { y: 100, opacity: 0, rotateZ: 10, duration: 0.8, stagger: 0.02, ease: "back.out(1.7)" }, "-=0.5")
           .to("#hero-sub", { opacity: 1, y: 0, duration: 1 }, "-=0.5");
 
-        // PROJECT ANIMATIONS
+        // PROJECT CARD TILT
         document.querySelectorAll('.project-card').forEach(card => {
-            gsap.to(card.querySelector('.img-curtain'), {
-                height: "0%", duration: 1.2, ease: "power3.inOut", scrollTrigger: { trigger: card, start: "top 75%" }
-            });
-            gsap.to(card.querySelector('.project-img'), {
-                y: "-20%", scrollTrigger: { trigger: card, start: "top bottom", end: "bottom top", scrub: true }
-            });
             card.addEventListener('mousemove', (e) => {
                 const rect = card.getBoundingClientRect();
                 const rotateX = ((e.clientY - rect.top - rect.height/2) / rect.height/2) * -5;
@@ -317,7 +321,7 @@
             });
         });
 
-        // MOUSE
+        // MOUSE FOLLOWER
         const cursor = document.querySelector('.cursor');
         const follower = document.querySelector('.cursor-follower');
         window.addEventListener('mousemove', (e) => {

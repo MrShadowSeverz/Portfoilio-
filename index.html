@@ -35,89 +35,64 @@
         /* --- HERO SECTION --- */
         .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; width: 100%; }
         
+        /* RESTORED: Phase 1 (Big, Bold, Red Accent) */
         #hero-intro { 
             position: absolute; width: 100%; max-width: 1400px; padding: 0 5vw; 
-            top: 50%; left: 50%; transform: translate(-50%, -50%); /* EXACT CENTER */
-            z-index: 2; 
+            top: 50%; transform: translateY(-50%); z-index: 2; 
         }
-        /* UPDATED: Reduced Font Size */
         #hero-intro h1 { 
             font-family: var(--font-head); 
-            font-size: clamp(2.5rem, 6vw, 5.5rem); /* Reduced from 8rem */
-            line-height: 0.9; 
+            font-size: clamp(4rem, 12vw, 11rem); /* RESTORED MASSIVE SIZE */
+            line-height: 0.85; 
             text-transform: uppercase; 
             font-weight: 700; 
-            letter-spacing: -1px; 
+            letter-spacing: -3px; 
+            color: #fff; /* Solid White */
         }
         
+        /* RESTORED: Phase 2 (Centered, Clean) */
         #hero-personal { 
             position: absolute; width: 100%; 
-            top: 50%; left: 50%; transform: translate(-50%, -50%); /* EXACT CENTER */
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
             opacity: 0; z-index: 1; text-align: center; display: flex; flex-direction: column; align-items: center; 
         }
-        .hello-badge { font-family: var(--font-code); font-size: 0.8rem; margin-bottom: 1.5rem; margin-top: 2rem; border: 1px solid #333; padding: 8px 20px; border-radius: 50px; color: #888; text-transform: uppercase; letter-spacing: 3px; background: rgba(255, 255, 255, 0.03); }
-        .personal-text { font-family: var(--font-head); font-size: clamp(2rem, 5vw, 4rem); line-height: 1.2; font-weight: 500; max-width: 1100px; color: #fff; margin: 0 auto; text-align: center; }
+        .hello-badge { font-family: var(--font-code); font-size: 0.8rem; margin-bottom: 2rem; border: 1px solid #333; padding: 8px 20px; border-radius: 50px; color: #888; text-transform: uppercase; letter-spacing: 3px; background: rgba(255, 255, 255, 0.03); }
+        .personal-text { 
+            font-family: var(--font-head); 
+            font-size: clamp(2.5rem, 6vw, 5.5rem); /* RESTORED SIZE */
+            line-height: 1.1; 
+            font-weight: 600; 
+            max-width: 1200px; 
+            color: #fff; 
+            margin: 0 auto; 
+            text-align: center; 
+        }
         .highlight-italic { font-family: var(--font-italic); font-style: italic; font-weight: 400; color: var(--accent); padding: 0 8px; }
 
         /* --- ABOUT SECTION --- */
         .container { max-width: 1400px; margin: 0 auto; padding: 0 5vw; }
         .about-section { padding: 8rem 0; }
         .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem; border-bottom: 1px solid #222; padding-bottom: 2rem; }
-        /* UPDATED: Reduced Section Title Size */
-        .section-title { 
-            font-family: var(--font-head); 
-            font-size: 2.5rem; /* Reduced from 4rem */
-            text-transform: uppercase; 
-            color: var(--accent); 
-            font-weight: 700; 
-            line-height: 1; 
-        }
+        .section-title { font-family: var(--font-head); font-size: 4rem; text-transform: uppercase; color: var(--accent); font-weight: 700; line-height: 1; }
         .reading-text { font-size: clamp(1.2rem, 2.5vw, 2rem); line-height: 1.5; color: #888; max-width: 100%; }
         .reading-text .word.active { color: #fff; }
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 5rem; }
-        .stat-box h4 { font-size: 3rem; color: var(--accent); font-family: var(--font-head); line-height: 1; margin-bottom: 0.5rem; }
+        .stat-box h4 { font-size: 4rem; color: var(--accent); font-family: var(--font-head); line-height: 1; margin-bottom: 0.5rem; }
         .stat-box p { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: #666; }
 
         /* --- WORKS AREA (3 COLUMNS) --- */
         .works-area { margin-top: 10rem; width: 100%; }
-        
-        .work-header { 
-            display: flex; justify-content: center; align-items: center; flex-direction: column; margin-bottom: 2rem; 
-        }
-        /* UPDATED: Reduced Heading Size */
-        .work-header h2 { 
-            font-family: var(--font-head); 
-            font-size: 3rem; /* Reduced from 4rem */
-            text-transform: uppercase; 
-            line-height: 1; 
-            margin: 0; 
-            color: #fff; 
-        }
+        .work-header { display: flex; justify-content: center; align-items: center; flex-direction: column; margin-bottom: 2rem; }
+        .work-header h2 { font-family: var(--font-head); font-size: 4rem; text-transform: uppercase; line-height: 1; margin: 0; color: #fff; }
         .work-header span { font-family: var(--font-code); color: #666; margin-top: 10px; letter-spacing: 2px; }
 
-        .work-gateway {
-            display: flex; height: 70vh; width: 100%; overflow: hidden; background: #000; gap: 2px;
-        }
-        
-        .work-col {
-            display: block; flex: 1; position: relative;
-            transition: flex 0.6s cubic-bezier(0.25, 1, 0.5, 1), filter 0.4s;
-            overflow: hidden; border-right: 1px solid rgba(255,255,255,0.1); text-decoration: none;
-        }
+        .work-gateway { display: flex; height: 70vh; width: 100%; overflow: hidden; background: #000; gap: 2px; }
+        .work-col { display: block; flex: 1; position: relative; transition: flex 0.6s cubic-bezier(0.25, 1, 0.5, 1), filter 0.4s; overflow: hidden; border-right: 1px solid rgba(255,255,255,0.1); text-decoration: none; }
         .work-col:last-child { border-right: none; }
+        .work-col img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) brightness(0.4); transition: transform 0.8s ease, filter 0.5s ease; }
         
-        .work-col img {
-            width: 100%; height: 100%; object-fit: cover;
-            filter: grayscale(100%) brightness(0.4);
-            transition: transform 0.8s ease, filter 0.5s ease;
-        }
-        
-        .col-overlay {
-            position: absolute; bottom: 0; left: 0; width: 100%; padding: 2rem;
-            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-            transform: translateY(100%); transition: transform 0.5s ease; z-index: 2;
-        }
-        .col-title { font-family: var(--font-head); font-size: 2rem; color: #fff; text-transform: uppercase; line-height: 1; }
+        .col-overlay { position: absolute; bottom: 0; left: 0; width: 100%; padding: 2rem; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); transform: translateY(100%); transition: transform 0.5s ease; z-index: 2; }
+        .col-title { font-family: var(--font-head); font-size: 2.5rem; color: #fff; text-transform: uppercase; line-height: 1; }
         .col-sub { font-family: var(--font-code); color: var(--accent); font-size: 0.8rem; margin-bottom: 10px; display: block; }
         .view-btn { margin-top: 10px; font-family: var(--font-code); font-size: 0.7rem; border: 1px solid #fff; padding: 5px 15px; border-radius: 20px; color: #fff; display: inline-block; }
 
@@ -130,20 +105,21 @@
         .resume-container { margin-top: 3rem; width: 100%; }
         .resume-box { display: flex; justify-content: space-between; align-items: center; padding: 4rem; border: 1px solid #222; text-decoration: none; transition: all 0.4s ease; background: rgba(255,255,255,0.02); }
         .resume-box:hover { border-color: var(--accent); background: rgba(255, 51, 51, 0.05); }
-        .resume-info h3 { font-family: var(--font-head); font-size: 2rem; text-transform: uppercase; color: #fff; margin-bottom: 0.5rem; }
+        .resume-info h3 { font-family: var(--font-head); font-size: 2.5rem; text-transform: uppercase; color: #fff; margin-bottom: 0.5rem; }
         .resume-info p { font-family: var(--font-code); color: #666; font-size: 0.9rem; }
         .resume-action { background: #fff; color: #000; padding: 15px 30px; border-radius: 50px; font-family: var(--font-head); font-weight: 600; text-transform: uppercase; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; transition: 0.3s; }
         .resume-box:hover .resume-action { background: var(--accent); color: #fff; }
 
         /* --- FOOTER --- */
         footer { padding: 8rem 5vw; border-top: 1px solid #222; background: #080808; margin-top: 5rem; }
-        .footer-headline { font-family: var(--font-head); font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1; text-transform: uppercase; color: #fff; margin-bottom: 2rem; }
+        .footer-headline { font-family: var(--font-head); font-size: clamp(3rem, 6vw, 5rem); line-height: 1; text-transform: uppercase; color: #fff; margin-bottom: 2rem; }
         .social-row { display: flex; gap: 2rem; margin-top: 2rem; }
         .social-row a { color: #555; text-decoration: none; text-transform: uppercase; font-family: var(--font-code); font-size: 0.9rem; transition: 0.3s; }
         .social-row a:hover { color: var(--accent); }
         .email-link { font-size: 1.5rem; color: #555; text-decoration: none; transition: 0.3s; font-family: var(--font-code); display: block; margin-bottom: 2rem;}
         .email-link:hover { color: #fff; }
 
+        /* PRELOADER */
         .preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #fff; color: #000; z-index: 99999; display: flex; justify-content: space-between; align-items: flex-end; padding: 2rem; font-family: var(--font-head); }
         .preloader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: var(--bg); z-index: 99998; transform: translateY(100%); }
 
@@ -178,9 +154,14 @@
             <div style="display: flex; gap: 2rem; margin-bottom: 2rem; font-family: var(--font-head); text-transform: uppercase; color: var(--accent); font-size: 0.9rem; letter-spacing: 2px;">
                 <span>Unity 3D</span><span>///</span><span>Creative Dev</span>
             </div>
-            <h1 id="hero-text-tech">Crafting<br><span style="color: var(--accent);">Immersive</span><br>Realities</h1>
+            <h1 id="hero-text-tech">
+                Crafting<br>
+                <span style="color: var(--accent);">Immersive</span><br>
+                Realities
+            </h1>
             <p style="margin-top: 2rem; max-width: 400px; color: #888; line-height: 1.6;" id="hero-sub">Bridging the gap between technical code and artistic vision.</p>
         </div>
+        
         <div id="hero-personal">
             <span class="hello-badge">Hello</span>
             <div class="personal-text" id="hero-text-personal">

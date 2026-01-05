@@ -40,10 +40,9 @@
             top: 50%; transform: translateY(-50%); z-index: 2; 
         }
         
-        /* CORRECTED: Reduced font size for the main heading only */
         #hero-intro h1 { 
             font-family: var(--font-head); 
-            font-size: clamp(2.5rem, 8vw, 6.5rem); /* Reduced size */
+            font-size: clamp(2.5rem, 8vw, 6.5rem); 
             line-height: 0.9;
             text-transform: uppercase; 
             font-weight: 700; 
@@ -58,18 +57,26 @@
         }
         .hello-badge { font-family: var(--font-code); font-size: 0.8rem; margin-bottom: 2rem; border: 1px solid #333; padding: 8px 20px; border-radius: 50px; color: #888; text-transform: uppercase; letter-spacing: 3px; background: rgba(255, 255, 255, 0.03); }
         
-        /* RESTORED: Original larger, bolder font style for the second text block */
+        /* UPDATED: Matching reference image style */
         .personal-text { 
             font-family: var(--font-head); 
-            font-size: clamp(2rem, 5vw, 4.5rem); /* Restored original size */
-            line-height: 1.2; 
-            font-weight: 500; /* Restored weight */
-            max-width: 1100px; 
+            font-size: clamp(3rem, 7vw, 6rem); /* Increased size */
+            line-height: 1.1; 
+            font-weight: 700; /* Bolder */
+            max-width: 1300px; /* Wider container */
             color: #fff; 
             margin: 0 auto; 
             text-align: center; 
         }
-        .highlight-italic { font-family: var(--font-italic); font-style: italic; font-weight: 400; color: var(--accent); padding: 0 8px; }
+        
+        /* UPDATED: Italic red text style */
+        .highlight-italic { 
+            font-family: var(--font-italic); 
+            font-style: italic; 
+            font-weight: 400; 
+            color: var(--accent); 
+            padding: 0 5px; 
+        }
 
         /* --- ABOUT SECTION --- */
         .container { max-width: 1400px; margin: 0 auto; padding: 0 5vw; }

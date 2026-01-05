@@ -39,13 +39,15 @@
             position: absolute; width: 100%; max-width: 1400px; padding: 0 5vw; 
             top: 50%; transform: translateY(-50%); z-index: 2; 
         }
+        
+        /* UPDATED: Reduced font size for the main heading */
         #hero-intro h1 { 
             font-family: var(--font-head); 
-            font-size: clamp(4rem, 12vw, 11rem);
-            line-height: 0.85; 
+            font-size: clamp(3rem, 9vw, 8rem); /* Reduced from 11rem max */
+            line-height: 0.9; /* Adjusted line height for smaller text */
             text-transform: uppercase; 
             font-weight: 700; 
-            letter-spacing: -3px; 
+            letter-spacing: -2px; /* Reduced letter spacing */
             color: #fff;
         }
         
@@ -108,11 +110,10 @@
         .resume-action { background: #fff; color: #000; padding: 15px 30px; border-radius: 50px; font-family: var(--font-head); font-weight: 600; text-transform: uppercase; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; transition: 0.3s; }
         .resume-box:hover .resume-action { background: var(--accent); color: #fff; }
 
-        /* --- FOOTER (UPDATED) --- */
+        /* --- FOOTER --- */
         footer { padding: 8rem 5vw; border-top: 1px solid #222; background: #080808; margin-top: 5rem; }
         .footer-headline { font-family: var(--font-head); font-size: clamp(3rem, 6vw, 5rem); line-height: 1; text-transform: uppercase; color: #fff; margin-bottom: 2rem; }
         .social-row { display: flex; gap: 2rem; margin-top: 2rem; }
-        /* Updated social link style to match reference */
         .social-row a { color: #6e56cf; text-decoration: underline; text-transform: uppercase; font-family: var(--font-code); font-size: 0.9rem; transition: 0.3s; }
         .social-row a:hover { color: var(--accent); }
         .email-link { font-size: 1.5rem; color: #555; text-decoration: none; transition: 0.3s; font-family: var(--font-code); display: block; margin-bottom: 2rem;}

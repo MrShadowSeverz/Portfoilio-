@@ -220,4 +220,204 @@
             <span class="mask"><span class="reveal" style="color: var(--accent);">Immersive</span></span>
             <span class="mask"><span class="reveal">Realities</span></span>
         </h1>
-        <p style="margin-top: 2rem; max-width: 500px;"
+        <p style="margin-top: 2rem; max-width: 500px;" class="mask">
+            <span class="reveal">
+                I am Abhilash Saji. A technical artist and Unity developer bridging the gap between code and visual fidelity in Games, AR, and VR.
+            </span>
+        </p>
+    </section>
+
+    <div class="marquee">
+        <div class="marquee-inner">
+            <span>Unity 3D • C# • ShaderGraph • AR Foundation • Oculus SDK • Blender • HLSL • Unity 3D • C# • ShaderGraph • AR Foundation •</span>
+        </div>
+    </div>
+
+    <section class="container projects-section" id="work">
+        
+        <article class="project-card">
+            <div class="project-img-wrap magnetic-area">
+                <img src="https://images.unsplash.com/photo-1614726365723-49faaa56cf75?q=80&w=2574&auto=format&fit=crop" class="project-img" alt="VR Game">
+            </div>
+            <div class="project-info">
+                <span style="color: var(--accent); font-weight: 700; margin-bottom: 10px; display:block;">01 — VR EXPERIENCE</span>
+                <h3>Project Aether</h3>
+                <p>A high-fidelity VR climbing simulation built for Oculus Quest 2. Features custom physics-based hand interactions, IK body solving, and optimized dynamic lighting.</p>
+                <div class="tech-list">
+                    <span class="tech-tag">Unity XR</span>
+                    <span class="tech-tag">C#</span>
+                    <span class="tech-tag">Final IK</span>
+                </div>
+                <a href="#" class="btn-view magnetic">View Case Study</a>
+            </div>
+        </article>
+
+        <article class="project-card">
+            <div class="project-img-wrap magnetic-area">
+                <img src="https://images.unsplash.com/photo-1633123678097-f5424796b426?q=80&w=2670&auto=format&fit=crop" class="project-img" alt="AR App">
+            </div>
+            <div class="project-info">
+                <span style="color: var(--accent); font-weight: 700; margin-bottom: 10px; display:block;">02 — AUGMENTED REALITY</span>
+                <h3>Retail AR Vision</h3>
+                <p>An AR interior design application allowing users to place life-size 3D furniture in their homes. Utilizes plane detection and real-time light estimation.</p>
+                <div class="tech-list">
+                    <span class="tech-tag">AR Foundation</span>
+                    <span class="tech-tag">ARCore</span>
+                    <span class="tech-tag">URP</span>
+                </div>
+                <a href="#" class="btn-view magnetic">View Case Study</a>
+            </div>
+        </article>
+
+        <article class="project-card">
+            <div class="project-img-wrap magnetic-area">
+                <img src="https://images.unsplash.com/photo-1552820728-8b83bb6b773f?q=80&w=2670&auto=format&fit=crop" class="project-img" alt="3D Game">
+            </div>
+            <div class="project-info">
+                <span style="color: var(--accent); font-weight: 700; margin-bottom: 10px; display:block;">03 — ACTION RPG</span>
+                <h3>Neon Samurai</h3>
+                <p>A stylized 3D action game with custom shader effects. I wrote the combat state machine, enemy AI behavior trees, and the post-processing stack.</p>
+                <div class="tech-list">
+                    <span class="tech-tag">Unity 3D</span>
+                    <span class="tech-tag">ShaderGraph</span>
+                    <span class="tech-tag">VFX Graph</span>
+                </div>
+                <a href="#" class="btn-view magnetic">View Case Study</a>
+            </div>
+        </article>
+
+    </section>
+
+    <section class="container about-section">
+        <div>
+            <h2>Beyond the Code</h2>
+            <p style="margin-bottom: 1rem;">I don't just write scripts; I engineer feelings. With a background in both technical implementation and visual design, I ensure that every frame rendered is optimized for performance without sacrificing the artistic vision.</p>
+            <p>From mobile 2D puzzles to complex PC VR simulations, my workflow is adaptable, scalable, and modern.</p>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-box">
+                <h4>4+</h4>
+                <p>Years Experience</p>
+            </div>
+            <div class="stat-box">
+                <h4>15+</h4>
+                <p>Shipped Projects</p>
+            </div>
+            <div class="stat-box">
+                <h4>100%</h4>
+                <p>Client Satisfaction</p>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <p style="letter-spacing: 2px; margin-bottom: 2rem;">READY TO COLLABORATE?</p>
+        <a href="mailto:email@example.com" class="footer-cta magnetic-area">
+            LET'S <span style="color: var(--accent);">BUILD</span><br>THE FUTURE.
+        </a>
+        <div style="margin-top: 3rem; display: flex; gap: 2rem;">
+            <a href="#" class="magnetic">LINKEDIN</a>
+            <a href="#" class="magnetic">GITHUB</a>
+            <a href="#" class="magnetic">TWITTER</a>
+        </div>
+    </footer>
+
+    <script>
+        // 1. INITIALIZE LENIS (SMOOTH SCROLL)
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            smooth: true,
+        });
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // 2. PRELOADER ANIMATION
+        const tl = gsap.timeline();
+        
+        // Counter logic
+        let count = 0;
+        const counterElement = document.querySelector('.counter');
+        const interval = setInterval(() => {
+            count += Math.floor(Math.random() * 10) + 1;
+            if (count > 100) count = 100;
+            counterElement.textContent = count + "%";
+            if (count === 100) clearInterval(interval);
+        }, 30);
+
+        tl.to(".preloader", {
+            delay: 2.5,
+            y: "-100%",
+            duration: 1.5,
+            ease: "power4.inOut"
+        })
+        .from(".reveal", {
+            y: "110%",
+            duration: 1,
+            stagger: 0.1,
+            ease: "power3.out"
+        }, "-=1"); // Start reveals while preloader is sliding up
+
+        // 3. PARALLAX EFFECT ON IMAGES
+        gsap.registerPlugin(ScrollTrigger);
+        
+        document.querySelectorAll('.project-img-wrap').forEach(wrap => {
+            const img = wrap.querySelector('.project-img');
+            
+            gsap.to(img, {
+                y: "-20%", // Move image up slightly
+                scrollTrigger: {
+                    trigger: wrap,
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
+        });
+
+        // 4. CUSTOM MAGNETIC CURSOR
+        const cursor = document.querySelector('.cursor');
+        
+        // Mouse Move
+        window.addEventListener('mousemove', (e) => {
+            gsap.to(cursor, {
+                x: e.clientX,
+                y: e.clientY,
+                duration: 0.1,
+                ease: "power2.out"
+            });
+        });
+
+        // Hover Effects (Scale cursor)
+        const hoverables = document.querySelectorAll('a, .magnetic, .magnetic-area');
+        hoverables.forEach(el => {
+            el.addEventListener('mouseenter', () => document.body.classList.add('hover-active'));
+            el.addEventListener('mouseleave', () => document.body.classList.remove('hover-active'));
+        });
+
+        // Magnetic Pull Effect on Buttons
+        document.querySelectorAll('.magnetic').forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                gsap.to(btn, {
+                    x: x * 0.3,
+                    y: y * 0.3,
+                    duration: 0.3,
+                    ease: "power2.out"
+                });
+            });
+            btn.addEventListener('mouseleave', () => {
+                gsap.to(btn, { x: 0, y: 0, duration: 0.5, ease: "elastic.out(1, 0.3)" });
+            });
+        });
+
+    </script>
+</body>
+</html>

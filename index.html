@@ -18,11 +18,11 @@
         :root {
             --bg: #050505;
             --text: #e1e1e1;
-            --accent: #ff3333;
+            --accent: #ff3333; /* The Brand Red */
             --dim: #444;
             --font-head: 'Clash Display', sans-serif;
             --font-body: 'Satoshi', sans-serif;
-            --font-italic: 'Playfair Display', serif; /* For the "Data/Insights" style highlight */
+            --font-italic: 'Playfair Display', serif;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
@@ -56,107 +56,135 @@
         nav { 
             position: fixed; top: 0; width: 100%; padding: 2rem 5vw; 
             display: flex; justify-content: space-between; align-items: center; 
-            z-index: 100; background: rgba(5,5,5,0.8); backdrop-filter: blur(10px);
+            z-index: 100; background: rgba(5,5,5,0.85); backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
         .logo { font-weight: 700; font-family: var(--font-head); text-transform: uppercase; letter-spacing: 1px; font-size: 1.2rem; }
         .nav-links { display: flex; gap: 2rem; }
-        .nav-links a { font-family: var(--font-head); text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; transition: color 0.3s; }
-        .nav-links a:hover { color: var(--accent); }
+        .nav-links a { font-family: var(--font-head); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; transition: color 0.3s; color: #999; }
+        .nav-links a:hover, .nav-links a.active { color: var(--accent); }
 
-        /* Typography & Headings */
+        /* Typography */
         .section-header {
-            border-bottom: 1px solid #333;
-            padding-bottom: 2rem;
-            margin-bottom: 4rem;
+            border-bottom: 1px solid #333; padding-bottom: 1.5rem; margin-bottom: 4rem;
             display: flex; align-items: center; justify-content: space-between;
         }
         .section-title { font-family: var(--font-head); font-size: clamp(2rem, 4vw, 3rem); color: var(--accent); text-transform: uppercase; }
-        .section-num { font-family: monospace; color: #555; font-size: 1.2rem; }
+        .section-num { font-family: monospace; color: #555; font-size: 1rem; }
 
-        /* --- 4. HERO SECTION (THE TRANSITION MAGIC) --- */
+        /* --- 4. HERO SECTION (UPDATED) --- */
         .hero { 
             height: 100vh; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: center; 
-            position: relative; /* Needed for stacking the two intros */
+            display: flex; flex-direction: column; justify-content: center; 
+            position: relative; 
         }
 
-        /* Hero Phase 1: The Technical Intro */
+        /* Technical Intro (Phase 1) */
         #hero-intro {
-            position: absolute;
-            width: 100%;
-            top: 50%;
-            transform: translateY(-50%);
+            position: absolute; width: 100%; top: 50%; transform: translateY(-50%);
             z-index: 2;
         }
-        
         #hero-intro h1 {
             font-family: var(--font-head); 
-            font-size: clamp(3.5rem, 9vw, 9.5rem); 
-            line-height: 0.85; 
-            text-transform: uppercase; 
-            font-weight: 600; 
-            letter-spacing: -2px;
+            font-size: clamp(3rem, 8vw, 8rem); 
+            line-height: 0.9; text-transform: uppercase; font-weight: 600; letter-spacing: -2px;
         }
 
-        /* Hero Phase 2: The Personal Intro (Hidden Initially) */
+        /* Personal Intro (Phase 2) */
         #hero-personal {
-            position: absolute;
-            width: 100%;
-            top: 50%;
-            transform: translateY(-50%);
-            opacity: 0; /* Hidden start */
-            z-index: 1;
-            text-align: center;
+            position: absolute; width: 100%; top: 50%; transform: translateY(-50%);
+            opacity: 0; z-index: 1; text-align: center;
+            /* Flex for centering */
+            display: flex; flex-direction: column; align-items: center;
         }
 
         .hello-badge {
-            font-size: 1.2rem; margin-bottom: 1.5rem; display: block; 
-            font-family: var(--font-body); font-weight: 500;
+            font-size: 1rem; margin-bottom: 2rem; 
+            border: 1px solid #333; padding: 5px 15px; border-radius: 50px;
+            color: #888; text-transform: uppercase; letter-spacing: 2px;
         }
 
+        /* UPDATED: Smaller, cleaner font size */
         .personal-text {
             font-family: var(--font-head);
-            font-size: clamp(2.5rem, 6vw, 6rem);
-            line-height: 1.1;
-            font-weight: 600;
-            max-width: 1200px;
-            margin: 0 auto;
+            font-size: clamp(2rem, 5vw, 4.5rem); /* Reduced from 6rem */
+            line-height: 1.2;
+            font-weight: 500;
+            max-width: 1100px;
+            color: #fff;
         }
 
-        /* The "Data/Insights" Style Highlight from your image */
         .highlight-italic {
             font-family: var(--font-italic);
             font-style: italic;
             font-weight: 400;
             color: var(--accent);
-            padding: 0 5px;
+            padding: 0 8px;
         }
 
-        /* --- 5. SECTIONS --- */
+        /* UPDATED BUTTONS TO MATCH THEME */
+        .hero-btn-group {
+            margin-top: 3.5rem; display: flex; gap: 1.5rem;
+        }
         
-        /* About (#about) */
-        .about-section { padding: 8rem 0; }
-        .reading-text { font-size: clamp(1.5rem, 3vw, 2.5rem); line-height: 1.4; color: #333; }
-        .reading-text .word.active { color: #fff; }
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem; margin-top: 4rem; }
-        .stat-box { border-top: 1px solid #333; padding-top: 1rem; }
-        .stat-box h4 { font-size: 4rem; color: var(--accent); font-family: var(--font-head); line-height: 1; }
+        .btn-primary {
+            background: var(--accent);
+            color: #fff;
+            padding: 16px 40px;
+            border-radius: 100px;
+            font-family: var(--font-head);
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+            transition: transform 0.3s, background 0.3s;
+            border: 1px solid var(--accent);
+        }
+        .btn-primary:hover { transform: scale(1.05); background: #cc2929; }
 
-        /* Projects (#work) */
-        .projects-section { padding: 8rem 0; }
-        .project-card { margin-bottom: 8rem; display: grid; grid-template-columns: 1.5fr 1fr; gap: 4rem; align-items: center; perspective: 1000px; }
+        .btn-secondary {
+            background: transparent;
+            color: #fff;
+            padding: 16px 40px;
+            border-radius: 100px;
+            font-family: var(--font-head);
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s;
+        }
+        .btn-secondary:hover { border-color: #fff; background: rgba(255,255,255,0.05); }
+
+        /* --- 5. SECTIONS --- */
+        .about-section, .projects-section { padding: 8rem 0; }
+        
+        /* Stats */
+        .reading-text { font-size: clamp(1.2rem, 2.5vw, 2rem); line-height: 1.5; color: #888; max-width: 90%; }
+        .reading-text .word.active { color: #fff; }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 5rem; }
+        .stat-box { border-top: 1px solid #333; padding-top: 1.5rem; }
+        .stat-box h4 { font-size: 3.5rem; color: var(--accent); font-family: var(--font-head); line-height: 1; margin-bottom: 0.5rem; }
+        .stat-box p { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: #666; }
+
+        /* Projects */
+        .project-card { margin-bottom: 8rem; display: grid; grid-template-columns: 1.5fr 1fr; gap: 5rem; align-items: center; perspective: 1000px; }
         .project-card:nth-child(even) { direction: rtl; }
         .project-card:nth-child(even) .project-info { direction: ltr; }
-        .project-img-wrap { height: 50vh; width: 100%; overflow: hidden; border-radius: 4px; position: relative; }
-        .project-img { width: 100%; height: 100%; object-fit: cover; }
-        .tech-tag { border: 1px solid #333; padding: 0.5rem 1rem; border-radius: 50px; font-size: 0.8rem; text-transform: uppercase; margin-right: 10px; margin-bottom: 10px; display: inline-block; transition: 0.3s; }
-        .btn-view { display: inline-block; margin-top: 2rem; font-family: var(--font-head); text-transform: uppercase; font-weight: 600; border-bottom: 1px solid #fff; padding-bottom: 5px; }
+        .project-img-wrap { height: 55vh; width: 100%; overflow: hidden; border-radius: 6px; position: relative; background: #111; }
+        .project-img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; transition: opacity 0.5s; }
+        .project-card:hover .project-img { opacity: 1; }
+        
+        .project-info h3 { font-family: var(--font-head); font-size: 2.5rem; margin-bottom: 1rem; }
+        .project-info p { color: #888; line-height: 1.6; margin-bottom: 1.5rem; }
+        .tech-tag { border: 1px solid #333; padding: 6px 14px; border-radius: 50px; font-size: 0.75rem; text-transform: uppercase; margin-right: 8px; color: #777; display: inline-block; }
+        .btn-view { display: inline-block; margin-top: 2rem; font-family: var(--font-head); text-transform: uppercase; font-weight: 600; border-bottom: 1px solid var(--accent); padding-bottom: 5px; color: var(--accent); font-size: 0.9rem; }
 
-        /* Contact (#contact) */
-        footer { height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; border-top: 1px solid #222; }
-        .footer-cta { font-size: clamp(3rem, 10vw, 11rem); font-family: var(--font-head); text-transform: uppercase; line-height: 0.9; }
+        /* Contact */
+        footer { height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; border-top: 1px solid #222; }
+        .footer-cta { font-size: clamp(3rem, 9vw, 10rem); font-family: var(--font-head); text-transform: uppercase; line-height: 0.9; transition: color 0.3s; }
+        .footer-cta:hover { color: var(--accent); }
 
         /* Preloader */
         .preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #fff; color: #000; z-index: 99999; display: flex; justify-content: space-between; align-items: flex-end; padding: 2rem; font-family: var(--font-head); }
@@ -164,11 +192,13 @@
 
         @media (max-width: 768px) {
             .nav-links { display: none; }
+            .hero-btn-group { flex-direction: column; gap: 1rem; margin-top: 2rem; width: 100%; padding: 0 2rem; }
+            .btn-primary, .btn-secondary { width: 100%; text-align: center; padding: 14px 0; }
             .project-card, .project-card:nth-child(even) { grid-template-columns: 1fr; direction: ltr; gap: 2rem; margin-bottom: 6rem; }
-            .project-img-wrap { height: 40vh; }
-            .stats-grid { grid-template-columns: 1fr; }
-            #hero-intro h1 { font-size: 3.5rem; } 
-            .personal-text { font-size: 2.5rem; }
+            .project-img-wrap { height: 35vh; }
+            .stats-grid { grid-template-columns: 1fr; gap: 3rem; }
+            #hero-intro h1 { font-size: 3.2rem; }
+            .personal-text { font-size: 2.2rem; }
         }
     </style>
 </head>
@@ -186,7 +216,7 @@
     <nav>
         <a href="#home" class="logo magnetic">Abhilash Saji.</a>
         <div class="nav-links">
-            <a href="#home" class="magnetic">Home</a>
+            <a href="#home" class="magnetic active">Home</a>
             <a href="#about" class="magnetic">About</a>
             <a href="#work" class="magnetic">Projects</a>
             <a href="#contact" class="magnetic">Contact</a>
@@ -196,7 +226,7 @@
     <section id="home" class="hero container">
         
         <div id="hero-intro">
-            <div style="display: flex; gap: 2rem; margin-bottom: 2rem; font-family: var(--font-head); text-transform: uppercase; color: var(--accent);">
+            <div style="display: flex; gap: 2rem; margin-bottom: 2rem; font-family: var(--font-head); text-transform: uppercase; color: var(--accent); font-size: 0.9rem; letter-spacing: 2px;">
                 <span>Unity 3D</span><span>///</span><span>Creative Dev</span>
             </div>
             <h1 id="hero-text-tech">
@@ -204,7 +234,7 @@
                 <span style="color: var(--accent);">Immersive</span><br>
                 Realities
             </h1>
-            <p style="margin-top: 2rem; max-width: 500px;" id="hero-sub">
+            <p style="margin-top: 2rem; max-width: 400px; color: #888; line-height: 1.6;" id="hero-sub">
                 Bridging the gap between technical code and artistic vision.
             </p>
         </div>
@@ -215,9 +245,9 @@
                 I’m Abhilash Saji, a Unity Developer who loves building <span class="highlight-italic">worlds</span> and crafting immersive <span class="highlight-italic">experiences.</span>
             </div>
             
-            <div style="margin-top: 3rem; display: flex; gap: 20px; justify-content: center;">
-                 <a href="#work" class="magnetic" style="padding: 15px 40px; background: #CFFF69; color: #000; border-radius: 50px; font-weight: 600; text-transform: uppercase; font-size: 0.9rem;">Projects</a>
-                <a href="#contact" class="magnetic" style="padding: 15px 40px; border: 1px solid #fff; color: #fff; border-radius: 50px; font-weight: 600; text-transform: uppercase; font-size: 0.9rem;">Connect</a>
+            <div class="hero-btn-group">
+                <a href="#work" class="btn-primary magnetic">View Projects</a>
+                <a href="#contact" class="btn-secondary magnetic">Let's Connect</a>
             </div>
         </div>
 
@@ -228,20 +258,19 @@
             <h2 class="section-title">Profile</h2>
             <span class="section-num">01 / ABOUT</span>
         </div>
-        <div class="about-grid">
-            <div>
-                <p class="reading-text">
-                    I don't just write scripts; I engineer feelings. My background in 
-                    <span style="color: var(--accent);">Technical Art</span> and 
-                    <span style="color: var(--accent);">Game Design</span> ensures that every frame rendered is optimized for 
-                    <span style="color: var(--accent);">Performance</span> without sacrificing the artistic vision. 
-                    From mobile 2D puzzles to complex PC VR simulations, my workflow is adaptable, scalable, and modern.
-                </p>
-                <div class="stats-grid">
-                    <div class="stat-box"><h4>4+</h4><p>Years Experience</p></div>
-                    <div class="stat-box"><h4>15+</h4><p>Shipped Projects</p></div>
-                    <div class="stat-box"><h4>100%</h4><p>Satisfaction</p></div>
-                </div>
+        
+        <div>
+            <p class="reading-text">
+                I don't just write scripts; I engineer feelings. My background in 
+                <span style="color: var(--accent);">Technical Art</span> and 
+                <span style="color: var(--accent);">Game Design</span> ensures that every frame rendered is optimized for 
+                <span style="color: var(--accent);">Performance</span> without sacrificing the artistic vision. 
+                From mobile 2D puzzles to complex PC VR simulations, my workflow is adaptable, scalable, and modern.
+            </p>
+            <div class="stats-grid">
+                <div class="stat-box"><h4>4+</h4><p>Years Experience</p></div>
+                <div class="stat-box"><h4>15+</h4><p>Shipped Projects</p></div>
+                <div class="stat-box"><h4>100%</h4><p>Satisfaction</p></div>
             </div>
         </div>
     </section>
@@ -259,10 +288,10 @@
             <div class="project-info">
                 <h3>Pixel Odyssey</h3>
                 <p>A precision-based 2D platformer. Implemented tight character controllers, wall-jumps, and a custom particle system.</p>
-                <div style="margin: 1.5rem 0;">
+                <div>
                     <span class="tech-tag">Unity 2D</span><span class="tech-tag">C#</span><span class="tech-tag">URP 2D</span>
                 </div>
-                <a href="#" class="btn-view magnetic">VIEW PROJECT</a>
+                <a href="#" class="btn-view magnetic">VIEW CASE STUDY</a>
             </div>
         </article>
 
@@ -273,10 +302,10 @@
             <div class="project-info">
                 <h3>Cyber Dash</h3>
                 <p>High-speed mobile runner. Features object pooling for infinite terrain and procedural obstacle placement.</p>
-                <div style="margin: 1.5rem 0;">
+                <div>
                     <span class="tech-tag">Mobile Opt</span><span class="tech-tag">Object Pooling</span>
                 </div>
-                <a href="#" class="btn-view magnetic">VIEW PROJECT</a>
+                <a href="#" class="btn-view magnetic">VIEW CASE STUDY</a>
             </div>
         </article>
 
@@ -287,13 +316,13 @@
             <div class="project-info">
                 <h3>Titan Strike</h3>
                 <p>Tactical FPS with robust Raycast shooting, weapon sway, and FSM Enemy AI.</p>
-                <div style="margin: 1.5rem 0;">
+                <div>
                     <span class="tech-tag">Raycasting</span><span class="tech-tag">State Machines</span>
                 </div>
-                <a href="#" class="btn-view magnetic">VIEW PROJECT</a>
+                <a href="#" class="btn-view magnetic">VIEW CASE STUDY</a>
             </div>
         </article>
-
+        
         <article class="project-card">
             <div class="project-img-wrap magnetic-area">
                 <img src="https://images.unsplash.com/photo-1627855331309-409c9e88d1d8?q=80&w=2671&auto=format&fit=crop" class="project-img">
@@ -301,10 +330,10 @@
             <div class="project-info">
                 <h3>Covert Ops</h3>
                 <p>TPS cover shooter using Cinemachine for camera blending and Inverse Kinematics for aiming.</p>
-                <div style="margin: 1.5rem 0;">
+                <div>
                     <span class="tech-tag">Cinemachine</span><span class="tech-tag">IK Rigging</span>
                 </div>
-                <a href="#" class="btn-view magnetic">VIEW PROJECT</a>
+                <a href="#" class="btn-view magnetic">VIEW CASE STUDY</a>
             </div>
         </article>
 
@@ -315,10 +344,10 @@
             <div class="project-info">
                 <h3>Drift Horizon</h3>
                 <p>Physics-based vehicle simulation using Unity Wheel Colliders, friction curves, and manual transmission logic.</p>
-                <div style="margin: 1.5rem 0;">
+                <div>
                     <span class="tech-tag">Physics</span><span class="tech-tag">Wheel Colliders</span>
                 </div>
-                <a href="#" class="btn-view magnetic">VIEW PROJECT</a>
+                <a href="#" class="btn-view magnetic">VIEW CASE STUDY</a>
             </div>
         </article>
     </section>
@@ -348,11 +377,11 @@
         // TEXT REVEAL (ABOUT SECTION)
         const readingText = new SplitType('.reading-text', { types: 'words' });
         gsap.fromTo(readingText.words, { opacity: 0.2, color: "#333" }, {
-            opacity: 1, color: "#e1e1e1", stagger: 0.1,
-            scrollTrigger: { trigger: ".reading-text", start: "top 80%", end: "bottom 60%", scrub: true }
+            opacity: 1, color: "#e1e1e1", stagger: 0.05,
+            scrollTrigger: { trigger: ".reading-text", start: "top 85%", end: "bottom 65%", scrub: true }
         });
 
-        // PRELOADER & HERO TRANSITION SEQUENCE
+        // FAST PRELOADER & CINEMATIC HERO TRANSITION
         const tl = gsap.timeline();
         let count = 0; const counterElement = document.querySelector('.counter');
         const interval = setInterval(() => {
@@ -360,31 +389,58 @@
             if (count > 100) count = 100;
             counterElement.textContent = count + "%";
             if (count === 100) clearInterval(interval);
-        }, 20);
+        }, 15); // Faster counting
 
-        // Prepare Text Splits
         const techText = new SplitType('#hero-text-tech', { types: 'words, chars' });
         const personalText = new SplitType('#hero-text-personal', { types: 'words' });
 
-        // THE SEQUENCE
-        tl.to(".preloader", { delay: 2.2, y: "-100%", duration: 1.2, ease: "power4.inOut" })
-          .to(".preloader-overlay", { y: "-100%", duration: 1.2, ease: "power4.inOut" }, "-=1")
+        // THE SNAP SEQUENCE
+        tl.to(".preloader", { delay: 1.5, y: "-100%", duration: 1, ease: "expo.inOut" })
+          .to(".preloader-overlay", { y: "-100%", duration: 1, ease: "expo.inOut" }, "-=0.8")
           
-          // 1. Show Technical Intro
-          .from(techText.chars, { y: 100, opacity: 0, rotateZ: 10, duration: 0.8, stagger: 0.02, ease: "back.out(1.7)" }, "-=0.5")
-          .from("#hero-sub", { opacity: 0, y: 20, duration: 1 }, "-=0.5")
+          // Phase 1: Tech Intro (Fast & Sharp)
+          .from(techText.chars, { y: 100, opacity: 0, rotateZ: 5, duration: 0.8, stagger: 0.02, ease: "back.out(1.7)" }, "-=0.5")
+          .from("#hero-sub", { opacity: 0, y: 10, duration: 0.5 }, "-=0.3")
           
-          // 2. WAIT... Then Transition
-          .to("#hero-intro", { opacity: 0, y: -50, duration: 1, delay: 2.5, ease: "power2.in" })
+          // SHORT PAUSE
+          .to({}, { duration: 1.2 }) 
+
+          // Phase 2: The "Blur-Snap" Swap
+          .to("#hero-intro", { 
+              filter: "blur(20px)", 
+              opacity: 0, 
+              scale: 0.95, 
+              duration: 0.6, 
+              ease: "power2.in" 
+          })
           
-          // 3. Show Personal Intro (From Image)
-          .to("#hero-personal", { opacity: 1, duration: 0.1 }) // Make visible
-          .from(".hello-badge", { opacity: 0, y: 20, duration: 0.8 }, "+=0.1")
-          .from(personalText.words, { opacity: 0, y: 30, duration: 0.8, stagger: 0.05, ease: "power3.out" }, "-=0.6")
-          .from("#hero-personal .magnetic", { opacity: 0, y: 20, duration: 0.8, stagger: 0.1 }, "-=0.4");
+          .to("#hero-personal", { opacity: 1, duration: 0.1 }) // Switch visibility
+          
+          // Incoming Personal Text (Snap In)
+          .from("#hero-personal", { 
+              filter: "blur(20px)", 
+              scale: 1.1, 
+              duration: 0.8, 
+              ease: "expo.out" 
+          }, "+=0.1")
+          
+          .from(".hello-badge", { opacity: 0, y: -20, duration: 0.6 }, "-=0.6")
+          .from(personalText.words, { 
+              y: 50, 
+              opacity: 0, 
+              duration: 0.8, 
+              stagger: 0.03, 
+              ease: "power3.out" 
+          }, "-=0.6")
+          .from(".hero-btn-group a", { 
+              y: 20, 
+              opacity: 0, 
+              duration: 0.6, 
+              stagger: 0.1 
+          }, "-=0.4");
 
 
-        // PROJECT CARD TILT
+        // PROJECT CARD 3D TILT
         document.querySelectorAll('.project-card').forEach(card => {
             card.addEventListener('mousemove', (e) => {
                 const rect = card.getBoundingClientRect();

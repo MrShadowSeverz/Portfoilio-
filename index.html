@@ -15,7 +15,7 @@
 
     <style>
         /* --- CORE --- */
-        :root { --bg: #050505; --text: #e1e1e1; --accent: #ff3333; --font-head: 'Clash Display', sans-serif; --font-body: 'Satoshi', sans-serif; --font-code: 'Space Mono', monospace; --font-italic: 'Playfair Display', serif; }
+        :root { --bg: #050505; --text: #e1e1e1; --accent: #ff3333; --font-head: 'Clash Display', sans-serif; --font-body: 'Satoshi', sans-serif; --font-code: 'Space Mono', monospace; }
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
         ::selection { background: var(--accent); color: #000; }
         html { scroll-behavior: auto; }
@@ -40,14 +40,14 @@
             top: 50%; transform: translateY(-50%); z-index: 2; 
         }
         
-        /* UPDATED: Reduced font size for the main heading */
+        /* UPDATED: Further Reduced Font Size */
         #hero-intro h1 { 
             font-family: var(--font-head); 
-            font-size: clamp(3rem, 9vw, 8rem); /* Reduced from 11rem max */
-            line-height: 0.9; /* Adjusted line height for smaller text */
+            font-size: clamp(2.5rem, 8vw, 6.5rem); /* Reduced slightly more */
+            line-height: 0.9;
             text-transform: uppercase; 
             font-weight: 700; 
-            letter-spacing: -2px; /* Reduced letter spacing */
+            letter-spacing: -2px;
             color: #fff;
         }
         

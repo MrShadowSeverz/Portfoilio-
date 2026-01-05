@@ -14,31 +14,28 @@
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
 
     <style>
-        :root { --bg: #050505; --text: #e1e1e1; --accent: #ff3333; --blue: #0044ff; --font-head: 'Clash Display', sans-serif; --font-body: 'Satoshi', sans-serif; --font-code: 'Space Mono', monospace; --font-italic: 'Playfair Display', serif; }
+        /* --- CORE --- */
+        :root { --bg: #050505; --text: #e1e1e1; --accent: #ff3333; --font-head: 'Clash Display', sans-serif; --font-body: 'Satoshi', sans-serif; --font-code: 'Space Mono', monospace; --font-italic: 'Playfair Display', serif; }
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
         ::selection { background: var(--accent); color: #000; }
         html { scroll-behavior: auto; }
         body { background-color: var(--bg); color: var(--text); font-family: var(--font-body); overflow-x: hidden; }
 
-        /* CURSOR */
+        /* --- UI ELEMENTS --- */
         .cursor { position: fixed; width: 12px; height: 12px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%); mix-blend-mode: difference; }
         .cursor-follower { position: fixed; width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.3); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: 0.1s; }
 
-        /* NAVIGATION */
         nav { position: fixed; top: 0; width: 100%; padding: 2rem 5vw; display: flex; justify-content: space-between; align-items: center; z-index: 100; background: rgba(5,5,5,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.05); }
         .logo { font-weight: 700; font-family: var(--font-head); text-transform: uppercase; letter-spacing: 1px; font-size: 1.2rem; text-decoration: none; color: #fff; }
         .nav-links { display: flex; gap: 2rem; }
         .nav-links a { font-family: var(--font-head); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; transition: color 0.3s; color: #999; text-decoration: none; }
         .nav-links a:hover { color: var(--accent); }
 
-        /* HERO SECTION */
+        /* --- HERO SECTION --- */
         .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; width: 100%; }
-        
-        /* Phase 1: CRAFTING IMMERSIVE REALITIES */
         #hero-intro { position: absolute; width: 100%; max-width: 1400px; padding: 0 5vw; top: 50%; transform: translateY(-50%); z-index: 2; }
-        #hero-intro h1 { font-family: var(--font-head); font-size: clamp(4rem, 10vw, 9rem); line-height: 0.85; text-transform: uppercase; font-weight: 700; letter-spacing: -2px; }
+        #hero-intro h1 { font-family: var(--font-head); font-size: clamp(3rem, 8vw, 8rem); line-height: 0.9; text-transform: uppercase; font-weight: 600; letter-spacing: -2px; }
         
-        /* Phase 2: I'M ABHILASH SAJI */
         #hero-personal { position: absolute; width: 100%; top: 50%; transform: translateY(-50%); opacity: 0; z-index: 1; text-align: center; display: flex; flex-direction: column; align-items: center; }
         .hello-badge { font-family: var(--font-code); font-size: 0.8rem; margin-bottom: 1.5rem; border: 1px solid #333; padding: 8px 20px; border-radius: 50px; color: #888; text-transform: uppercase; letter-spacing: 3px; background: rgba(255, 255, 255, 0.03); }
         .personal-text { font-family: var(--font-head); font-size: clamp(2rem, 5vw, 4.5rem); line-height: 1.2; font-weight: 500; max-width: 1100px; color: #fff; margin: 0 auto; text-align: center; }
@@ -47,41 +44,148 @@
         .btn-primary { margin-top: 2rem; background: var(--accent); color: #fff; padding: 16px 45px; border-radius: 100px; font-family: var(--font-head); text-transform: uppercase; font-weight: 600; letter-spacing: 1px; font-size: 0.85rem; transition: transform 0.3s, background 0.3s; border: 1px solid var(--accent); display: inline-block; text-decoration: none; }
         .btn-primary:hover { transform: scale(1.05); background: #cc2929; }
 
-        /* ABOUT SECTION */
+        /* --- ABOUT SECTION --- */
         .container { max-width: 1400px; margin: 0 auto; padding: 0 5vw; }
         .about-section { padding: 8rem 0; }
         .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem; border-bottom: 1px solid #222; padding-bottom: 2rem; }
         .section-title { font-family: var(--font-head); font-size: 4rem; text-transform: uppercase; color: var(--accent); font-weight: 700; line-height: 1; }
-        
-        .reading-text { font-size: clamp(1.5rem, 3vw, 2.5rem); line-height: 1.4; color: #888; max-width: 100%; }
+        .reading-text { font-size: clamp(1.2rem, 2.5vw, 2rem); line-height: 1.5; color: #888; max-width: 100%; }
         .reading-text .word.active { color: #fff; }
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 5rem; }
         .stat-box h4 { font-size: 4rem; color: var(--accent); font-family: var(--font-head); line-height: 1; margin-bottom: 0.5rem; }
         .stat-box p { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: #666; }
 
-        /* RESUME MARQUEE */
-        .resume-marquee { width: 100%; background: var(--accent); padding: 3rem 0; overflow: hidden; white-space: nowrap; display: flex; align-items: center; cursor: pointer; text-decoration: none; transition: background 0.3s; }
-        .resume-marquee:hover { background: #fff; }
-        .resume-marquee:hover .marquee-content { color: var(--accent); }
-        .marquee-content { display: flex; animation: scroll 15s linear infinite; font-family: var(--font-head); font-size: 4rem; font-weight: 700; color: #000; text-transform: uppercase; }
-        .marquee-item { margin-right: 4rem; }
-        @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        /* --- NEW: PROJECT GATEWAY (THE "BIG SPACE") --- */
+        .project-gateway {
+            position: relative;
+            height: 80vh; /* Big vertical space */
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-top: 5rem;
+            text-decoration: none; /* Make whole area clickable */
+        }
 
-        /* CONTACT SECTION */
-        footer { padding: 8rem 0; text-align: left; }
-        .collab-header { font-family: var(--font-head); font-size: 4rem; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 2rem; }
-        .big-cta { font-family: var(--font-head); font-size: clamp(4rem, 11vw, 12rem); line-height: 0.8; font-weight: 700; text-transform: uppercase; }
-        .outline-text { -webkit-text-stroke: 2px var(--blue); color: transparent; transition: 0.3s; }
-        .solid-text { color: var(--accent); }
-        .footer-links { margin-top: 4rem; display: flex; gap: 3rem; font-family: var(--font-code); text-transform: uppercase; font-size: 0.9rem; }
-        .footer-links a { color: #555; text-decoration: none; transition: 0.3s; }
-        .footer-links a:hover { color: var(--accent); }
+        /* The Image Background */
+        .gateway-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 120%; /* Taller for parallax */
+            /* Using a high-quality abstract tech/game image */
+            background-image: url('https://images.unsplash.com/photo-1614726365723-49faaa56cf75?q=80&w=2574&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.4) grayscale(100%); /* Dark and moody initially */
+            transition: filter 0.5s ease, transform 0.5s ease;
+            z-index: 1;
+        }
+
+        /* Hover Effect on the Container */
+        .project-gateway:hover .gateway-bg {
+            filter: brightness(0.8) grayscale(0%); /* Color comes back on hover */
+            transform: scale(1.05); /* Slight zoom */
+        }
+
+        .gateway-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            pointer-events: none; /* Let clicks pass through to the link */
+        }
+
+        .gateway-title {
+            font-family: var(--font-head);
+            font-size: clamp(3rem, 10vw, 8rem);
+            color: #fff;
+            text-transform: uppercase;
+            font-weight: 700;
+            line-height: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .gateway-btn {
+            display: inline-block;
+            border: 1px solid rgba(255,255,255,0.5);
+            padding: 15px 40px;
+            border-radius: 50px;
+            color: #fff;
+            font-family: var(--font-code);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        /* --- NEW: CLEAN CONTACT & RESUME FOOTER --- */
+        footer {
+            padding: 8rem 5vw;
+            border-top: 1px solid #222;
+            background: #080808;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: end;
+        }
+
+        .footer-headline {
+            font-family: var(--font-head);
+            font-size: clamp(3rem, 6vw, 5rem);
+            line-height: 1;
+            text-transform: uppercase;
+            color: #fff;
+            margin-bottom: 2rem;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            align-items: flex-start;
+        }
+
+        .resume-btn {
+            background: #fff;
+            color: #000;
+            font-family: var(--font-head);
+            font-weight: 600;
+            text-transform: uppercase;
+            padding: 15px 30px;
+            border-radius: 4px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.3s;
+        }
+        .resume-btn:hover { background: var(--accent); color: #fff; }
+
+        .email-link {
+            font-size: 1.5rem;
+            color: #555;
+            text-decoration: none;
+            transition: 0.3s;
+            font-family: var(--font-code);
+        }
+        .email-link:hover { color: #fff; }
+
+        .social-row { display: flex; gap: 2rem; margin-top: 2rem; }
+        .social-row a { color: #555; text-decoration: none; text-transform: uppercase; font-family: var(--font-code); font-size: 0.9rem; transition: 0.3s; }
+        .social-row a:hover { color: var(--accent); }
 
         /* PRELOADER */
         .preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #fff; color: #000; z-index: 99999; display: flex; justify-content: space-between; align-items: flex-end; padding: 2rem; font-family: var(--font-head); }
         .preloader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: var(--bg); z-index: 99998; transform: translateY(100%); }
-        
-        @media (max-width: 768px) { .stats-grid { grid-template-columns: 1fr; gap: 3rem; } .nav-links { display: none; } }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: 1fr; gap: 3rem; }
+        }
     </style>
 </head>
 <body>
@@ -94,7 +198,7 @@
     <nav>
         <a href="index.html" class="logo magnetic">Abhilash Saji.</a>
         <div class="nav-links">
-            <a href="#home" class="magnetic" style="color: var(--accent);">Home</a>
+            <a href="index.html" class="magnetic" style="color: var(--accent);">Home</a>
             <a href="#about" class="magnetic">About</a>
             <a href="projects.html" class="magnetic">Projects</a>
             <a href="#contact" class="magnetic">Contact</a>
@@ -109,13 +213,11 @@
             <h1 id="hero-text-tech">Crafting<br><span style="color: var(--accent);">Immersive</span><br>Realities</h1>
             <p style="margin-top: 2rem; max-width: 400px; color: #888; line-height: 1.6;" id="hero-sub">Bridging the gap between technical code and artistic vision.</p>
         </div>
-
         <div id="hero-personal">
             <span class="hello-badge">Hello</span>
             <div class="personal-text" id="hero-text-personal">
                 I’m Abhilash Saji, a Unity Developer who loves building <span class="highlight-italic">worlds</span> and crafting immersive <span class="highlight-italic">experiences.</span>
             </div>
-            <a href="projects.html" class="btn-primary magnetic">See My Projects</a>
         </div>
     </section>
 
@@ -136,27 +238,33 @@
         </div>
     </section>
 
-    <a href="resume.pdf" download class="resume-marquee">
-        <div class="marquee-content">
-            <div class="marquee-item">DOWNLOAD RESUME ↘</div><div class="marquee-item">GET MY CV ↘</div>
-            <div class="marquee-item">DOWNLOAD RESUME ↘</div><div class="marquee-item">GET MY CV ↘</div>
-            <div class="marquee-item">DOWNLOAD RESUME ↘</div><div class="marquee-item">GET MY CV ↘</div>
+    <a href="projects.html" class="project-gateway magnetic-area">
+        <div class="gateway-bg"></div> <div class="gateway-content">
+            <div class="gateway-title">Selected<br><span style="color: var(--accent); -webkit-text-stroke: 0px;">Works</span></div>
+            <div class="gateway-btn">Explore Projects ↗</div>
         </div>
     </a>
 
-    <footer id="contact" class="container">
-        <div class="collab-header">COLLABORATION</div>
-        <div style="margin-bottom: 2rem; font-family: var(--font-code); color: #666;">READY TO START?</div>
-        
-        <a href="mailto:email@example.com" style="text-decoration: none;">
-            <div class="big-cta outline-text">LET'S BUILD</div>
-            <div class="big-cta solid-text">THE FUTURE.</div>
-        </a>
-
-        <div class="footer-links">
-            <a href="#" class="magnetic">LINKEDIN</a>
-            <a href="#" class="magnetic">GITHUB</a>
-            <a href="#" class="magnetic">TWITTER</a>
+    <footer id="contact">
+        <div class="footer-grid">
+            <div>
+                <p style="font-family: var(--font-code); color: var(--accent); margin-bottom: 1rem;">03 / CONTACT</p>
+                <h2 class="footer-headline">Let's Create<br>The Unknown.</h2>
+                <div class="social-row">
+                    <a href="#" class="magnetic">LinkedIn</a>
+                    <a href="#" class="magnetic">GitHub</a>
+                    <a href="#" class="magnetic">Twitter</a>
+                </div>
+            </div>
+            
+            <div class="footer-links">
+                <a href="mailto:email@example.com" class="email-link magnetic">hello@abhilashsaji.com</a>
+                <br>
+                <a href="resume.pdf" download class="resume-btn magnetic">
+                    <span>Download Resume</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                </a>
+            </div>
         </div>
     </footer>
 
@@ -166,7 +274,6 @@
         requestAnimationFrame(raf);
         gsap.registerPlugin(ScrollTrigger);
 
-        // CURSOR
         const cursor = document.querySelector('.cursor');
         const follower = document.querySelector('.cursor-follower');
         window.addEventListener('mousemove', (e) => {
@@ -174,7 +281,7 @@
             gsap.to(follower, { x: e.clientX, y: e.clientY, duration: 0.3 });
         });
 
-        // HERO ANIMATIONS (Transition Sequence)
+        // HERO ANIMATIONS
         const tl = gsap.timeline();
         const techText = new SplitType('#hero-text-tech', { types: 'words, chars' });
         const personalText = new SplitType('#hero-text-personal', { types: 'words' });
@@ -184,22 +291,28 @@
 
         tl.to(".preloader", { delay: 1, y: "-100%", duration: 1, ease: "expo.inOut" })
           .to(".preloader-overlay", { y: "-100%", duration: 1, ease: "expo.inOut" }, "-=0.8")
-          // 1. Show Technical Intro
           .from(techText.chars, { y: 100, opacity: 0, rotateZ: 5, duration: 0.8, stagger: 0.02, ease: "back.out(1.7)" }, "-=0.5")
           .from("#hero-sub", { opacity: 0, y: 10, duration: 0.5 }, "-=0.3")
-          // 2. Wait
           .to({}, { duration: 1.0 }) 
-          // 3. Transition to Personal Intro
           .to("#hero-intro", { filter: "blur(20px)", opacity: 0, scale: 0.9, duration: 0.5, ease: "power2.in" })
           .to("#hero-personal", { opacity: 1, duration: 0.1 })
           .from("#hero-personal", { filter: "blur(20px)", scale: 1.1, duration: 0.7, ease: "expo.out" }, "+=0.1")
           .from(".hello-badge", { opacity: 0, y: -20, duration: 0.5 }, "-=0.5")
-          .from(personalText.words, { y: 40, opacity: 0, duration: 0.6, stagger: 0.02, ease: "power3.out" }, "-=0.5")
-          .from(".btn-primary", { y: 20, opacity: 0, duration: 0.5 }, "-=0.3");
-          
-        // About Text Highlight
+          .from(personalText.words, { y: 40, opacity: 0, duration: 0.6, stagger: 0.02, ease: "power3.out" }, "-=0.5");
+
         const readingText = new SplitType('.reading-text', { types: 'words' });
         gsap.fromTo(readingText.words, { opacity: 0.2, color: "#333" }, { opacity: 1, color: "#e1e1e1", stagger: 0.05, scrollTrigger: { trigger: ".reading-text", start: "top 85%", end: "bottom 65%", scrub: true }});
+
+        // PARALLAX FOR PROJECT GATEWAY
+        gsap.to(".gateway-bg", {
+            y: "20%",
+            scrollTrigger: {
+                trigger: ".project-gateway",
+                start: "top bottom",
+                end: "bottom top",
+                scrub: true
+            }
+        });
     </script>
 </body>
 </html>

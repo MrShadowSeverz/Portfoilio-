@@ -6,6 +6,7 @@
     <title>Abhilash Saji | Unity Developer</title>
     
     <link href="https://api.fontshare.com/v2/css?f[]=clash-display@200,400,600,700&f[]=satoshi@300,400,500,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
@@ -21,11 +22,12 @@
             --dim: #444;
             --font-head: 'Clash Display', sans-serif;
             --font-body: 'Satoshi', sans-serif;
+            --font-italic: 'Playfair Display', serif; /* For the "Data/Insights" style highlight */
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
         ::selection { background: var(--accent); color: #000; }
-        html { scroll-behavior: auto; /* Let Lenis handle scroll */ }
+        html { scroll-behavior: auto; }
 
         body {
             background-color: var(--bg);
@@ -35,20 +37,16 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- 2. ASSETS (Optimized) --- */
-        /* Removed Grain for Performance */
-        
+        /* --- 2. ASSETS --- */
         .cursor {
             position: fixed; top: 0; left: 0; width: 12px; height: 12px;
             background: var(--accent); border-radius: 50%; transform: translate(-50%, -50%);
             pointer-events: none; z-index: 10000; mix-blend-mode: difference;
-            will-change: transform; /* Performance Boost */
         }
         .cursor-follower {
             position: fixed; top: 0; left: 0; width: 40px; height: 40px;
             border: 1px solid rgba(255,255,255,0.3); border-radius: 50%; transform: translate(-50%, -50%);
             pointer-events: none; z-index: 9999; transition: width 0.3s, height 0.3s;
-            will-change: transform; /* Performance Boost */
         }
 
         /* --- 3. LAYOUT --- */
@@ -65,34 +63,81 @@
         .nav-links a { font-family: var(--font-head); text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; transition: color 0.3s; }
         .nav-links a:hover { color: var(--accent); }
 
-        /* Typography */
-        h1 { font-family: var(--font-head); font-size: clamp(3.5rem, 9vw, 9.5rem); line-height: 0.85; text-transform: uppercase; font-weight: 600; letter-spacing: -2px; }
-        
-        /* SECTION HEADINGS */
+        /* Typography & Headings */
         .section-header {
             border-bottom: 1px solid #333;
             padding-bottom: 2rem;
             margin-bottom: 4rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            display: flex; align-items: center; justify-content: space-between;
         }
-        .section-title {
-            font-family: var(--font-head);
-            font-size: clamp(2rem, 4vw, 3rem);
-            color: var(--accent);
-            text-transform: uppercase;
-        }
+        .section-title { font-family: var(--font-head); font-size: clamp(2rem, 4vw, 3rem); color: var(--accent); text-transform: uppercase; }
         .section-num { font-family: monospace; color: #555; font-size: 1.2rem; }
 
-        /* --- 4. SECTIONS --- */
+        /* --- 4. HERO SECTION (THE TRANSITION MAGIC) --- */
+        .hero { 
+            height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            position: relative; /* Needed for stacking the two intros */
+        }
+
+        /* Hero Phase 1: The Technical Intro */
+        #hero-intro {
+            position: absolute;
+            width: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 2;
+        }
         
-        /* Hero */
-        .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding-top: 10vh; }
+        #hero-intro h1 {
+            font-family: var(--font-head); 
+            font-size: clamp(3.5rem, 9vw, 9.5rem); 
+            line-height: 0.85; 
+            text-transform: uppercase; 
+            font-weight: 600; 
+            letter-spacing: -2px;
+        }
+
+        /* Hero Phase 2: The Personal Intro (Hidden Initially) */
+        #hero-personal {
+            position: absolute;
+            width: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0; /* Hidden start */
+            z-index: 1;
+            text-align: center;
+        }
+
+        .hello-badge {
+            font-size: 1.2rem; margin-bottom: 1.5rem; display: block; 
+            font-family: var(--font-body); font-weight: 500;
+        }
+
+        .personal-text {
+            font-family: var(--font-head);
+            font-size: clamp(2.5rem, 6vw, 6rem);
+            line-height: 1.1;
+            font-weight: 600;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* The "Data/Insights" Style Highlight from your image */
+        .highlight-italic {
+            font-family: var(--font-italic);
+            font-style: italic;
+            font-weight: 400;
+            color: var(--accent);
+            padding: 0 5px;
+        }
+
+        /* --- 5. SECTIONS --- */
         
         /* About (#about) */
         .about-section { padding: 8rem 0; }
-        .about-grid { display: grid; grid-template-columns: 1fr; gap: 4rem; }
         .reading-text { font-size: clamp(1.5rem, 3vw, 2.5rem); line-height: 1.4; color: #333; }
         .reading-text .word.active { color: #fff; }
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem; margin-top: 4rem; }
@@ -105,7 +150,7 @@
         .project-card:nth-child(even) { direction: rtl; }
         .project-card:nth-child(even) .project-info { direction: ltr; }
         .project-img-wrap { height: 50vh; width: 100%; overflow: hidden; border-radius: 4px; position: relative; }
-        .project-img { width: 100%; height: 100%; object-fit: cover; } /* Removed filter transition for speed */
+        .project-img { width: 100%; height: 100%; object-fit: cover; }
         .tech-tag { border: 1px solid #333; padding: 0.5rem 1rem; border-radius: 50px; font-size: 0.8rem; text-transform: uppercase; margin-right: 10px; margin-bottom: 10px; display: inline-block; transition: 0.3s; }
         .btn-view { display: inline-block; margin-top: 2rem; font-family: var(--font-head); text-transform: uppercase; font-weight: 600; border-bottom: 1px solid #fff; padding-bottom: 5px; }
 
@@ -122,6 +167,8 @@
             .project-card, .project-card:nth-child(even) { grid-template-columns: 1fr; direction: ltr; gap: 2rem; margin-bottom: 6rem; }
             .project-img-wrap { height: 40vh; }
             .stats-grid { grid-template-columns: 1fr; }
+            #hero-intro h1 { font-size: 3.5rem; } 
+            .personal-text { font-size: 2.5rem; }
         }
     </style>
 </head>
@@ -137,26 +184,43 @@
     <div class="preloader-overlay"></div>
 
     <nav>
-        <a href="#" class="logo magnetic">Abhilash Saji.</a>
+        <a href="#home" class="logo magnetic">Abhilash Saji.</a>
         <div class="nav-links">
+            <a href="#home" class="magnetic">Home</a>
             <a href="#about" class="magnetic">About</a>
             <a href="#work" class="magnetic">Projects</a>
             <a href="#contact" class="magnetic">Contact</a>
         </div>
     </nav>
 
-    <section class="hero container">
-        <div style="display: flex; gap: 2rem; margin-bottom: 2rem; font-family: var(--font-head); text-transform: uppercase; color: var(--accent);">
-            <span>Unity 3D</span><span>///</span><span>Creative Dev</span>
+    <section id="home" class="hero container">
+        
+        <div id="hero-intro">
+            <div style="display: flex; gap: 2rem; margin-bottom: 2rem; font-family: var(--font-head); text-transform: uppercase; color: var(--accent);">
+                <span>Unity 3D</span><span>///</span><span>Creative Dev</span>
+            </div>
+            <h1 id="hero-text-tech">
+                Crafting<br>
+                <span style="color: var(--accent);">Immersive</span><br>
+                Realities
+            </h1>
+            <p style="margin-top: 2rem; max-width: 500px;" id="hero-sub">
+                Bridging the gap between technical code and artistic vision.
+            </p>
         </div>
-        <h1 id="hero-text">
-            Crafting<br>
-            <span style="color: var(--accent);">Immersive</span><br>
-            Realities
-        </h1>
-        <p style="margin-top: 2rem; max-width: 500px; opacity: 0;" id="hero-sub">
-            Bridging the gap between technical code and artistic vision.
-        </p>
+
+        <div id="hero-personal">
+            <span class="hello-badge">Hello</span>
+            <div class="personal-text" id="hero-text-personal">
+                I’m Abhilash Saji, a Unity Developer who loves building <span class="highlight-italic">worlds</span> and crafting immersive <span class="highlight-italic">experiences.</span>
+            </div>
+            
+            <div style="margin-top: 3rem; display: flex; gap: 20px; justify-content: center;">
+                 <a href="#work" class="magnetic" style="padding: 15px 40px; background: #CFFF69; color: #000; border-radius: 50px; font-weight: 600; text-transform: uppercase; font-size: 0.9rem;">Projects</a>
+                <a href="#contact" class="magnetic" style="padding: 15px 40px; border: 1px solid #fff; color: #fff; border-radius: 50px; font-weight: 600; text-transform: uppercase; font-size: 0.9rem;">Connect</a>
+            </div>
+        </div>
+
     </section>
 
     <section class="container about-section" id="about">
@@ -164,7 +228,6 @@
             <h2 class="section-title">Profile</h2>
             <span class="section-num">01 / ABOUT</span>
         </div>
-
         <div class="about-grid">
             <div>
                 <p class="reading-text">
@@ -174,7 +237,6 @@
                     <span style="color: var(--accent);">Performance</span> without sacrificing the artistic vision. 
                     From mobile 2D puzzles to complex PC VR simulations, my workflow is adaptable, scalable, and modern.
                 </p>
-                
                 <div class="stats-grid">
                     <div class="stat-box"><h4>4+</h4><p>Years Experience</p></div>
                     <div class="stat-box"><h4>15+</h4><p>Shipped Projects</p></div>
@@ -259,7 +321,6 @@
                 <a href="#" class="btn-view magnetic">VIEW PROJECT</a>
             </div>
         </article>
-
     </section>
 
     <footer id="contact">
@@ -267,7 +328,6 @@
             <h2 class="section-title">Collaboration</h2>
             <span class="section-num">03 / CONTACT</span>
         </div>
-        
         <p style="letter-spacing: 2px; margin-bottom: 2rem; color: #555;">READY TO START?</p>
         <a href="mailto:email@example.com" class="footer-cta magnetic-area">LET'S <span style="color: var(--accent);">BUILD</span><br>THE FUTURE.</a>
         <div style="margin-top: 4rem; display: flex; gap: 3rem;">
@@ -285,14 +345,14 @@
 
         gsap.registerPlugin(ScrollTrigger);
 
-        // TEXT REVEAL ANIMATION (ABOUT SECTION)
+        // TEXT REVEAL (ABOUT SECTION)
         const readingText = new SplitType('.reading-text', { types: 'words' });
         gsap.fromTo(readingText.words, { opacity: 0.2, color: "#333" }, {
             opacity: 1, color: "#e1e1e1", stagger: 0.1,
             scrollTrigger: { trigger: ".reading-text", start: "top 80%", end: "bottom 60%", scrub: true }
         });
 
-        // PRELOADER
+        // PRELOADER & HERO TRANSITION SEQUENCE
         const tl = gsap.timeline();
         let count = 0; const counterElement = document.querySelector('.counter');
         const interval = setInterval(() => {
@@ -302,11 +362,27 @@
             if (count === 100) clearInterval(interval);
         }, 20);
 
-        const heroText = new SplitType('#hero-text', { types: 'words, chars' });
+        // Prepare Text Splits
+        const techText = new SplitType('#hero-text-tech', { types: 'words, chars' });
+        const personalText = new SplitType('#hero-text-personal', { types: 'words' });
+
+        // THE SEQUENCE
         tl.to(".preloader", { delay: 2.2, y: "-100%", duration: 1.2, ease: "power4.inOut" })
           .to(".preloader-overlay", { y: "-100%", duration: 1.2, ease: "power4.inOut" }, "-=1")
-          .from(heroText.chars, { y: 100, opacity: 0, rotateZ: 10, duration: 0.8, stagger: 0.02, ease: "back.out(1.7)" }, "-=0.5")
-          .to("#hero-sub", { opacity: 1, y: 0, duration: 1 }, "-=0.5");
+          
+          // 1. Show Technical Intro
+          .from(techText.chars, { y: 100, opacity: 0, rotateZ: 10, duration: 0.8, stagger: 0.02, ease: "back.out(1.7)" }, "-=0.5")
+          .from("#hero-sub", { opacity: 0, y: 20, duration: 1 }, "-=0.5")
+          
+          // 2. WAIT... Then Transition
+          .to("#hero-intro", { opacity: 0, y: -50, duration: 1, delay: 2.5, ease: "power2.in" })
+          
+          // 3. Show Personal Intro (From Image)
+          .to("#hero-personal", { opacity: 1, duration: 0.1 }) // Make visible
+          .from(".hello-badge", { opacity: 0, y: 20, duration: 0.8 }, "+=0.1")
+          .from(personalText.words, { opacity: 0, y: 30, duration: 0.8, stagger: 0.05, ease: "power3.out" }, "-=0.6")
+          .from("#hero-personal .magnetic", { opacity: 0, y: 20, duration: 0.8, stagger: 0.1 }, "-=0.4");
+
 
         // PROJECT CARD TILT
         document.querySelectorAll('.project-card').forEach(card => {

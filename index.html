@@ -15,7 +15,7 @@
 
     <style>
         /* --- CORE --- */
-        :root { --bg: #050505; --text: #e1e1e1; --accent: #ff3333; --font-head: 'Clash Display', sans-serif; --font-body: 'Satoshi', sans-serif; --font-code: 'Space Mono', monospace; }
+        :root { --bg: #050505; --text: #e1e1e1; --accent: #ff3333; --font-head: 'Clash Display', sans-serif; --font-body: 'Satoshi', sans-serif; --font-code: 'Space Mono', monospace; --font-italic: 'Playfair Display', serif; }
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
         ::selection { background: var(--accent); color: #000; }
         html { scroll-behavior: auto; }
@@ -40,10 +40,10 @@
             top: 50%; transform: translateY(-50%); z-index: 2; 
         }
         
-        /* UPDATED: Further Reduced Font Size */
+        /* CORRECTED: Reduced font size for the main heading only */
         #hero-intro h1 { 
             font-family: var(--font-head); 
-            font-size: clamp(2.5rem, 8vw, 6.5rem); /* Reduced slightly more */
+            font-size: clamp(2.5rem, 8vw, 6.5rem); /* Reduced size */
             line-height: 0.9;
             text-transform: uppercase; 
             font-weight: 700; 
@@ -57,12 +57,14 @@
             opacity: 0; z-index: 1; text-align: center; display: flex; flex-direction: column; align-items: center; 
         }
         .hello-badge { font-family: var(--font-code); font-size: 0.8rem; margin-bottom: 2rem; border: 1px solid #333; padding: 8px 20px; border-radius: 50px; color: #888; text-transform: uppercase; letter-spacing: 3px; background: rgba(255, 255, 255, 0.03); }
+        
+        /* RESTORED: Original larger, bolder font style for the second text block */
         .personal-text { 
             font-family: var(--font-head); 
-            font-size: clamp(2.5rem, 6vw, 5.5rem);
-            line-height: 1.1; 
-            font-weight: 600; 
-            max-width: 1200px; 
+            font-size: clamp(2rem, 5vw, 4.5rem); /* Restored original size */
+            line-height: 1.2; 
+            font-weight: 500; /* Restored weight */
+            max-width: 1100px; 
             color: #fff; 
             margin: 0 auto; 
             text-align: center; 

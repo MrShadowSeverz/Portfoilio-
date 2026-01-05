@@ -14,7 +14,7 @@
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
 
     <style>
-        :root { --bg: #050505; --text: #e1e1e1; --accent: #ff3333; --blue: #0044ff; --font-head: 'Clash Display', sans-serif; --font-body: 'Satoshi', sans-serif; --font-code: 'Space Mono', monospace; --font-italic: 'Playfair Display', serif; }
+        :root { --bg: #050505; --text: #e1e1e1; --accent: #ff3333; --font-head: 'Clash Display', sans-serif; --font-body: 'Satoshi', sans-serif; --font-code: 'Space Mono', monospace; --font-italic: 'Playfair Display', serif; }
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
         ::selection { background: var(--accent); color: #000; }
         html { scroll-behavior: auto; }
@@ -28,26 +28,52 @@
         nav { position: fixed; top: 0; width: 100%; padding: 2rem 5vw; display: flex; justify-content: space-between; align-items: center; z-index: 100; background: rgba(5,5,5,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.05); }
         .logo { font-weight: 700; font-family: var(--font-head); text-transform: uppercase; letter-spacing: 1px; font-size: 1.2rem; text-decoration: none; color: #fff; }
         .nav-links { display: flex; gap: 2rem; }
-        /* Resume button now shares the exact same style as other links */
         .nav-links a { font-family: var(--font-head); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; transition: color 0.3s; color: #999; text-decoration: none; }
         .nav-links a:hover { color: var(--accent); }
 
-        /* HERO SECTION */
-        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; width: 100%; }
+        /* HERO SECTION - CENTERED ACCURATELY */
+        .hero { 
+            height: 100vh; 
+            width: 100%;
+            position: relative; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+        }
         
-        /* Phase 1: CRAFTING IMMERSIVE REALITIES */
-        #hero-intro { position: absolute; width: 100%; max-width: 1400px; padding: 0 5vw; top: 50%; transform: translateY(-50%); z-index: 2; }
+        /* Phase 1: Technical Intro */
+        #hero-intro { 
+            position: absolute; 
+            top: 50%; 
+            left: 50%; 
+            transform: translate(-50%, -50%); /* Perfect Center */
+            width: 100%; 
+            max-width: 1400px; 
+            padding: 0 5vw; 
+            z-index: 2; 
+        }
         #hero-intro h1 { font-family: var(--font-head); font-size: clamp(4rem, 10vw, 9rem); line-height: 0.85; text-transform: uppercase; font-weight: 700; letter-spacing: -2px; }
         
-        /* Phase 2: I'M ABHILASH SAJI */
-        #hero-personal { position: absolute; width: 100%; top: 50%; transform: translateY(-50%); opacity: 0; z-index: 1; text-align: center; display: flex; flex-direction: column; align-items: center; }
+        /* Phase 2: Personal Intro */
+        #hero-personal { 
+            position: absolute; 
+            top: 50%; 
+            left: 50%; 
+            transform: translate(-50%, -50%); /* Perfect Center */
+            width: 100%; 
+            opacity: 0; 
+            z-index: 1; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center;
+            text-align: center;
+        }
         
-        /* MOVED DOWN: Increased margin-top to push it lower */
         .hello-badge { 
             font-family: var(--font-code); 
             font-size: 0.8rem; 
-            margin-bottom: 1.5rem; 
-            margin-top: 8rem; /* PUSHED DOWN HERE */
+            margin-bottom: 2rem; 
             border: 1px solid #333; 
             padding: 8px 20px; 
             border-radius: 50px; 
@@ -57,7 +83,16 @@
             background: rgba(255, 255, 255, 0.03); 
         }
         
-        .personal-text { font-family: var(--font-head); font-size: clamp(2rem, 5vw, 4.5rem); line-height: 1.2; font-weight: 500; max-width: 1100px; color: #fff; margin: 0 auto; text-align: center; }
+        .personal-text { 
+            font-family: var(--font-head); 
+            font-size: clamp(2rem, 5vw, 4.5rem); 
+            line-height: 1.2; 
+            font-weight: 500; 
+            max-width: 1100px; 
+            color: #fff; 
+            margin: 0; 
+        }
+        
         .highlight-italic { font-family: var(--font-italic); font-style: italic; font-weight: 400; color: var(--accent); padding: 0 8px; }
 
         /* ABOUT SECTION */
@@ -72,7 +107,7 @@
         .stat-box h4 { font-size: 4rem; color: var(--accent); font-family: var(--font-head); line-height: 1; margin-bottom: 0.5rem; }
         .stat-box p { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: #666; }
 
-        /* PROJECT GATEWAY (Big Image Link) */
+        /* PROJECT GATEWAY */
         .project-gateway {
             position: relative; height: 80vh; width: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden; margin-top: 5rem; text-decoration: none;
         }
@@ -87,7 +122,7 @@
         .gateway-title { font-family: var(--font-head); font-size: clamp(3rem, 10vw, 8rem); color: #fff; text-transform: uppercase; font-weight: 700; line-height: 0.9; margin-bottom: 2rem; }
         .gateway-btn { display: inline-block; border: 1px solid rgba(255,255,255,0.5); padding: 15px 40px; border-radius: 50px; color: #fff; font-family: var(--font-code); text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); }
 
-        /* CONTACT SECTION */
+        /* CONTACT & FOOTER */
         footer { padding: 8rem 5vw; border-top: 1px solid #222; background: #080808; }
         .footer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: end; }
         .footer-headline { font-family: var(--font-head); font-size: clamp(3rem, 6vw, 5rem); line-height: 1; text-transform: uppercase; color: #fff; margin-bottom: 2rem; }

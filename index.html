@@ -14,102 +14,55 @@
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
 
     <style>
+        /* --- CORE --- */
         :root { --bg: #050505; --text: #e1e1e1; --accent: #ff3333; --font-head: 'Clash Display', sans-serif; --font-body: 'Satoshi', sans-serif; --font-code: 'Space Mono', monospace; --font-italic: 'Playfair Display', serif; }
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
         ::selection { background: var(--accent); color: #000; }
         html { scroll-behavior: auto; }
         body { background-color: var(--bg); color: var(--text); font-family: var(--font-body); overflow-x: hidden; }
 
-        /* CURSOR */
+        /* --- UI ELEMENTS --- */
         .cursor { position: fixed; width: 12px; height: 12px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%); mix-blend-mode: difference; }
         .cursor-follower { position: fixed; width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.3); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: 0.1s; }
 
-        /* NAVIGATION */
         nav { position: fixed; top: 0; width: 100%; padding: 2rem 5vw; display: flex; justify-content: space-between; align-items: center; z-index: 100; background: rgba(5,5,5,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.05); }
         .logo { font-weight: 700; font-family: var(--font-head); text-transform: uppercase; letter-spacing: 1px; font-size: 1.2rem; text-decoration: none; color: #fff; }
         .nav-links { display: flex; gap: 2rem; }
         .nav-links a { font-family: var(--font-head); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; transition: color 0.3s; color: #999; text-decoration: none; }
         .nav-links a:hover { color: var(--accent); }
 
-        /* HERO SECTION - CENTERED ACCURATELY */
-        .hero { 
-            height: 100vh; 
-            width: 100%;
-            position: relative; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-        }
+        /* --- HERO SECTION --- */
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; width: 100%; }
+        #hero-intro { position: absolute; width: 100%; max-width: 1400px; padding: 0 5vw; top: 50%; transform: translateY(-50%); z-index: 2; }
+        #hero-intro h1 { font-family: var(--font-head); font-size: clamp(3rem, 8vw, 8rem); line-height: 0.9; text-transform: uppercase; font-weight: 600; letter-spacing: -2px; }
         
-        /* Phase 1: Technical Intro */
-        #hero-intro { 
-            position: absolute; 
-            top: 50%; 
-            left: 50%; 
-            transform: translate(-50%, -50%); /* Perfect Center */
-            width: 100%; 
-            max-width: 1400px; 
-            padding: 0 5vw; 
-            z-index: 2; 
-        }
-        #hero-intro h1 { font-family: var(--font-head); font-size: clamp(4rem, 10vw, 9rem); line-height: 0.85; text-transform: uppercase; font-weight: 700; letter-spacing: -2px; }
-        
-        /* Phase 2: Personal Intro */
-        #hero-personal { 
-            position: absolute; 
-            top: 50%; 
-            left: 50%; 
-            transform: translate(-50%, -50%); /* Perfect Center */
-            width: 100%; 
-            opacity: 0; 
-            z-index: 1; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center;
-            text-align: center;
-        }
-        
-        .hello-badge { 
-            font-family: var(--font-code); 
-            font-size: 0.8rem; 
-            margin-bottom: 2rem; 
-            border: 1px solid #333; 
-            padding: 8px 20px; 
-            border-radius: 50px; 
-            color: #888; 
-            text-transform: uppercase; 
-            letter-spacing: 3px; 
-            background: rgba(255, 255, 255, 0.03); 
-        }
-        
-        .personal-text { 
-            font-family: var(--font-head); 
-            font-size: clamp(2rem, 5vw, 4.5rem); 
-            line-height: 1.2; 
-            font-weight: 500; 
-            max-width: 1100px; 
-            color: #fff; 
-            margin: 0; 
-        }
-        
+        #hero-personal { position: absolute; width: 100%; top: 50%; transform: translateY(-50%); opacity: 0; z-index: 1; text-align: center; display: flex; flex-direction: column; align-items: center; }
+        .hello-badge { font-family: var(--font-code); font-size: 0.8rem; margin-bottom: 1.5rem; border: 1px solid #333; padding: 8px 20px; border-radius: 50px; color: #888; text-transform: uppercase; letter-spacing: 3px; background: rgba(255, 255, 255, 0.03); }
+        .personal-text { font-family: var(--font-head); font-size: clamp(2rem, 5vw, 4.5rem); line-height: 1.2; font-weight: 500; max-width: 1100px; color: #fff; margin: 0 auto; text-align: center; }
         .highlight-italic { font-family: var(--font-italic); font-style: italic; font-weight: 400; color: var(--accent); padding: 0 8px; }
 
-        /* ABOUT SECTION */
+        /* --- ABOUT SECTION --- */
         .container { max-width: 1400px; margin: 0 auto; padding: 0 5vw; }
         .about-section { padding: 8rem 0; }
         .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem; border-bottom: 1px solid #222; padding-bottom: 2rem; }
         .section-title { font-family: var(--font-head); font-size: 4rem; text-transform: uppercase; color: var(--accent); font-weight: 700; line-height: 1; }
-        
-        .reading-text { font-size: clamp(1.5rem, 3vw, 2.5rem); line-height: 1.4; color: #888; max-width: 100%; }
+        .reading-text { font-size: clamp(1.2rem, 2.5vw, 2rem); line-height: 1.5; color: #888; max-width: 100%; }
         .reading-text .word.active { color: #fff; }
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 5rem; }
         .stat-box h4 { font-size: 4rem; color: var(--accent); font-family: var(--font-head); line-height: 1; margin-bottom: 0.5rem; }
         .stat-box p { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: #666; }
 
-        /* PROJECT GATEWAY */
+        /* --- PROJECT GATEWAY (IMAGE) --- */
         .project-gateway {
-            position: relative; height: 80vh; width: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden; margin-top: 5rem; text-decoration: none;
+            position: relative;
+            height: 80vh; 
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-top: 5rem;
+            text-decoration: none;
         }
         .gateway-bg {
             position: absolute; top: 0; left: 0; width: 100%; height: 120%;
@@ -122,26 +75,69 @@
         .gateway-title { font-family: var(--font-head); font-size: clamp(3rem, 10vw, 8rem); color: #fff; text-transform: uppercase; font-weight: 700; line-height: 0.9; margin-bottom: 2rem; }
         .gateway-btn { display: inline-block; border: 1px solid rgba(255,255,255,0.5); padding: 15px 40px; border-radius: 50px; color: #fff; font-family: var(--font-code); text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); }
 
-        /* CONTACT & FOOTER */
-        footer { padding: 8rem 5vw; border-top: 1px solid #222; background: #080808; }
-        .footer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: end; }
-        .footer-headline { font-family: var(--font-head); font-size: clamp(3rem, 6vw, 5rem); line-height: 1; text-transform: uppercase; color: #fff; margin-bottom: 2rem; }
-        .footer-links { display: flex; flex-direction: column; gap: 1.5rem; align-items: flex-start; }
-        
-        .resume-btn { background: #fff; color: #000; font-family: var(--font-head); font-weight: 600; text-transform: uppercase; padding: 15px 30px; border-radius: 4px; text-decoration: none; display: flex; align-items: center; gap: 10px; transition: 0.3s; }
-        .resume-btn:hover { background: var(--accent); color: #fff; }
+        /* --- NEW: RESUME BOX --- */
+        .resume-container {
+            margin-top: 2rem;
+            width: 100%;
+        }
+        .resume-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4rem;
+            border: 1px solid #222;
+            text-decoration: none;
+            transition: all 0.4s ease;
+            background: rgba(255,255,255,0.02);
+        }
+        .resume-box:hover {
+            border-color: var(--accent);
+            background: rgba(255, 51, 51, 0.05);
+        }
+        .resume-info h3 {
+            font-family: var(--font-head);
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+        .resume-info p {
+            font-family: var(--font-code);
+            color: #666;
+            font-size: 0.9rem;
+        }
+        .resume-action {
+            background: #fff;
+            color: #000;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-family: var(--font-head);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            display: flex; align-items: center; gap: 10px;
+            transition: 0.3s;
+        }
+        .resume-box:hover .resume-action { background: var(--accent); color: #fff; }
 
-        .email-link { font-size: 1.5rem; color: #555; text-decoration: none; transition: 0.3s; font-family: var(--font-code); }
-        .email-link:hover { color: #fff; }
+        /* --- FOOTER --- */
+        footer { padding: 8rem 5vw; border-top: 1px solid #222; background: #080808; margin-top: 5rem; }
+        .footer-headline { font-family: var(--font-head); font-size: clamp(3rem, 6vw, 5rem); line-height: 1; text-transform: uppercase; color: #fff; margin-bottom: 2rem; }
         .social-row { display: flex; gap: 2rem; margin-top: 2rem; }
         .social-row a { color: #555; text-decoration: none; text-transform: uppercase; font-family: var(--font-code); font-size: 0.9rem; transition: 0.3s; }
         .social-row a:hover { color: var(--accent); }
+        .email-link { font-size: 1.5rem; color: #555; text-decoration: none; transition: 0.3s; font-family: var(--font-code); display: block; margin-bottom: 2rem;}
+        .email-link:hover { color: #fff; }
 
         /* PRELOADER */
         .preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #fff; color: #000; z-index: 99999; display: flex; justify-content: space-between; align-items: flex-end; padding: 2rem; font-family: var(--font-head); }
         .preloader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: var(--bg); z-index: 99998; transform: translateY(100%); }
-        
-        @media (max-width: 768px) { .stats-grid { grid-template-columns: 1fr; gap: 3rem; } .nav-links { display: none; } .footer-grid { grid-template-columns: 1fr; } }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .resume-box { flex-direction: column; align-items: flex-start; gap: 2rem; padding: 2rem; }
+            .stats-grid { grid-template-columns: 1fr; gap: 3rem; }
+        }
     </style>
 </head>
 <body>
@@ -170,7 +166,6 @@
             <h1 id="hero-text-tech">Crafting<br><span style="color: var(--accent);">Immersive</span><br>Realities</h1>
             <p style="margin-top: 2rem; max-width: 400px; color: #888; line-height: 1.6;" id="hero-sub">Bridging the gap between technical code and artistic vision.</p>
         </div>
-        
         <div id="hero-personal">
             <span class="hello-badge">Hello</span>
             <div class="personal-text" id="hero-text-personal">
@@ -204,25 +199,28 @@
         </div>
     </a>
 
-    <footer id="contact">
-        <div class="footer-grid">
-            <div>
-                <p style="font-family: var(--font-code); color: var(--accent); margin-bottom: 1rem;">03 / CONTACT</p>
-                <h2 class="footer-headline">Let's Create<br>The Unknown.</h2>
-                <div class="social-row">
-                    <a href="#" class="magnetic">LinkedIn</a>
-                    <a href="#" class="magnetic">GitHub</a>
-                    <a href="#" class="magnetic">Twitter</a>
-                </div>
+    <div class="container resume-container">
+        <a href="resume.pdf" download class="resume-box magnetic-area">
+            <div class="resume-info">
+                <h3>Curriculum Vitae</h3>
+                <p>View my full professional experience & credentials.</p>
             </div>
-            
-            <div class="footer-links">
-                <a href="mailto:email@example.com" class="email-link magnetic">hello@abhilashsaji.com</a>
-                <br>
-                <a href="resume.pdf" download class="resume-btn magnetic">
-                    <span>Download Resume</span>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                </a>
+            <div class="resume-action">
+                Download PDF 
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            </div>
+        </a>
+    </div>
+
+    <footer id="contact">
+        <div>
+            <p style="font-family: var(--font-code); color: var(--accent); margin-bottom: 1rem;">03 / CONTACT</p>
+            <h2 class="footer-headline">Let's Create<br>The Unknown.</h2>
+            <a href="mailto:email@example.com" class="email-link magnetic">hello@abhilashsaji.com</a>
+            <div class="social-row">
+                <a href="#" class="magnetic">LinkedIn</a>
+                <a href="#" class="magnetic">GitHub</a>
+                <a href="#" class="magnetic">Twitter</a>
             </div>
         </div>
     </footer>

@@ -12,65 +12,47 @@
         :root { --bg: #050505; --text: #e1e1e1; --accent: #ff3333; --font-head: 'Clash Display', sans-serif; --font-body: 'Satoshi', sans-serif; }
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
         body { background-color: var(--bg); color: var(--text); font-family: var(--font-body); }
-        
         .cursor { position: fixed; width: 12px; height: 12px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%); mix-blend-mode: difference; }
         .cursor-follower { position: fixed; width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.3); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: 0.1s; }
-
         nav { position: fixed; top: 0; width: 100%; padding: 2rem 5vw; display: flex; justify-content: space-between; align-items: center; z-index: 100; background: rgba(5,5,5,0.9); }
         .logo { font-weight: 700; font-family: var(--font-head); text-transform: uppercase; font-size: 1.2rem; color: #fff; text-decoration: none; }
         .back-link { font-family: var(--font-head); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; color: #999; text-decoration: none; transition: 0.3s; }
         .back-link:hover { color: var(--accent); }
-
         .container { max-width: 1400px; margin: 0 auto; padding: 0 5vw; }
         .header { padding-top: 20vh; padding-bottom: 5vh; border-bottom: 1px solid #222; margin-bottom: 5rem; }
         h1 { font-family: var(--font-head); font-size: clamp(3rem, 8vw, 6rem); text-transform: uppercase; color: #fff; }
-
         .project-card { margin-bottom: 8rem; display: grid; grid-template-columns: 1.5fr 1fr; gap: 5rem; align-items: center; }
         .project-card:nth-child(even) { direction: rtl; }
         .project-card:nth-child(even) .project-info { direction: ltr; }
         .project-img-wrap { height: 50vh; width: 100%; overflow: hidden; border-radius: 6px; background: #111; }
         .project-img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; transition: 0.5s; }
         .project-card:hover .project-img { opacity: 1; transform: scale(1.05); }
-        
         .project-info h3 { font-family: var(--font-head); font-size: 2.5rem; margin-bottom: 1rem; color: #fff; }
         .project-info p { color: #888; line-height: 1.6; margin-bottom: 1.5rem; }
         .tech-tag { border: 1px solid #333; padding: 6px 14px; border-radius: 50px; font-size: 0.75rem; text-transform: uppercase; margin-right: 8px; color: #777; display: inline-block; }
-        
         .btn-view { display: inline-block; margin-top: 2rem; font-family: var(--font-head); text-transform: uppercase; font-weight: 600; border-bottom: 1px solid var(--accent); padding-bottom: 5px; color: var(--accent); font-size: 0.9rem; text-decoration: none; }
-        
         @media (max-width: 768px) { .project-card, .project-card:nth-child(even) { grid-template-columns: 1fr; direction: ltr; gap: 2rem; } .project-img-wrap { height: 35vh; } }
     </style>
 </head>
 <body>
-    <div class="cursor"></div>
-    <div class="cursor-follower"></div>
-
-    <nav>
-        <a href="index.html" class="logo">Abhilash Saji.</a>
-        <a href="index.html" class="back-link">← Back Home</a>
-    </nav>
-
+    <div class="cursor"></div><div class="cursor-follower"></div>
+    <nav><a href="index.html" class="logo">Abhilash Saji.</a><a href="index.html" class="back-link">← Back Home</a></nav>
     <div class="container">
-        <header class="header">
-            <p style="color: var(--accent); margin-bottom: 1rem; letter-spacing: 2px;">PORTFOLIO</p>
-            <h1>Selected Works</h1>
-        </header>
-
+        <header class="header"><p style="color: var(--accent); margin-bottom: 1rem; letter-spacing: 2px;">PORTFOLIO</p><h1>Selected Works</h1></header>
+        
         <article class="project-card">
             <div class="project-img-wrap"><img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2670&auto=format&fit=crop" class="project-img"></div>
             <div class="project-info">
-                <h3>Pixel Odyssey</h3>
-                <p>A precision-based 2D platformer. Implemented tight character controllers, wall-jumps, and a custom particle system.</p>
+                <h3>Pixel Odyssey</h3><p>A precision-based 2D platformer. Implemented tight character controllers, wall-jumps, and a custom particle system.</p>
                 <div><span class="tech-tag">Unity 2D</span><span class="tech-tag">C#</span><span class="tech-tag">URP 2D</span></div>
                 <a href="#" class="btn-view">View Case Study</a>
             </div>
         </article>
-
+        
         <article class="project-card">
             <div class="project-img-wrap"><img src="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2670&auto=format&fit=crop" class="project-img"></div>
             <div class="project-info">
-                <h3>Cyber Dash</h3>
-                <p>High-speed mobile runner. Features object pooling for infinite terrain and procedural obstacle placement.</p>
+                <h3>Cyber Dash</h3><p>High-speed mobile runner. Features object pooling for infinite terrain and procedural obstacle placement.</p>
                 <div><span class="tech-tag">Mobile Opt</span><span class="tech-tag">Object Pooling</span></div>
                 <a href="#" class="btn-view">View Case Study</a>
             </div>
@@ -79,39 +61,34 @@
         <article class="project-card">
             <div class="project-img-wrap"><img src="https://images.unsplash.com/photo-1599434868477-8339c148e67a?q=80&w=2574&auto=format&fit=crop" class="project-img"></div>
             <div class="project-info">
-                <h3>Titan Strike</h3>
-                <p>Tactical FPS with robust Raycast shooting, weapon sway, and FSM Enemy AI.</p>
+                <h3>Titan Strike</h3><p>Tactical FPS with robust Raycast shooting, weapon sway, and FSM Enemy AI.</p>
                 <div><span class="tech-tag">Raycasting</span><span class="tech-tag">State Machines</span></div>
                 <a href="#" class="btn-view">View Case Study</a>
             </div>
         </article>
-
+        
         <article class="project-card">
             <div class="project-img-wrap"><img src="https://images.unsplash.com/photo-1627855331309-409c9e88d1d8?q=80&w=2671&auto=format&fit=crop" class="project-img"></div>
             <div class="project-info">
-                <h3>Covert Ops</h3>
-                <p>TPS cover shooter using Cinemachine for camera blending and Inverse Kinematics for aiming.</p>
+                <h3>Covert Ops</h3><p>TPS cover shooter using Cinemachine for camera blending and Inverse Kinematics for aiming.</p>
                 <div><span class="tech-tag">Cinemachine</span><span class="tech-tag">IK Rigging</span></div>
                 <a href="#" class="btn-view">View Case Study</a>
             </div>
         </article>
-
+        
         <article class="project-card">
             <div class="project-img-wrap"><img src="https://images.unsplash.com/photo-1616782352136-2244243b7135?q=80&w=2574&auto=format&fit=crop" class="project-img"></div>
             <div class="project-info">
-                <h3>Drift Horizon</h3>
-                <p>Physics-based vehicle simulation using Unity Wheel Colliders, friction curves, and manual transmission logic.</p>
+                <h3>Drift Horizon</h3><p>Physics-based vehicle simulation using Unity Wheel Colliders, friction curves, and manual transmission logic.</p>
                 <div><span class="tech-tag">Physics</span><span class="tech-tag">Wheel Colliders</span></div>
                 <a href="#" class="btn-view">View Case Study</a>
             </div>
         </article>
     </div>
-
     <script>
         const lenis = new Lenis({ duration: 1.2, smooth: true });
         function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
         requestAnimationFrame(raf);
-
         const cursor = document.querySelector('.cursor');
         const follower = document.querySelector('.cursor-follower');
         window.addEventListener('mousemove', (e) => {

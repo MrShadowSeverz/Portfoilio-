@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VR / AR | Abhilash Saji</title>
+    
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@200,400,600,700&f[]=satoshi@300,400,500,700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+
+    <style>
+        :root { --bg: #050505; --text: #e1e1e1; --accent: #ff3333; --font-head: 'Clash Display', sans-serif; --font-body: 'Satoshi', sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        body { background-color: var(--bg); color: var(--text); font-family: var(--font-body); }
+        .cursor { position: fixed; width: 12px; height: 12px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%); mix-blend-mode: difference; }
+        .cursor-follower { position: fixed; width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.3); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: 0.1s; }
+        
+        nav { position: fixed; top: 0; width: 100%; padding: 2rem 5vw; display: flex; justify-content: space-between; align-items: center; z-index: 100; background: rgba(5,5,5,0.9); }
+        .logo { font-weight: 700; font-family: var(--font-head); text-transform: uppercase; font-size: 1.2rem; color: #fff; text-decoration: none; }
+        .back-link { font-family: var(--font-head); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; color: #999; text-decoration: none; transition: 0.3s; }
+        .back-link:hover { color: var(--accent); }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 5vw; }
+        .header { padding-top: 20vh; padding-bottom: 5vh; border-bottom: 1px solid #222; margin-bottom: 5rem; }
+        h1 { font-family: var(--font-head); font-size: clamp(3rem, 8vw, 6rem); text-transform: uppercase; color: #fff; }
+
+        .project-card { margin-bottom: 8rem; display: grid; grid-template-columns: 1.5fr 1fr; gap: 5rem; align-items: center; }
+        .project-card:nth-child(even) { direction: rtl; }
+        .project-card:nth-child(even) .project-info { direction: ltr; }
+        .project-img-wrap { height: 50vh; width: 100%; overflow: hidden; border-radius: 6px; background: #111; }
+        .project-img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; transition: 0.5s; }
+        .project-card:hover .project-img { opacity: 1; transform: scale(1.05); }
+        .project-info h3 { font-family: var(--font-head); font-size: 2.5rem; margin-bottom: 1rem; color: #fff; }
+        .project-info p { color: #888; line-height: 1.6; margin-bottom: 1.5rem; }
+        .tech-tag { border: 1px solid #333; padding: 6px 14px; border-radius: 50px; font-size: 0.75rem; text-transform: uppercase; margin-right: 8px; color: #777; display: inline-block; }
+        .btn-view { display: inline-block; margin-top: 2rem; font-family: var(--font-head); text-transform: uppercase; font-weight: 600; border-bottom: 1px solid var(--accent); padding-bottom: 5px; color: var(--accent); font-size: 0.9rem; text-decoration: none; }
+        @media (max-width: 768px) { .project-card, .project-card:nth-child(even) { grid-template-columns: 1fr; direction: ltr; gap: 2rem; } .project-img-wrap { height: 35vh; } }
+    </style>
+</head>
+<body>
+    <div class="cursor"></div><div class="cursor-follower"></div>
+    <nav><a href="index.html" class="logo">Abhilash Saji.</a><a href="index.html" class="back-link">← Back Home</a></nav>
+    
+    <div class="container">
+        <header class="header">
+            <p style="color: var(--accent); margin-bottom: 1rem; letter-spacing: 2px;">COLLECTION</p>
+            <h1>VR / AR Exp.</h1>
+        </header>
+        
+        <article class="project-card">
+            <div class="project-img-wrap"><img src="https://images.unsplash.com/photo-1622979135228-5118441e9635?q=80&w=2536&auto=format&fit=crop" class="project-img"></div>
+            <div class="project-info">
+                <h3>Virtual Lab</h3>
+                <p>A fully interactive chemistry VR simulation for Oculus Quest. Features realistic liquid physics and grab interactions.</p>
+                <div><span class="tech-tag">Oculus SDK</span><span class="tech-tag">XR Interaction</span><span class="tech-tag">Optimization</span></div>
+                <a href="#" class="btn-view">View Case Study</a>
+            </div>
+        </article>
+        
+        <article class="project-card">
+            <div class="project-img-wrap"><img src="https://images.unsplash.com/photo-1593508512255-86ab42a8e620?q=80&w=2678&auto=format&fit=crop" class="project-img"></div>
+            <div class="project-info">
+                <h3>AR ArchViz</h3>
+                <p>Augmented Reality architectural visualization app. Allows clients to place 3D house models in real-world scale using AR Foundation.</p>
+                <div><span class="tech-tag">AR Foundation</span><span class="tech-tag">Plane Tracking</span><span class="tech-tag">UI/UX</span></div>
+                <a href="#" class="btn-view">View Case Study</a>
+            </div>
+        </article>
+    </div>
+
+    <script>
+        const lenis = new Lenis({ duration: 1.2, smooth: true });
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+        const cursor = document.querySelector('.cursor');
+        const follower = document.querySelector('.cursor-follower');
+        window.addEventListener('mousemove', (e) => {
+            gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1 });
+            gsap.to(follower, { x: e.clientX, y: e.clientY, duration: 0.3 });
+        });
+    </script>
+</body>
+</html>

@@ -9,20 +9,21 @@
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/split-type"></script>
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
 
     <style>
-        /* --- 1. CORE VARIABLES & RESET --- */
+        /* --- 1. CORE VARIABLES --- */
         :root {
-            --bg: #080808;
+            --bg: #050505;
             --text: #e1e1e1;
-            --accent: #ff3333; /* High energy Red/Orange */
+            --accent: #ff3333;
             --dim: #444;
             --font-head: 'Clash Display', sans-serif;
             --font-body: 'Satoshi', sans-serif;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; } /* Hide default cursor */
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
 
         body {
             background-color: var(--bg);
@@ -32,56 +33,86 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* FILM GRAIN OVERLAY */
+        /* --- 2. ATMOSPHERE (Grain & Glow) --- */
         .grain {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none; z-index: 9999;
-            opacity: 0.05;
+            opacity: 0.04;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
-        /* --- 2. CUSTOM CURSOR --- */
+        .mouse-glow {
+            position: fixed; top: 0; left: 0;
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(255, 51, 51, 0.08) 0%, rgba(0,0,0,0) 70%);
+            transform: translate(-50%, -50%);
+            pointer-events: none; z-index: -1;
+            transition: opacity 0.5s;
+        }
+
+        /* --- 3. CUSTOM CURSOR --- */
         .cursor {
             position: fixed; top: 0; left: 0;
-            width: 20px; height: 20px;
-            background: #fff;
+            width: 12px; height: 12px;
+            background: var(--accent);
             border-radius: 50%;
             transform: translate(-50%, -50%);
             pointer-events: none;
-            mix-blend-mode: difference;
             z-index: 10000;
-            transition: width 0.3s, height 0.3s;
+            mix-blend-mode: difference;
+            transition: width 0.3s, height 0.3s, background 0.3s;
         }
-        body.hover-active .cursor { width: 80px; height: 80px; opacity: 0.5; }
+        .cursor-follower {
+            position: fixed; top: 0; left: 0;
+            width: 40px; height: 40px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 0.1s ease-out;
+        }
+        body.hover-active .cursor { width: 0px; height: 0px; opacity: 0; }
+        body.hover-active .cursor-follower { 
+            width: 80px; height: 80px; 
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--accent);
+            backdrop-filter: blur(2px);
+        }
 
-        /* --- 3. PRELOADER --- */
+        /* --- 4. PRELOADER --- */
         .preloader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
             background: #fff; color: #000;
-            z-index: 9999;
+            z-index: 99999;
             display: flex; justify-content: space-between; align-items: flex-end;
             padding: 2rem;
             font-family: var(--font-head);
-            font-weight: 700; font-size: 5rem;
         }
         .preloader-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-            background: var(--bg); z-index: 9998;
+            background: var(--bg); z-index: 99998;
             transform: translateY(100%);
         }
 
-        /* --- 4. TYPOGRAPHY & UTILS --- */
+        /* --- 5. LAYOUT & TYPOGRAPHY --- */
         .container { max-width: 1400px; margin: 0 auto; padding: 0 5vw; }
-        a { text-decoration: none; color: inherit; }
         
-        .mask { overflow: hidden; display: block; }
-        .reveal { transform: translateY(110%); display: block; }
+        .char { display: inline-block; } /* For Text Animations */
         
-        h1 { font-family: var(--font-head); font-size: clamp(3rem, 9vw, 9rem); line-height: 0.9; text-transform: uppercase; font-weight: 600; }
+        h1 { 
+            font-family: var(--font-head); 
+            font-size: clamp(3.5rem, 9vw, 9.5rem); 
+            line-height: 0.85; 
+            text-transform: uppercase; 
+            font-weight: 600; 
+            letter-spacing: -2px;
+        }
+        
         h2 { font-family: var(--font-head); font-size: clamp(2rem, 5vw, 4rem); text-transform: uppercase; margin-bottom: 2rem; }
         p { font-size: 1.1rem; color: #999; line-height: 1.6; }
 
-        /* --- 5. NAVIGATION --- */
+        /* --- 6. NAV --- */
         nav {
             position: fixed; top: 0; width: 100%;
             padding: 2rem 5vw;
@@ -91,48 +122,19 @@
         }
         .logo { font-weight: 700; font-family: var(--font-head); text-transform: uppercase; letter-spacing: 1px; }
 
-        /* --- 6. HERO SECTION --- */
-        .hero {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding-top: 10vh;
-        }
-        .hero-tags {
-            display: flex; gap: 2rem; margin-bottom: 2rem;
-            font-family: var(--font-head); text-transform: uppercase; font-size: 0.9rem; letter-spacing: 2px; color: var(--accent);
-        }
+        /* --- 7. HERO --- */
+        .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding-top: 10vh; }
+        .hero-tags { display: flex; gap: 2rem; margin-bottom: 2rem; font-family: var(--font-head); text-transform: uppercase; font-size: 0.9rem; letter-spacing: 2px; color: var(--accent); }
 
-        /* --- 7. MARQUEE STRIP --- */
-        .marquee {
-            padding: 3rem 0;
-            border-top: 1px solid #333; border-bottom: 1px solid #333;
-            overflow: hidden; white-space: nowrap;
-            background: #0f0f0f;
-        }
-        .marquee-inner {
-            display: inline-block;
-            animation: scroll 20s linear infinite;
-        }
-        .marquee span {
-            font-family: var(--font-head); font-size: 4rem; font-weight: 700;
-            text-transform: uppercase; color: #333; margin-right: 4rem;
-            transition: color 0.3s;
-        }
-        .marquee:hover span { color: var(--accent); }
-        @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-
-        /* --- 8. PROJECTS (THE SHOWCASE) --- */
+        /* --- 8. PROJECTS --- */
         .projects-section { padding: 10rem 0; }
         
         .project-card {
-            position: relative;
-            margin-bottom: 8rem;
+            margin-bottom: 12rem;
             display: grid; grid-template-columns: 1.5fr 1fr; gap: 4rem;
             align-items: center;
+            perspective: 1000px; /* Enable 3D */
         }
-        /* Flip layout for every even child */
         .project-card:nth-child(even) { direction: rtl; }
         .project-card:nth-child(even) .project-info { direction: ltr; }
 
@@ -140,149 +142,153 @@
             height: 60vh; width: 100%;
             overflow: hidden; border-radius: 4px;
             position: relative;
+            transform-style: preserve-3d;
         }
+        
+        /* The Curtain Effect */
+        .img-curtain {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg); z-index: 2;
+            transform-origin: top;
+        }
+
         .project-img {
-            width: 100%; height: 120%; /* Taller for parallax */
+            width: 100%; height: 120%;
             object-fit: cover;
-            object-position: center;
-            filter: grayscale(100%);
+            filter: grayscale(100%) contrast(1.2);
             transition: filter 0.5s;
         }
-        .project-card:hover .project-img { filter: grayscale(0%); }
+        .project-card:hover .project-img { filter: grayscale(0%) contrast(1); }
 
-        .project-info h3 { font-family: var(--font-head); font-size: 3rem; margin-bottom: 1rem; }
-        .tech-list { display: flex; gap: 1rem; margin: 1.5rem 0; flex-wrap: wrap; }
-        .tech-tag { border: 1px solid #333; padding: 0.5rem 1rem; border-radius: 50px; font-size: 0.8rem; text-transform: uppercase; }
+        .tech-tag { 
+            border: 1px solid #333; padding: 0.5rem 1rem; border-radius: 50px; 
+            font-size: 0.8rem; text-transform: uppercase; margin-right: 10px; margin-bottom: 10px; display: inline-block;
+            transition: 0.3s;
+        }
+        .tech-tag:hover { border-color: var(--accent); color: var(--accent); }
 
-        .btn-view {
-            display: inline-block; margin-top: 2rem;
-            font-family: var(--font-head); text-transform: uppercase; font-weight: 600;
-            border-bottom: 1px solid #fff; padding-bottom: 5px;
+        /* --- 9. MARQUEE & STATS --- */
+        .marquee { padding: 4rem 0; border-top: 1px solid #222; border-bottom: 1px solid #222; overflow: hidden; background: #0a0a0a; }
+        .marquee-inner { display: flex; animation: scroll 20s linear infinite; }
+        .marquee span { 
+            font-family: var(--font-head); font-size: 4rem; font-weight: 700; 
+            text-transform: uppercase; color: #222; -webkit-text-stroke: 1px #444; margin-right: 4rem; white-space: nowrap; 
         }
+        @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-100%); } }
 
-        /* --- 9. ABOUT / PROCESS --- */
-        .about-section { 
-            padding: 5rem 0; 
-            display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; 
-        }
-        .stats-grid {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
-        }
-        .stat-box h4 { font-size: 3rem; color: var(--accent); font-family: var(--font-head); }
+        .about-section { padding: 8rem 0; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
+        .stat-box { border-top: 1px solid #333; padding-top: 1rem; }
+        .stat-box h4 { font-size: 4rem; color: var(--accent); font-family: var(--font-head); line-height: 1; }
 
         /* --- 10. FOOTER --- */
-        footer {
-            height: 80vh;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            text-align: center;
-            border-top: 1px solid #222;
-        }
-        .footer-cta {
-            font-size: clamp(3rem, 10vw, 10rem);
-            font-family: var(--font-head); text-transform: uppercase;
-            line-height: 1; margin-bottom: 2rem;
-        }
+        footer { height: 90vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; border-top: 1px solid #222; position: relative; overflow: hidden; }
+        .footer-cta { font-size: clamp(3rem, 10vw, 11rem); font-family: var(--font-head); text-transform: uppercase; line-height: 0.9; z-index: 2; }
+        
+        /* SCRAMBLE TEXT EFFECT CLASS */
+        .scramble-text { display: inline-block; }
 
-        /* --- MOBILE --- */
         @media (max-width: 768px) {
-            .project-card, .project-card:nth-child(even) { 
-                grid-template-columns: 1fr; direction: ltr; 
-            }
+            .project-card, .project-card:nth-child(even) { grid-template-columns: 1fr; direction: ltr; gap: 2rem; margin-bottom: 6rem; }
             .project-img-wrap { height: 40vh; }
             .about-section { grid-template-columns: 1fr; }
+            .mouse-glow { display: none; }
         }
     </style>
 </head>
 <body>
 
     <div class="grain"></div>
+    <div class="mouse-glow"></div>
     <div class="cursor"></div>
+    <div class="cursor-follower"></div>
 
     <div class="preloader">
-        <div class="counter">0%</div>
-        <div style="font-size: 1rem; letter-spacing: 2px; margin-bottom: 15px;">LOADING EXPERIENCE</div>
+        <div class="counter" style="font-size: 5rem; font-weight: 700;">0%</div>
+        <div class="scramble-text" style="font-size: 1rem; letter-spacing: 2px; margin-bottom: 15px;">INITIALIZING SYSTEM...</div>
     </div>
     <div class="preloader-overlay"></div>
 
     <nav>
-        <a href="#" class="logo magnetic">Abhilash Saji.</a>
-        <div class="menu magnetic" style="cursor: pointer;">MENU</div>
+        <a href="#" class="logo scramble-hover magnetic">Abhilash Saji.</a>
+        <div class="menu scramble-hover magnetic" style="cursor: pointer;">MENU +</div>
     </nav>
 
     <section class="hero container">
         <div class="hero-tags">
-            <span class="mask"><span class="reveal">Unity 3D</span></span>
-            <span class="mask"><span class="reveal">AR / VR</span></span>
-            <span class="mask"><span class="reveal">Creative Dev</span></span>
+            <span class="scramble-on-view">Unity 3D</span>
+            <span class="scramble-on-view">///</span>
+            <span class="scramble-on-view">Creative Dev</span>
         </div>
-        <h1>
-            <span class="mask"><span class="reveal">Crafting</span></span>
-            <span class="mask"><span class="reveal" style="color: var(--accent);">Immersive</span></span>
-            <span class="mask"><span class="reveal">Realities</span></span>
+        <h1 id="hero-text">
+            Crafting<br>
+            <span style="color: var(--accent);">Immersive</span><br>
+            Realities
         </h1>
-        <p style="margin-top: 2rem; max-width: 500px;" class="mask">
-            <span class="reveal">
-                I am Abhilash Saji. A technical artist and Unity developer bridging the gap between code and visual fidelity in Games, AR, and VR.
-            </span>
+        <p style="margin-top: 2rem; max-width: 500px; opacity: 0; transform: translateY(20px);" id="hero-sub">
+            I bridge the gap between technical code and artistic vision. Specialized in AR/VR, Shaders, and Gameplay Mechanics.
         </p>
     </section>
 
     <div class="marquee">
         <div class="marquee-inner">
-            <span>Unity 3D • C# • ShaderGraph • AR Foundation • Oculus SDK • Blender • HLSL • Unity 3D • C# • ShaderGraph • AR Foundation •</span>
+            <span>Unity 3D • C# • ShaderGraph • AR Foundation • Oculus SDK • Blender • HLSL • Unity 3D • C# • ShaderGraph • AR Foundation • Oculus SDK • Blender • HLSL •</span>
+            <span>Unity 3D • C# • ShaderGraph • AR Foundation • Oculus SDK • Blender • HLSL • Unity 3D • C# • ShaderGraph • AR Foundation • Oculus SDK • Blender • HLSL •</span>
         </div>
     </div>
 
     <section class="container projects-section" id="work">
         
-        <article class="project-card">
+        <article class="project-card tilt-card">
             <div class="project-img-wrap magnetic-area">
+                <div class="img-curtain"></div>
                 <img src="https://images.unsplash.com/photo-1614726365723-49faaa56cf75?q=80&w=2574&auto=format&fit=crop" class="project-img" alt="VR Game">
             </div>
             <div class="project-info">
-                <span style="color: var(--accent); font-weight: 700; margin-bottom: 10px; display:block;">01 — VR EXPERIENCE</span>
+                <span style="color: var(--accent); font-weight: 700; margin-bottom: 15px; display:block;">01 — VR EXPERIENCE</span>
                 <h3>Project Aether</h3>
-                <p>A high-fidelity VR climbing simulation built for Oculus Quest 2. Features custom physics-based hand interactions, IK body solving, and optimized dynamic lighting.</p>
+                <p style="margin-bottom: 1.5rem;">A high-fidelity VR climbing simulation built for Oculus Quest 2. Features custom physics-based hand interactions and IK body solving.</p>
                 <div class="tech-list">
                     <span class="tech-tag">Unity XR</span>
                     <span class="tech-tag">C#</span>
                     <span class="tech-tag">Final IK</span>
                 </div>
-                <a href="#" class="btn-view magnetic">View Case Study</a>
+                <a href="#" class="btn-view magnetic scramble-hover" style="margin-top: 2rem; display: inline-block; border-bottom: 1px solid white;">VIEW CASE STUDY</a>
             </div>
         </article>
 
-        <article class="project-card">
+        <article class="project-card tilt-card">
             <div class="project-img-wrap magnetic-area">
+                <div class="img-curtain"></div>
                 <img src="https://images.unsplash.com/photo-1633123678097-f5424796b426?q=80&w=2670&auto=format&fit=crop" class="project-img" alt="AR App">
             </div>
             <div class="project-info">
-                <span style="color: var(--accent); font-weight: 700; margin-bottom: 10px; display:block;">02 — AUGMENTED REALITY</span>
-                <h3>Retail AR Vision</h3>
-                <p>An AR interior design application allowing users to place life-size 3D furniture in their homes. Utilizes plane detection and real-time light estimation.</p>
+                <span style="color: var(--accent); font-weight: 700; margin-bottom: 15px; display:block;">02 — AUGMENTED REALITY</span>
+                <h3>Retail Vision AR</h3>
+                <p style="margin-bottom: 1.5rem;">An AR interior design application allowing users to place life-size 3D furniture. Utilizes AR Foundation plane detection and light estimation.</p>
                 <div class="tech-list">
                     <span class="tech-tag">AR Foundation</span>
-                    <span class="tech-tag">ARCore</span>
                     <span class="tech-tag">URP</span>
+                    <span class="tech-tag">Mobile</span>
                 </div>
-                <a href="#" class="btn-view magnetic">View Case Study</a>
+                <a href="#" class="btn-view magnetic scramble-hover" style="margin-top: 2rem; display: inline-block; border-bottom: 1px solid white;">VIEW CASE STUDY</a>
             </div>
         </article>
 
-        <article class="project-card">
+        <article class="project-card tilt-card">
             <div class="project-img-wrap magnetic-area">
-                <img src="https://images.unsplash.com/photo-1552820728-8b83bb6b773f?q=80&w=2670&auto=format&fit=crop" class="project-img" alt="3D Game">
+                <div class="img-curtain"></div>
+                <img src="https://images.unsplash.com/photo-1552820728-8b83bb6b773f?q=80&w=2670&auto=format&fit=crop" class="project-img" alt="Action Game">
             </div>
             <div class="project-info">
-                <span style="color: var(--accent); font-weight: 700; margin-bottom: 10px; display:block;">03 — ACTION RPG</span>
+                <span style="color: var(--accent); font-weight: 700; margin-bottom: 15px; display:block;">03 — ACTION RPG</span>
                 <h3>Neon Samurai</h3>
-                <p>A stylized 3D action game with custom shader effects. I wrote the combat state machine, enemy AI behavior trees, and the post-processing stack.</p>
+                <p style="margin-bottom: 1.5rem;">A stylized 3D action game with custom shader effects. I wrote the combat state machine, enemy AI behavior trees, and the post-processing stack.</p>
                 <div class="tech-list">
                     <span class="tech-tag">Unity 3D</span>
                     <span class="tech-tag">ShaderGraph</span>
                     <span class="tech-tag">VFX Graph</span>
                 </div>
-                <a href="#" class="btn-view magnetic">View Case Study</a>
+                <a href="#" class="btn-view magnetic scramble-hover" style="margin-top: 2rem; display: inline-block; border-bottom: 1px solid white;">VIEW CASE STUDY</a>
             </div>
         </article>
 
@@ -291,10 +297,9 @@
     <section class="container about-section">
         <div>
             <h2>Beyond the Code</h2>
-            <p style="margin-bottom: 1rem;">I don't just write scripts; I engineer feelings. With a background in both technical implementation and visual design, I ensure that every frame rendered is optimized for performance without sacrificing the artistic vision.</p>
-            <p>From mobile 2D puzzles to complex PC VR simulations, my workflow is adaptable, scalable, and modern.</p>
+            <p style="margin-bottom: 1rem;">I don't just write scripts; I engineer feelings. My background in technical implementation and visual design ensures that every frame rendered is optimized for performance without sacrificing the artistic vision.</p>
         </div>
-        <div class="stats-grid">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
             <div class="stat-box">
                 <h4>4+</h4>
                 <p>Years Experience</p>
@@ -305,25 +310,25 @@
             </div>
             <div class="stat-box">
                 <h4>100%</h4>
-                <p>Client Satisfaction</p>
+                <p>Satisfaction</p>
             </div>
         </div>
     </section>
 
     <footer id="contact">
-        <p style="letter-spacing: 2px; margin-bottom: 2rem;">READY TO COLLABORATE?</p>
+        <p style="letter-spacing: 2px; margin-bottom: 2rem; color: var(--accent);">READY TO COLLABORATE?</p>
         <a href="mailto:email@example.com" class="footer-cta magnetic-area">
             LET'S <span style="color: var(--accent);">BUILD</span><br>THE FUTURE.
         </a>
-        <div style="margin-top: 3rem; display: flex; gap: 2rem;">
-            <a href="#" class="magnetic">LINKEDIN</a>
-            <a href="#" class="magnetic">GITHUB</a>
-            <a href="#" class="magnetic">TWITTER</a>
+        <div style="margin-top: 4rem; display: flex; gap: 3rem;">
+            <a href="#" class="scramble-hover">LINKEDIN</a>
+            <a href="#" class="scramble-hover">GITHUB</a>
+            <a href="#" class="scramble-hover">TWITTER</a>
         </div>
     </footer>
 
     <script>
-        // 1. INITIALIZE LENIS (SMOOTH SCROLL)
+        // 1. LENIS SMOOTH SCROLL
         const lenis = new Lenis({
             duration: 1.2,
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -336,82 +341,130 @@
         }
         requestAnimationFrame(raf);
 
-        // 2. PRELOADER ANIMATION
+        // 2. MOUSE FOLLOWER & GLOW
+        const cursor = document.querySelector('.cursor');
+        const follower = document.querySelector('.cursor-follower');
+        const glow = document.querySelector('.mouse-glow');
+
+        window.addEventListener('mousemove', (e) => {
+            gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1 });
+            gsap.to(follower, { x: e.clientX, y: e.clientY, duration: 0.3 });
+            gsap.to(glow, { x: e.clientX, y: e.clientY, duration: 0.6 });
+        });
+
+        // 3. PRELOADER & HERO REVEAL
         const tl = gsap.timeline();
-        
-        // Counter logic
         let count = 0;
         const counterElement = document.querySelector('.counter');
+        
         const interval = setInterval(() => {
             count += Math.floor(Math.random() * 10) + 1;
             if (count > 100) count = 100;
             counterElement.textContent = count + "%";
             if (count === 100) clearInterval(interval);
-        }, 30);
+        }, 20);
 
-        tl.to(".preloader", {
-            delay: 2.5,
-            y: "-100%",
-            duration: 1.5,
-            ease: "power4.inOut"
-        })
-        .from(".reveal", {
-            y: "110%",
-            duration: 1,
-            stagger: 0.1,
-            ease: "power3.out"
-        }, "-=1"); // Start reveals while preloader is sliding up
+        // Split Hero Text
+        const heroText = new SplitType('#hero-text', { types: 'words, chars' });
 
-        // 3. PARALLAX EFFECT ON IMAGES
-        gsap.registerPlugin(ScrollTrigger);
+        tl.to(".preloader", { delay: 2.2, y: "-100%", duration: 1.2, ease: "power4.inOut" })
+          .to(".preloader-overlay", { y: "-100%", duration: 1.2, ease: "power4.inOut" }, "-=1")
+          .from(heroText.chars, { 
+              y: 100, opacity: 0, rotateZ: 10, duration: 0.8, stagger: 0.02, ease: "back.out(1.7)" 
+          }, "-=0.5")
+          .to("#hero-sub", { opacity: 1, y: 0, duration: 1 }, "-=0.5");
+
+        // 4. PROJECT 3D TILT & CURTAIN REVEAL
+        const cards = document.querySelectorAll('.project-card');
         
-        document.querySelectorAll('.project-img-wrap').forEach(wrap => {
-            const img = wrap.querySelector('.project-img');
-            
-            gsap.to(img, {
-                y: "-20%", // Move image up slightly
+        cards.forEach(card => {
+            // Curtain Reveal
+            const curtain = card.querySelector('.img-curtain');
+            gsap.to(curtain, {
+                height: "0%",
+                duration: 1.2,
+                ease: "power3.inOut",
                 scrollTrigger: {
-                    trigger: wrap,
-                    start: "top bottom",
-                    end: "bottom top",
-                    scrub: true
+                    trigger: card,
+                    start: "top 75%",
                 }
             });
-        });
 
-        // 4. CUSTOM MAGNETIC CURSOR
-        const cursor = document.querySelector('.cursor');
-        
-        // Mouse Move
-        window.addEventListener('mousemove', (e) => {
-            gsap.to(cursor, {
-                x: e.clientX,
-                y: e.clientY,
-                duration: 0.1,
-                ease: "power2.out"
+            // Parallax Image
+            const img = card.querySelector('.project-img');
+            gsap.to(img, {
+                y: "-20%",
+                scrollTrigger: { trigger: card, start: "top bottom", end: "bottom top", scrub: true }
+            });
+
+            // 3D Tilt Interaction
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = ((y - centerY) / centerY) * -5; // Max 5deg
+                const rotateY = ((x - centerX) / centerX) * 5;
+
+                gsap.to(card.querySelector('.project-img-wrap'), {
+                    transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`,
+                    duration: 0.4
+                });
+            });
+
+            card.addEventListener('mouseleave', () => {
+                gsap.to(card.querySelector('.project-img-wrap'), {
+                    transform: `perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)`,
+                    duration: 0.5,
+                    ease: "elastic.out(1, 0.5)"
+                });
             });
         });
 
-        // Hover Effects (Scale cursor)
-        const hoverables = document.querySelectorAll('a, .magnetic, .magnetic-area');
-        hoverables.forEach(el => {
-            el.addEventListener('mouseenter', () => document.body.classList.add('hover-active'));
-            el.addEventListener('mouseleave', () => document.body.classList.remove('hover-active'));
+        // 5. CYBERPUNK TEXT SCRAMBLE ON HOVER
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
+        document.querySelectorAll(".scramble-hover, .scramble-on-view").forEach(el => {
+            el.dataset.value = el.innerText;
+            
+            const scramble = () => {
+                let iterations = 0;
+                const interval = setInterval(() => {
+                    el.innerText = el.innerText.split("")
+                        .map((letter, index) => {
+                            if(index < iterations) return el.dataset.value[index];
+                            return letters[Math.floor(Math.random() * 26)];
+                        })
+                        .join("");
+                    
+                    if(iterations >= el.dataset.value.length) clearInterval(interval);
+                    iterations += 1 / 2; 
+                }, 30);
+            }
+
+            // Trigger on hover
+            if(el.classList.contains("scramble-hover")) {
+                el.addEventListener("mouseenter", scramble);
+            }
+            
+            // Trigger on view (for tags)
+            if(el.classList.contains("scramble-on-view")) {
+                ScrollTrigger.create({
+                    trigger: el,
+                    start: "top 90%",
+                    onEnter: scramble
+                });
+            }
         });
 
-        // Magnetic Pull Effect on Buttons
+        // 6. MAGNETIC BUTTONS (Refined)
         document.querySelectorAll('.magnetic').forEach(btn => {
             btn.addEventListener('mousemove', (e) => {
                 const rect = btn.getBoundingClientRect();
                 const x = e.clientX - rect.left - rect.width / 2;
                 const y = e.clientY - rect.top - rect.height / 2;
-                
-                gsap.to(btn, {
-                    x: x * 0.3,
-                    y: y * 0.3,
-                    duration: 0.3,
-                    ease: "power2.out"
-                });
+                gsap.to(btn, { x: x * 0.4, y: y * 0.4, duration: 0.3, ease: "power2.out" });
             });
             btn.addEventListener('mouseleave', () => {
                 gsap.to(btn, { x: 0, y: 0, duration: 0.5, ease: "elastic.out(1, 0.3)" });

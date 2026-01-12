@@ -19,11 +19,36 @@
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
         ::selection { background: var(--accent); color: #000; }
         html { scroll-behavior: auto; }
-        body { background-color: var(--bg); color: var(--text); font-family: var(--font-body); overflow-x: hidden; }
+        
+        /* --- UPDATED: GAME DEV MAIN BACKGROUND (Unity Grid Style) --- */
+        body { 
+            background-color: var(--bg); 
+            color: var(--text); 
+            font-family: var(--font-body); 
+            overflow-x: hidden; 
+            /* Detailed Dot Grid (Like Unity Scene View) */
+            background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+            background-size: 24px 24px; 
+            background-attachment: fixed;
+        }
 
         /* --- UI ELEMENTS --- */
-        .cursor { position: fixed; width: 12px; height: 12px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%); mix-blend-mode: difference; }
-        .cursor-follower { position: fixed; width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.3); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: 0.1s; }
+        /* UPDATED: Crosshair Cursor */
+        .cursor { position: fixed; width: 8px; height: 8px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%); mix-blend-mode: difference; }
+        
+        /* Reticle Style Follower */
+        .cursor-follower { 
+            position: fixed; width: 50px; height: 50px; 
+            border: 1px solid rgba(255, 51, 51, 0.5); /* Accent color border */
+            border-radius: 50%; 
+            pointer-events: none; z-index: 9999; 
+            transform: translate(-50%, -50%); transition: 0.1s;
+            /* Crosshair lines inside the circle */
+            background: 
+                linear-gradient(to right, transparent 45%, rgba(255,51,51,0.5) 45%, rgba(255,51,51,0.5) 55%, transparent 55%),
+                linear-gradient(to bottom, transparent 45%, rgba(255,51,51,0.5) 45%, rgba(255,51,51,0.5) 55%, transparent 55%);
+            background-size: 100% 100%;
+        }
 
         /* --- NAV --- */
         nav { position: fixed; top: 0; width: 100%; padding: 2rem 5vw; display: flex; justify-content: space-between; align-items: center; z-index: 100; background: rgba(5,5,5,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.05); }
@@ -78,10 +103,7 @@
 
         /* --- ABOUT SECTION --- */
         .container { max-width: 1400px; margin: 0 auto; padding: 0 5vw; }
-        
-        /* UPDATED: Reduced bottom padding to close gap */
         .about-section { padding: 8rem 0 2rem 0; }
-        
         .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem; border-bottom: 1px solid #222; padding-bottom: 2rem; }
         .section-title { font-family: var(--font-head); font-size: 4rem; text-transform: uppercase; color: var(--accent); font-weight: 700; line-height: 1; }
         .reading-text { font-size: clamp(1.2rem, 2.5vw, 2rem); line-height: 1.5; color: #888; max-width: 100%; }
@@ -91,9 +113,7 @@
         .stat-box p { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: #666; }
 
         /* --- WORKS AREA (3 COLUMNS) --- */
-        /* UPDATED: Reduced top margin to close gap */
         .works-area { margin-top: 2rem; width: 100%; }
-        
         .work-header { display: flex; justify-content: center; align-items: center; flex-direction: column; margin-bottom: 2rem; }
         .work-header h2 { font-family: var(--font-head); font-size: 4rem; text-transform: uppercase; line-height: 1; margin: 0; color: #fff; }
         .work-header span { font-family: var(--font-code); color: #666; margin-top: 10px; letter-spacing: 2px; }
@@ -131,9 +151,30 @@
         .email-link { font-size: 1.5rem; color: #555; text-decoration: none; transition: 0.3s; font-family: var(--font-code); display: block; margin-bottom: 2rem;}
         .email-link:hover { color: #fff; }
 
-        /* PRELOADER */
-        .preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #fff; color: #000; z-index: 99999; display: flex; justify-content: space-between; align-items: flex-end; padding: 2rem; font-family: var(--font-head); }
+        /* --- UPDATED: PRELOADER (Blueprint / Tech Grid Style) --- */
+        .preloader { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh; 
+            background: #000; /* Dark Background */
+            color: var(--accent); /* Red text like system code */
+            z-index: 99999; display: flex; justify-content: space-between; align-items: flex-end; padding: 2rem; font-family: var(--font-head);
+            
+            /* Tech Grid Pattern for Loader */
+            background-image:
+                linear-gradient(rgba(255, 51, 51, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 51, 51, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
         .preloader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: var(--bg); z-index: 99998; transform: translateY(100%); }
+
+        /* --- NEW: SCANLINES OVERLAY (Monitor Effect) --- */
+        .scanlines {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1));
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 99999;
+            opacity: 0.3;
+        }
 
         @media (max-width: 768px) {
             .nav-links { display: none; }
@@ -146,10 +187,11 @@
     </style>
 </head>
 <body>
-        <div class="cursor"></div><div class="cursor-follower"></div>
+    <div class="cursor"></div><div class="cursor-follower"></div>
+    
+    <div class="scanlines"></div>
 
-    <div class="preloader"><div class="counter" style="font-size: 5rem; font-weight: 700;">0%</div><div>LOADING</div></div>
-
+    <div class="preloader"><div class="counter" style="font-size: 5rem; font-weight: 700;">0%</div><div>INITIALIZING SYSTEM...</div></div>
     <div class="preloader-overlay"></div>
 
     <nav>
@@ -195,15 +237,11 @@
                 <br><br>
                 I have hands-on experience developing 2D, 3D, AR, and VR projects, working with player controllers, combat mechanics, enemy AI, animations, UI systems, physics simulations, and scene management. I prioritize <span style="color: var(--accent);">game feel</span>, <span style="color: var(--accent);">performance optimization</span>, and technical stability, ensuring clean workflows, effective debugging, and smooth cross-platform deployment.
             </p>
+            
             <div class="stats-grid">
-
                 <div class="stat-box"><h4>4+</h4><p>Core Projects</p></div>
-
                 <div class="stat-box"><h4>2+</h4><p>Certifications</p></div>
-
                 <div class="stat-box"><h4>FPS / TPS</h4><p>Specialization</p></div>
-
-            </div>
             </div>
         </div>
     </section>
@@ -266,9 +304,7 @@
             
             <div class="social-row">
                 <a href="https://www.linkedin.com/in/AbhilashSaji" target="_blank" class="magnetic">LinkedIn</a>
-                
                 <a href="https://wa.me/917511104768" target="_blank" class="magnetic">WhatsApp</a>
-                
                 <a href="tel:+917511104768" class="magnetic">Contact Number</a>
             </div>
         </div>

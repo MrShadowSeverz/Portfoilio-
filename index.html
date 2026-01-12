@@ -15,61 +15,18 @@
 
     <style>
         /* --- CORE --- */
-        :root { --bg: #080808; --text: #e1e1e1; --accent: #ff3333; --grid-color: rgba(255, 255, 255, 0.08); --font-head: 'Clash Display', sans-serif; --font-body: 'Satoshi', sans-serif; --font-code: 'Space Mono', monospace; --font-italic: 'Playfair Display', serif; }
+        :root { --bg: #050505; --text: #e1e1e1; --accent: #ff3333; --font-head: 'Clash Display', sans-serif; --font-body: 'Satoshi', sans-serif; --font-code: 'Space Mono', monospace; --font-italic: 'Playfair Display', serif; }
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
         ::selection { background: var(--accent); color: #000; }
         html { scroll-behavior: auto; }
-        
-        /* --- VISIBLE GAME EDITOR BACKGROUND --- */
-        body { 
-            background-color: var(--bg); 
-            color: var(--text); 
-            font-family: var(--font-body); 
-            overflow-x: hidden; 
-            
-            /* LEVEL EDITOR GRID PATTERN (Visible Grey Lines) */
-            background-image: 
-                linear-gradient(var(--grid-color) 1px, transparent 1px),
-                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-            background-size: 50px 50px; /* Size of grid squares */
-            background-attachment: fixed;
-            position: relative;
-        }
-
-        /* VIGNETTE (Dark edges like a game screen) */
-        body::after {
-            content: "";
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, transparent 40%, #000 100%);
-            pointer-events: none;
-            z-index: -1;
-        }
+        body { background-color: var(--bg); color: var(--text); font-family: var(--font-body); overflow-x: hidden; }
 
         /* --- UI ELEMENTS --- */
-        /* FPS CROSSHAIR CURSOR */
-        .cursor { 
-            position: fixed; width: 6px; height: 6px; 
-            background: var(--accent); border-radius: 0; /* Square for pixel feel */
-            pointer-events: none; z-index: 10000; 
-            transform: translate(-50%, -50%); 
-        }
-        
-        .cursor-follower { 
-            position: fixed; width: 60px; height: 60px; 
-            border: 1px solid var(--accent); /* Solid Red Border */
-            border-radius: 50%; 
-            pointer-events: none; z-index: 9999; 
-            transform: translate(-50%, -50%); transition: 0.08s;
-            /* Crosshair lines inside */
-            background: 
-                linear-gradient(to right, transparent 48%, var(--accent) 48%, var(--accent) 52%, transparent 52%),
-                linear-gradient(to bottom, transparent 48%, var(--accent) 48%, var(--accent) 52%, transparent 52%);
-            background-size: 100% 100%;
-            opacity: 0.6;
-        }
+        .cursor { position: fixed; width: 12px; height: 12px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%); mix-blend-mode: difference; }
+        .cursor-follower { position: fixed; width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.3); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: 0.1s; }
 
         /* --- NAV --- */
-        nav { position: fixed; top: 0; width: 100%; padding: 2rem 5vw; display: flex; justify-content: space-between; align-items: center; z-index: 100; background: rgba(8,8,8,0.9); backdrop-filter: blur(5px); border-bottom: 1px solid rgba(255,255,255,0.05); }
+        nav { position: fixed; top: 0; width: 100%; padding: 2rem 5vw; display: flex; justify-content: space-between; align-items: center; z-index: 100; background: rgba(5,5,5,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.05); }
         .logo { font-weight: 700; font-family: var(--font-head); text-transform: uppercase; letter-spacing: 1px; font-size: 1.2rem; text-decoration: none; color: #fff; }
         .nav-links { display: flex; gap: 2rem; }
         .nav-links a { font-family: var(--font-head); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; transition: color 0.3s; color: #999; text-decoration: none; }
@@ -91,7 +48,6 @@
             font-weight: 700; 
             letter-spacing: -2px;
             color: #fff;
-            text-shadow: 0 0 20px rgba(0,0,0,0.5); /* Shadow to pop against grid */
         }
         
         #hero-personal { 
@@ -99,7 +55,7 @@
             top: 50%; left: 50%; transform: translate(-50%, -50%);
             opacity: 0; z-index: 1; text-align: center; display: flex; flex-direction: column; align-items: center; 
         }
-        .hello-badge { font-family: var(--font-code); font-size: 0.8rem; margin-bottom: 2rem; border: 1px solid #333; padding: 8px 20px; border-radius: 50px; color: #888; text-transform: uppercase; letter-spacing: 3px; background: #000; }
+        .hello-badge { font-family: var(--font-code); font-size: 0.8rem; margin-bottom: 2rem; border: 1px solid #333; padding: 8px 20px; border-radius: 50px; color: #888; text-transform: uppercase; letter-spacing: 3px; background: rgba(255, 255, 255, 0.03); }
         
         .personal-text { 
             font-family: var(--font-head); 
@@ -109,8 +65,7 @@
             max-width: 1300px; 
             color: #fff; 
             margin: 0 auto; 
-            text-align: center;
-            text-shadow: 0 0 20px rgba(0,0,0,0.8);
+            text-align: center; 
         }
         
         .highlight-italic { 
@@ -123,22 +78,27 @@
 
         /* --- ABOUT SECTION --- */
         .container { max-width: 1400px; margin: 0 auto; padding: 0 5vw; }
+        
+        /* UPDATED: Reduced bottom padding to close gap */
         .about-section { padding: 8rem 0 2rem 0; }
+        
         .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem; border-bottom: 1px solid #222; padding-bottom: 2rem; }
         .section-title { font-family: var(--font-head); font-size: 4rem; text-transform: uppercase; color: var(--accent); font-weight: 700; line-height: 1; }
-        .reading-text { font-size: clamp(1.2rem, 2.5vw, 2rem); line-height: 1.5; color: #888; max-width: 100%; text-shadow: 0 2px 5px #000; }
+        .reading-text { font-size: clamp(1.2rem, 2.5vw, 2rem); line-height: 1.5; color: #888; max-width: 100%; }
         .reading-text .word.active { color: #fff; }
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 5rem; }
         .stat-box h4 { font-size: 4rem; color: var(--accent); font-family: var(--font-head); line-height: 1; margin-bottom: 0.5rem; }
-        .stat-box p { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: #666; font-family: var(--font-code); }
+        .stat-box p { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: #666; }
 
-        /* --- WORKS AREA --- */
+        /* --- WORKS AREA (3 COLUMNS) --- */
+        /* UPDATED: Reduced top margin to close gap */
         .works-area { margin-top: 2rem; width: 100%; }
+        
         .work-header { display: flex; justify-content: center; align-items: center; flex-direction: column; margin-bottom: 2rem; }
-        .work-header h2 { font-family: var(--font-head); font-size: 4rem; text-transform: uppercase; line-height: 1; margin: 0; color: #fff; text-shadow: 0 5px 10px #000; }
+        .work-header h2 { font-family: var(--font-head); font-size: 4rem; text-transform: uppercase; line-height: 1; margin: 0; color: #fff; }
         .work-header span { font-family: var(--font-code); color: #666; margin-top: 10px; letter-spacing: 2px; }
 
-        .work-gateway { display: flex; height: 70vh; width: 100%; overflow: hidden; background: #000; gap: 2px; border-top: 1px solid #333; border-bottom: 1px solid #333; }
+        .work-gateway { display: flex; height: 70vh; width: 100%; overflow: hidden; background: #000; gap: 2px; }
         .work-col { display: block; flex: 1; position: relative; transition: flex 0.6s cubic-bezier(0.25, 1, 0.5, 1), filter 0.4s; overflow: hidden; border-right: 1px solid rgba(255,255,255,0.1); text-decoration: none; }
         .work-col:last-child { border-right: none; }
         .work-col img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) brightness(0.4); transition: transform 0.8s ease, filter 0.5s ease; }
@@ -155,7 +115,7 @@
 
         /* --- RESUME BOX --- */
         .resume-container { margin-top: 3rem; width: 100%; }
-        .resume-box { display: flex; justify-content: space-between; align-items: center; padding: 4rem; border: 1px solid #222; text-decoration: none; transition: all 0.4s ease; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); }
+        .resume-box { display: flex; justify-content: space-between; align-items: center; padding: 4rem; border: 1px solid #222; text-decoration: none; transition: all 0.4s ease; background: rgba(255,255,255,0.02); }
         .resume-box:hover { border-color: var(--accent); background: rgba(255, 51, 51, 0.05); }
         .resume-info h3 { font-family: var(--font-head); font-size: 2.5rem; text-transform: uppercase; color: #fff; margin-bottom: 0.5rem; }
         .resume-info p { font-family: var(--font-code); color: #666; font-size: 0.9rem; }
@@ -163,7 +123,7 @@
         .resume-box:hover .resume-action { background: var(--accent); color: #fff; }
 
         /* --- FOOTER --- */
-        footer { padding: 8rem 5vw; border-top: 1px solid #222; background: #050505; margin-top: 5rem; position: relative; z-index: 2; }
+        footer { padding: 8rem 5vw; border-top: 1px solid #222; background: #080808; margin-top: 5rem; }
         .footer-headline { font-family: var(--font-head); font-size: clamp(3rem, 6vw, 5rem); line-height: 1; text-transform: uppercase; color: #fff; margin-bottom: 2rem; }
         .social-row { display: flex; gap: 2rem; margin-top: 2rem; }
         .social-row a { color: #6e56cf; text-decoration: underline; text-transform: uppercase; font-family: var(--font-code); font-size: 0.9rem; transition: 0.3s; }
@@ -171,24 +131,9 @@
         .email-link { font-size: 1.5rem; color: #555; text-decoration: none; transition: 0.3s; font-family: var(--font-code); display: block; margin-bottom: 2rem;}
         .email-link:hover { color: #fff; }
 
-        /* --- PRELOADER (TERMINAL STYLE) --- */
-        .preloader { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100vh; 
-            background: #000; color: var(--accent); 
-            z-index: 99999; display: flex; justify-content: space-between; align-items: flex-end; padding: 2rem; font-family: var(--font-code);
-            border-bottom: 5px solid var(--accent);
-        }
+        /* PRELOADER */
+        .preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #fff; color: #000; z-index: 99999; display: flex; justify-content: space-between; align-items: flex-end; padding: 2rem; font-family: var(--font-head); }
         .preloader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: var(--bg); z-index: 99998; transform: translateY(100%); }
-
-        /* --- MONITOR SCANLINES (Visible Effect) --- */
-        .scanlines {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 50%);
-            background-size: 100% 3px;
-            pointer-events: none;
-            z-index: 999999;
-            opacity: 0.4; /* Increased visibility */
-        }
 
         @media (max-width: 768px) {
             .nav-links { display: none; }
@@ -201,11 +146,10 @@
     </style>
 </head>
 <body>
-    <div class="cursor"></div><div class="cursor-follower"></div>
-    
-    <div class="scanlines"></div>
+        <div class="cursor"></div><div class="cursor-follower"></div>
 
-    <div class="preloader"><div class="counter" style="font-size: 5rem; font-weight: 700;">0%</div><div>> INITIALIZING ASSETS...</div></div>
+    <div class="preloader"><div class="counter" style="font-size: 5rem; font-weight: 700;">0%</div><div>LOADING</div></div>
+
     <div class="preloader-overlay"></div>
 
     <nav>
@@ -251,11 +195,15 @@
                 <br><br>
                 I have hands-on experience developing 2D, 3D, AR, and VR projects, working with player controllers, combat mechanics, enemy AI, animations, UI systems, physics simulations, and scene management. I prioritize <span style="color: var(--accent);">game feel</span>, <span style="color: var(--accent);">performance optimization</span>, and technical stability, ensuring clean workflows, effective debugging, and smooth cross-platform deployment.
             </p>
-            
             <div class="stats-grid">
+
                 <div class="stat-box"><h4>4+</h4><p>Core Projects</p></div>
+
                 <div class="stat-box"><h4>2+</h4><p>Certifications</p></div>
+
                 <div class="stat-box"><h4>FPS / TPS</h4><p>Specialization</p></div>
+
+            </div>
             </div>
         </div>
     </section>
@@ -318,7 +266,9 @@
             
             <div class="social-row">
                 <a href="https://www.linkedin.com/in/AbhilashSaji" target="_blank" class="magnetic">LinkedIn</a>
+                
                 <a href="https://wa.me/917511104768" target="_blank" class="magnetic">WhatsApp</a>
+                
                 <a href="tel:+917511104768" class="magnetic">Contact Number</a>
             </div>
         </div>

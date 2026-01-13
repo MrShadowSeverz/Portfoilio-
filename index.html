@@ -17,8 +17,7 @@
         /* --- CORE --- */
         :root { 
             --text: #e1e1e1; 
-            /* MATCHED COLOR: Soulful Cyan/Blue */
-            --accent: #00f2ff; 
+            --accent: #00f2ff; /* Magic Cyan */
             --font-head: 'Clash Display', sans-serif; 
             --font-body: 'Satoshi', sans-serif; 
             --font-code: 'Space Mono', monospace; 
@@ -27,9 +26,10 @@
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
         ::selection { background: var(--accent); color: #000; }
         
+        /* Ensure background is visible immediately */
         html, body { 
             margin: 0; padding: 0; 
-            background: #000 !important; /* Black fallback while loading */
+            background: #000510; 
             color: var(--text); 
             font-family: var(--font-body); 
             overflow-x: hidden; 
@@ -40,45 +40,42 @@
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
             z-index: -999;
             overflow: hidden;
-            background-color: #050510;
+            background-color: #000510;
         }
 
-        /* THE BACKGROUND IMAGE (OPTIMIZED) */
+        /* ANIMATED BACKGROUND IMAGE (Replaces Video for Speed) */
         #static-bg-img {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            /* High-Speed Hosted URL matching your Blue Tree Theme */
-            background-image: url('https://images.unsplash.com/photo-1504194921103-f8b80c338d47?q=80&w=2600&auto=format&fit=crop');
+            position: absolute; top: -10%; left: -10%; width: 120%; height: 120%;
+            /* Reliable Unsplash Image: Mystical Blue Forest */
+            background-image: url('https://images.unsplash.com/photo-1511447333015-45b65e60f6d5?q=80&w=2500&auto=format&fit=crop');
             background-size: cover;
             background-position: center;
-            /* Animation for "Breathing" Life */
-            animation: breatheScene 20s infinite ease-in-out alternate;
-            filter: brightness(0.7) contrast(1.2) hue-rotate(190deg); /* Shifts colors to Deep Blue/Cyan */
+            opacity: 0.6;
+            /* "Ken Burns" Effect to simulate video movement */
+            animation: cameraPan 30s infinite alternate ease-in-out;
+            filter: contrast(1.2) brightness(0.8) hue-rotate(10deg);
         }
 
-        @keyframes breatheScene {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.05); } 
+        @keyframes cameraPan {
+            0% { transform: scale(1) translate(0, 0); }
+            100% { transform: scale(1.1) translate(-20px, -10px); }
         }
 
-        /* Cinematic Overlay */
+        /* Overlay */
         .cinematic-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, rgba(0,10,30,0.2), rgba(0,10,30,0.5) 60%, #000 100%);
+            background: linear-gradient(to bottom, rgba(0,5,15,0.4), rgba(0,5,15,0.7) 60%, #000510 100%);
             z-index: 1;
         }
 
-        /* --- SOULFUL BUTTERFLIES --- */
-        .butterfly {
-            position: absolute;
-            width: 15px; height: 15px;
+        /* --- PARTICLES --- */
+        .dust-mote {
+            position: absolute; 
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent);
             z-index: 2;
             pointer-events: none;
-            background: var(--accent);
-            mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor'%3E%3Cpath d='M12 2C10 2 8 3 7 5C5 3 2 3 2 6C2 8 4 10 7 11C4 13 2 15 2 17C2 20 6 21 8 20C10 19 12 16 12 12C12 16 14 19 16 20C18 21 22 20 22 17C22 15 20 13 17 11C20 10 22 8 22 6C22 3 19 3 17 5C16 3 14 2 12 2Z'/%3E%3C/svg%3E");
-            -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor'%3E%3Cpath d='M12 2C10 2 8 3 7 5C5 3 2 3 2 6C2 8 4 10 7 11C4 13 2 15 2 17C2 20 6 21 8 20C10 19 12 16 12 12C12 16 14 19 16 20C18 21 22 20 22 17C22 15 20 13 17 11C20 10 22 8 22 6C22 3 19 3 17 5C16 3 14 2 12 2Z'/%3E%3C/svg%3E");
-            mask-size: contain; -webkit-mask-size: contain; mask-repeat: no-repeat; -webkit-mask-repeat: no-repeat;
-            opacity: 0.8;
-            filter: drop-shadow(0 0 10px var(--accent));
         }
 
         /* --- UI ELEMENTS --- */
@@ -108,7 +105,7 @@
             font-weight: 700; 
             letter-spacing: -2px;
             color: #fff;
-            text-shadow: 0 0 30px rgba(0, 242, 255, 0.3);
+            text-shadow: 0 0 30px rgba(0, 242, 255, 0.4);
         }
         
         #hero-personal { 
@@ -190,14 +187,14 @@
         .email-link { font-size: 1.5rem; color: #5588aa; text-decoration: none; transition: 0.3s; font-family: var(--font-code); display: block; margin-bottom: 2rem;}
         .email-link:hover { color: #fff; }
 
-        /* PRELOADER */
-        .preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #020205; color: #fff; z-index: 99999; display: flex; flex-direction: column; justify-content: flex-end; padding: 2rem 5vw; font-family: var(--font-code); }
-        .preloader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: var(--accent); z-index: 99998; transform: translateY(100%); }
+        /* PRELOADER (SAFE MODE) */
+        .preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #020205; color: #fff; z-index: 99999; display: flex; flex-direction: column; justify-content: flex-end; padding: 2rem 5vw; font-family: var(--font-code); transition: transform 0.8s ease-in-out; }
+        .preloader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: var(--accent); z-index: 99998; transform: translateY(100%); transition: transform 0.8s ease-in-out; }
         .console-log { font-size: 0.8rem; color: #aaddff; margin-bottom: 1rem; height: 100px; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; }
         .console-line { margin-bottom: 4px; }
         .success { color: var(--accent); }
         .loading-bar-container { width: 100%; height: 2px; background: #004455; margin-top: 10px; }
-        .loading-bar { width: 0%; height: 100%; background: var(--accent); box-shadow: 0 0 15px var(--accent); }
+        .loading-bar { width: 0%; height: 100%; background: var(--accent); box-shadow: 0 0 15px var(--accent); transition: width 0.1s linear; }
 
         @media (max-width: 768px) {
             .nav-links { display: none; }
@@ -213,7 +210,6 @@
 
     <div id="gamer-bg-container">
         <div id="static-bg-img"></div>
-        
         <div class="cinematic-overlay"></div>
         <div id="particles-container"></div>
     </div>
@@ -353,23 +349,24 @@
         requestAnimationFrame(raf);
         gsap.registerPlugin(ScrollTrigger);
 
-        /* --- SOULFUL BUTTERFLY PARTICLES --- */
+        /* --- PARTICLES: MAGIC BLUE FIREFLIES --- */
         const particleContainer = document.getElementById('particles-container');
         const particleCount = 20;
 
         for (let i = 0; i < particleCount; i++) {
             let p = document.createElement('div');
-            p.classList.add('butterfly');
+            p.classList.add('dust-mote');
             
             let x = Math.random() * 100;
             let duration = 8 + Math.random() * 15;
             let delay = Math.random() * -10; 
-            let size = 15 + Math.random() * 25; 
+            let size = 10 + Math.random() * 20; 
             
             p.style.left = x + 'vw';
             p.style.width = size + 'px';
             p.style.height = size + 'px';
             
+            // GSAP: Float up with a "fluttering" motion
             gsap.to(p, {
                 y: '-110vh',
                 x: '+=' + (Math.random() * 200 - 100), 
@@ -382,6 +379,7 @@
                 startAt: { y: '110vh', opacity: 0 }
             });
             
+            // Fade in/out to twinkle
             gsap.to(p, {
                 opacity: 0.8,
                 duration: 2,
@@ -404,11 +402,15 @@
         const techText = new SplitType('#hero-text-tech', { types: 'words, chars' });
         const personalText = new SplitType('#hero-text-personal', { types: 'words' });
         
+        /* --- ROBUST PRELOADER LOGIC --- */
+        // This ensures the site opens even if assets are slow
         let count = 0; 
         const counter = document.querySelector('.counter');
         const loadingBar = document.querySelector('.loading-bar');
         const consoleOutput = document.getElementById('console-output');
-        
+        const preloader = document.querySelector(".preloader");
+        const preloaderOverlay = document.querySelector(".preloader-overlay");
+
         const logs = [
             "> Loading Blue_Valley.scene...",
             "> Compiling Shaders...",
@@ -417,11 +419,14 @@
             "> <span class='success'>Ready.</span>"
         ];
         
+        // Use a timer to simulate loading, but force finish after 2.5s maximum
         const interval = setInterval(() => { 
             count += 2; 
             if(count > 100) count = 100; 
+            
             counter.innerText = count + "%"; 
             loadingBar.style.width = count + "%";
+
             if (count % 20 === 0 && count < 90) {
                 let logIndex = Math.floor(count / 20);
                 if (logs[logIndex]) {
@@ -432,19 +437,44 @@
                     consoleOutput.scrollTop = consoleOutput.scrollHeight;
                 }
             }
-            if(count === 100) clearInterval(interval); 
+
+            if(count === 100) {
+                clearInterval(interval);
+                finishLoading();
+            } 
         }, 30);
 
-        tl.to(".preloader", { delay: 2.5, y: "-100%", duration: 1, ease: "expo.inOut" })
-          .to(".preloader-overlay", { y: "-100%", duration: 1, ease: "expo.inOut" }, "-=0.8")
-          .from(techText.chars, { y: 100, opacity: 0, rotateZ: 5, duration: 0.8, stagger: 0.02, ease: "back.out(1.7)" }, "-=0.5")
-          .from("#hero-sub", { opacity: 0, y: 10, duration: 0.5 }, "-=0.3")
-          .to({}, { duration: 1.0 }) 
-          .to("#hero-intro", { filter: "blur(20px)", opacity: 0, scale: 0.9, duration: 0.5, ease: "power2.in" })
-          .to("#hero-personal", { opacity: 1, duration: 0.1 })
-          .from("#hero-personal", { filter: "blur(20px)", scale: 1.1, duration: 0.7, ease: "expo.out" }, "+=0.1")
-          .from(".hello-badge", { opacity: 0, y: -20, duration: 0.5 }, "-=0.5")
-          .from(personalText.words, { y: 40, opacity: 0, duration: 0.6, stagger: 0.02, ease: "power3.out" }, "-=0.5");
+        function finishLoading() {
+            gsap.to(preloader, { y: "-100%", duration: 1, ease: "expo.inOut" });
+            gsap.to(preloaderOverlay, { y: "-100%", duration: 1, ease: "expo.inOut", delay: 0.1 });
+            
+            // Animate Hero Text IN after loader lifts
+            gsap.from(techText.chars, { y: 100, opacity: 0, rotateZ: 5, duration: 0.8, stagger: 0.02, ease: "back.out(1.7)", delay: 0.5 });
+            gsap.from("#hero-sub", { opacity: 0, y: 10, duration: 0.5, delay: 0.8 });
+            
+            // Hero Intro Animation
+            gsap.to("#hero-intro", { 
+                scrollTrigger: {
+                    trigger: "#home",
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: true
+                },
+                filter: "blur(20px)", opacity: 0, scale: 0.9 
+            });
+            
+            // Hero Personal Text Animation
+            gsap.to("#hero-personal", { opacity: 1, duration: 0.1 });
+            gsap.from("#hero-personal", { 
+                scrollTrigger: {
+                    trigger: "#hero-intro",
+                    start: "bottom center",
+                },
+                filter: "blur(20px)", scale: 1.1, duration: 0.7, ease: "expo.out" 
+            });
+            gsap.from(".hello-badge", { opacity: 0, y: -20, duration: 0.5, delay: 1 });
+            gsap.from(personalText.words, { y: 40, opacity: 0, duration: 0.6, stagger: 0.02, ease: "power3.out", delay: 1.2 });
+        }
 
         const readingText = new SplitType('.reading-text', { types: 'words' });
         gsap.fromTo(readingText.words, { opacity: 0.2, color: "#aaa" }, { opacity: 1, color: "#fff", stagger: 0.05, scrollTrigger: { trigger: ".reading-text", start: "top 85%", end: "bottom 65%", scrub: true }});

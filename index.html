@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Abhilash Saji | Unity Developer</title>
     
-    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@200,400,600,700&f[]=satoshi@300,400,500,700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Space+Mono:wght@400;700&family=Rye&display=swap" rel="stylesheet">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
@@ -14,156 +13,204 @@
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
 
     <style>
-        /* --- CORE --- */
-        :root { --bg: #0a0a0a; --text: #e1e1e1; --accent: #44ff00; /* Neon Green for Tech Feel */ --font-head: 'Clash Display', sans-serif; --font-body: 'Satoshi', sans-serif; --font-code: 'Space Mono', monospace; }
+        /* --- RDR THEME VARIABLES --- */
+        :root { 
+            --bg: #0a0a0a; 
+            --rdr-red: #cc0000; /* The Iconic Red */
+            --paper: #e6dccf;   /* Vintage Paper Color */
+            --text: #e6dccf; 
+            --font-head: 'Playfair Display', serif; /* Western Style */
+            --font-body: 'Space Mono', monospace;   /* Technical/Gunsmith Style */
+        }
+        
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
-        ::selection { background: var(--accent); color: #000; }
-        body { background-color: var(--bg); color: var(--text); font-family: var(--font-body); overflow-x: hidden; }
+        ::selection { background: var(--rdr-red); color: #000; }
+        
+        body { 
+            background-color: var(--bg); 
+            color: var(--text); 
+            font-family: var(--font-body); 
+            overflow-x: hidden; 
+        }
 
-        /* --- IMMERSIVE BACKGROUND (UNITY EDITOR THEME) --- */
-        #game-engine-bg {
+        /* --- BACKGROUND: THE RED DEAD STYLE --- */
+        #rdr-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
             z-index: -2;
-            /* High Quality 3D Environment Image */
-            background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1555680202-c86f0e12f086?q=80&w=2670&auto=format&fit=crop'); 
-            background-size: cover; background-position: center;
-            transform: scale(1.1); /* Slight zoom for parallax */
+            /* Iconic Red Gradient Background */
+            background: linear-gradient(to bottom, #4a0000 0%, #8a0303 50%, #000000 100%);
         }
 
-        /* Unity Editor UI Overlays */
-        .unity-toolbar {
-            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-            display: flex; gap: 10px; background: #222; padding: 10px 20px; border-radius: 8px;
-            border: 1px solid #444; z-index: -1; opacity: 0.8;
-        }
-        .play-btn { width: 0; height: 0; border-top: 8px solid transparent; border-bottom: 8px solid transparent; border-left: 14px solid #fff; }
-        .pause-btn { width: 12px; height: 16px; border-left: 4px solid #fff; border-right: 4px solid #fff; }
-
-        .inspector-panel {
-            position: fixed; top: 150px; right: 30px; 
-            width: 200px; background: rgba(30,30,30,0.8); border: 1px solid #444;
-            padding: 15px; font-family: var(--font-code); font-size: 0.7rem; color: #ccc;
-            z-index: -1; backdrop-filter: blur(5px);
-            display: flex; flex-direction: column; gap: 8px;
-        }
-        .inspector-row { display: flex; justify-content: space-between; }
-        .val { color: var(--accent); }
-
-        .scene-gizmo {
-            position: fixed; top: 100px; right: 30px; width: 50px; height: 50px;
-            z-index: -1; opacity: 0.8;
-        }
-
-        /* Overlay Effects */
-        .scanlines {
+        /* GRUNGE TEXTURE OVERLAY */
+        .grunge-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1));
-            background-size: 100% 4px; z-index: 90; pointer-events: none; opacity: 0.3;
-        }
-        .vignette {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, transparent 60%, #000 100%);
-            z-index: 80; pointer-events: none;
+            z-index: -1;
+            opacity: 0.15;
+            background-image: url("https://www.transparenttextures.com/patterns/black-felt.png"); /* Simple noise texture */
+            pointer-events: none;
         }
 
-        /* --- PRELOADER (BOOT SEQUENCE) --- */
-        .preloader { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100vh; 
-            z-index: 99999; display: flex; flex-direction: column; justify-content: flex-end; padding: 3rem;
-            /* Background Image for Preloader to fill black space */
-            background: url('https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2670&auto=format&fit=crop') no-repeat center center;
-            background-size: cover;
+        /* DUST PARTICLES (Western Atmosphere) */
+        .dust-mote {
+            position: absolute;
+            width: 2px; height: 2px;
+            background: rgba(255, 200, 150, 0.4);
+            border-radius: 50%;
+            box-shadow: 0 0 4px rgba(255, 200, 150, 0.4);
         }
-        /* Dark overlay on preloader image so text pops */
-        .preloader::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85); z-index: -1;
-        }
+
+        /* --- TYPOGRAPHY STYLING --- */
+        h1, h2, h3, h4 { font-family: var(--font-head); font-weight: 700; letter-spacing: -1px; }
         
-        .preloader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #000; z-index: 99998; transform: translateY(100%); }
-
-        .boot-log { font-family: var(--font-code); color: #0f0; font-size: 0.9rem; margin-bottom: 20px; text-shadow: 0 0 5px #0f0; }
-        .log-entry { opacity: 0.7; margin-bottom: 5px; }
-        .loading-bar-bg { width: 100%; height: 4px; background: #333; margin-top: 10px; }
-        .loading-bar-fill { width: 0%; height: 100%; background: #0f0; box-shadow: 0 0 10px #0f0; }
-
-        /* --- HERO & UI --- */
-        nav { position: fixed; top: 0; width: 100%; padding: 2rem 5vw; display: flex; justify-content: space-between; align-items: center; z-index: 100; background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent); }
-        .logo { font-weight: 700; font-family: var(--font-head); text-transform: uppercase; letter-spacing: 1px; font-size: 1.2rem; text-decoration: none; color: #fff; }
-        .nav-links { display: flex; gap: 2rem; }
-        .nav-links a { font-family: var(--font-head); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; transition: color 0.3s; color: #bbb; text-decoration: none; }
-        .nav-links a:hover { color: #fff; text-shadow: 0 0 8px rgba(255,255,255,0.5); }
-
-        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; width: 100%; }
-        #hero-intro h1 { 
-            font-family: var(--font-head); font-size: clamp(3rem, 9vw, 7rem); 
-            line-height: 0.9; text-transform: uppercase; font-weight: 700; color: #fff;
-            text-shadow: 0 10px 40px rgba(0,0,0,0.8);
+        /* The "Red Dead" Title Style */
+        #hero-text-tech {
+            text-transform: uppercase;
+            font-size: clamp(3rem, 9vw, 8rem);
+            line-height: 0.85;
+            color: var(--rdr-red);
+            /* Grunge Text Effect */
+            -webkit-text-stroke: 2px var(--rdr-red); 
+            color: transparent; 
+            background: url('https://www.transparenttextures.com/patterns/aged-paper.png');
+            -webkit-background-clip: text;
+            background-clip: text;
+            filter: drop-shadow(0 0 15px rgba(0,0,0,0.8));
         }
-        #hero-sub { color: #ccc; background: rgba(0,0,0,0.6); padding: 5px 10px; border-radius: 4px; backdrop-filter: blur(4px); }
+
+        /* --- UI ELEMENTS --- */
+        /* Custom Crosshair Cursor */
+        .cursor { 
+            position: fixed; width: 8px; height: 8px; 
+            background: var(--rdr-red); border-radius: 50%; 
+            pointer-events: none; z-index: 10000; 
+            transform: translate(-50%, -50%); 
+        }
+        .cursor-follower { 
+            position: fixed; width: 50px; height: 50px; 
+            border: 1px solid rgba(230, 220, 207, 0.5); /* Paper color */
+            border-radius: 50%; 
+            pointer-events: none; z-index: 9999; 
+            transform: translate(-50%, -50%); transition: 0.1s; 
+        }
+        /* Crosshair lines */
+        .cursor-follower::after, .cursor-follower::before {
+            content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: rgba(230, 220, 207, 0.3);
+        }
+        .cursor-follower::after { width: 100%; height: 1px; }
+        .cursor-follower::before { width: 1px; height: 100%; }
+
+        /* --- NAV --- */
+        nav { 
+            position: fixed; top: 0; width: 100%; padding: 2rem 5vw; 
+            display: flex; justify-content: space-between; align-items: center; z-index: 100; 
+            /* Vintage Fade */
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
+        }
+        .logo { 
+            font-weight: 700; font-family: var(--font-head); text-transform: uppercase; 
+            letter-spacing: 2px; font-size: 1.5rem; text-decoration: none; color: var(--paper); 
+        }
+        .nav-links { display: flex; gap: 2rem; }
+        .nav-links a { 
+            font-family: var(--font-body); text-transform: uppercase; font-size: 0.8rem; 
+            letter-spacing: 2px; color: #999; text-decoration: none; transition: 0.3s; 
+        }
+        .nav-links a:hover { color: var(--rdr-red); }
 
         /* --- SECTIONS --- */
-        .container { max-width: 1400px; margin: 0 auto; padding: 0 5vw; position: relative; z-index: 5; }
-        .about-section { padding: 8rem 0; background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.8)); }
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 5vw; }
         
-        .works-gateway { display: flex; height: 60vh; gap: 10px; margin-top: 2rem; }
-        .work-col { flex: 1; position: relative; overflow: hidden; border: 1px solid #444; transition: 0.5s; cursor: pointer; }
-        .work-col img { width: 100%; height: 100%; object-fit: cover; opacity: 0.6; transition: 0.5s; }
-        .work-col:hover { flex: 3; border-color: var(--accent); }
-        .work-col:hover img { opacity: 1; transform: scale(1.1); }
-        .col-overlay { position: absolute; bottom: 0; left: 0; width: 100%; padding: 2rem; background: linear-gradient(to top, #000, transparent); }
-        .col-title { font-family: var(--font-head); font-size: 2rem; color: #fff; text-transform: uppercase; }
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; }
+        
+        #hero-sub {
+            font-family: var(--font-body); color: var(--paper); margin-top: 2rem; 
+            border-top: 1px solid var(--rdr-red); border-bottom: 1px solid var(--rdr-red);
+            padding: 10px 0; letter-spacing: 2px; text-transform: uppercase;
+        }
 
-        /* --- FOOTER --- */
-        footer { padding: 6rem 5vw; background: #050505; border-top: 1px solid #333; position: relative; z-index: 5; }
-        .footer-headline { font-family: var(--font-head); font-size: 4rem; text-transform: uppercase; color: #fff; }
+        /* ABOUT */
+        .about-section { padding: 8rem 0; }
+        .section-title { 
+            font-size: 5rem; color: var(--rdr-red); 
+            text-shadow: 2px 2px 0px #000;
+        }
+        .reading-text { font-size: 1.5rem; line-height: 1.6; color: #999; font-family: var(--font-head); }
+        .reading-text .word.active { color: var(--paper); }
+        
+        .stat-box h4 { font-size: 4rem; color: var(--rdr-red); font-family: var(--font-head); }
 
-        /* --- CURSOR --- */
-        .cursor { position: fixed; width: 10px; height: 10px; background: #fff; border-radius: 50%; pointer-events: none; z-index: 10000; mix-blend-mode: difference; }
-        .cursor-follower { position: fixed; width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.5); border-radius: 50%; pointer-events: none; z-index: 9999; transition: 0.15s ease-out; }
+        /* WORKS (The Wanted Posters) */
+        .work-gateway { display: flex; height: 60vh; gap: 20px; margin-top: 2rem; }
+        .work-col { 
+            flex: 1; position: relative; overflow: hidden; 
+            border: 4px solid #333; /* Thick border */
+            background: #111;
+            transition: 0.5s; cursor: pointer; 
+        }
+        .work-col img { 
+            width: 100%; height: 100%; object-fit: cover; 
+            filter: sepia(0.8) contrast(1.2) brightness(0.6); /* Old Photo Filter */
+            transition: 0.5s; 
+        }
+        
+        /* Hover Effect: Turns into full color */
+        .work-col:hover { flex: 2; border-color: var(--rdr-red); }
+        .work-col:hover img { filter: sepia(0) contrast(1) brightness(1); transform: scale(1.1); }
+        
+        .col-overlay { 
+            position: absolute; bottom: 0; left: 0; width: 100%; padding: 2rem; 
+            background: linear-gradient(to top, #000, transparent); 
+        }
+        .col-title { font-size: 2.5rem; color: var(--paper); text-transform: uppercase; }
+        .col-sub { color: var(--rdr-red); font-family: var(--font-body); letter-spacing: 2px; }
+
+        /* RESUME BOX */
+        .resume-box { 
+            display: flex; justify-content: space-between; align-items: center; padding: 4rem; 
+            border: 2px solid #333; background: rgba(20,20,20,0.8); margin-top: 4rem;
+            text-decoration: none; transition: 0.3s;
+        }
+        .resume-box:hover { border-color: var(--rdr-red); background: rgba(60, 0, 0, 0.2); }
+
+        /* FOOTER */
+        footer { padding: 8rem 5vw; background: #050000; border-top: 1px solid #333; margin-top: 5rem; }
+        .footer-headline { font-size: 4rem; color: var(--paper); margin-bottom: 2rem; }
+        .email-link { color: var(--rdr-red); font-size: 1.5rem; text-decoration: none; font-family: var(--font-body); }
+
+        /* PRELOADER: GUN CHAMBER / VINTAGE STYLE */
+        .preloader { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh; 
+            background: #000; color: var(--rdr-red); z-index: 99999; 
+            display: flex; align-items: center; justify-content: center;
+        }
+        .loader-text {
+            font-family: var(--font-head); font-size: 3rem; font-weight: 700;
+            letter-spacing: 5px; text-transform: uppercase;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+        
+        .preloader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #4a0000; z-index: 99998; transform: translateY(100%); }
 
         @media (max-width: 768px) {
-            .nav-links, .inspector-panel, .scene-gizmo { display: none; }
-            .works-gateway { flex-direction: column; height: 100vh; }
+            .nav-links { display: none; }
+            .work-gateway { flex-direction: column; height: 100vh; }
         }
     </style>
 </head>
 <body>
 
-    <div id="game-engine-bg"></div>
-    <div class="scanlines"></div>
-    <div class="vignette"></div>
-
-    <div class="unity-toolbar">
-        <div class="play-btn"></div>
-        <div class="pause-btn"></div>
-    </div>
-
-    <div class="inspector-panel">
-        <div style="font-weight: 700; margin-bottom: 10px; border-bottom: 1px solid #444; padding-bottom: 5px;">TRANSFORM</div>
-        <div class="inspector-row"><span>Position</span> <span class="val">X: 0 Y: 1 Z: -10</span></div>
-        <div class="inspector-row"><span>Rotation</span> <span class="val">X: 15 Y: 45 Z: 0</span></div>
-        <div class="inspector-row"><span>Scale</span> <span class="val">X: 1 Y: 1 Z: 1</span></div>
-        <div style="margin-top: 15px; font-weight: 700; border-bottom: 1px solid #444; padding-bottom: 5px;">SCRIPTS</div>
-        <div class="inspector-row"><span>Controller</span> <span class="val">[C#]</span></div>
-        <div class="inspector-row"><span>GameMgr</span> <span class="val">[C#]</span></div>
-    </div>
-
-    <svg class="scene-gizmo" viewBox="0 0 100 100">
-        <line x1="50" y1="50" x2="90" y2="50" stroke="#ff3333" stroke-width="3" /> <line x1="50" y1="50" x2="50" y2="10" stroke="#44ff00" stroke-width="3" /> <line x1="50" y1="50" x2="20" y2="80" stroke="#3333ff" stroke-width="3" /> <circle cx="50" cy="50" r="5" fill="#fff"/>
-    </svg>
-
-    <div class="preloader">
-        <div class="boot-log" id="boot-log">
-            <div class="log-entry">> INITIALIZING SYSTEM...</div>
-            <div class="log-entry">> LOADING ASSETS...</div>
-        </div>
-        <h1 style="font-family: var(--font-head); font-size: 4rem; color: #fff; margin-bottom: 0;">LOADING WORLD</h1>
-        <div class="loading-bar-bg"><div class="loading-bar-fill"></div></div>
-    </div>
-    <div class="preloader-overlay"></div>
+    <div id="rdr-bg"></div>
+    <div class="grunge-overlay"></div>
+    <div id="dust-container"></div>
 
     <div class="cursor"></div><div class="cursor-follower"></div>
+
+    <div class="preloader">
+        <div class="loader-text">LOADING</div>
+    </div>
+    <div class="preloader-overlay"></div>
 
     <nav>
         <a href="index.html" class="logo magnetic">Abhilash Saji.</a>
@@ -177,81 +224,127 @@
     </nav>
 
     <section id="home" class="hero">
-        <div id="hero-intro" style="text-align: center; z-index: 10;">
-            <div style="font-family: var(--font-code); color: var(--accent); margin-bottom: 1rem; letter-spacing: 3px;">UNITY DEVELOPER /// C#</div>
-            <h1 id="hero-text">
-                BUILDING<br>
-                DIGITAL<br>
-                WORLDS
+        <div id="hero-intro" style="text-align: center; z-index: 2;">
+            <div style="font-family: var(--font-body); color: #999; margin-bottom: 1rem; letter-spacing: 4px; text-transform: uppercase;">Unity 3D /// Game Dev</div>
+            <h1 id="hero-text-tech">
+                CRAFTING<br>
+                IMMERSIVE<br>
+                REALITIES
             </h1>
-            <p id="hero-sub" style="margin-top: 2rem; font-size: 1.1rem;">Level Design . Programming . Optimization</p>
+            <div id="hero-sub">Bridging code & artistic vision</div>
         </div>
     </section>
 
     <section id="about" class="container about-section">
-        <h2 style="font-family: var(--font-head); font-size: 3rem; color: #fff; margin-bottom: 2rem;">PLAYER STATS</h2>
-        <p style="font-size: 1.5rem; color: #ccc; line-height: 1.6; max-width: 900px;">
-            I am a <span style="color: var(--accent)">Unity Developer</span> specializing in gameplay programming and systems architecture. I turn abstract concepts into playable realities using efficient C# code and creative asset integration.
-        </p>
+        <div class="section-header">
+            <h2 class="section-title">PROFILE</h2>
+            <span style="font-family: var(--font-body); color: var(--rdr-red); letter-spacing: 2px;">ABOUT</span>
+        </div>
+        <div>
+            <p class="reading-text">
+                I’m a <span style="color: var(--rdr-red);">Unity Developer</span> and <span style="color: var(--rdr-red);">Gameplay Programmer</span> focused on building polished, production-ready gameplay systems. My work turns ideas into responsive, optimized real-time experiences.
+                <br><br>
+                I prioritize <span style="color: var(--rdr-red);">game feel</span>, performance optimization, and technical stability.
+            </p>
+            <div class="stats-grid">
+                <div class="stat-box"><h4>4+</h4><p>Core Projects</p></div>
+                <div class="stat-box"><h4>2+</h4><p>Certifications</p></div>
+                <div class="stat-box"><h4>FPS</h4><p>Specialization</p></div>
+            </div>
+        </div>
     </section>
 
     <div id="work" class="container">
-        <h2 style="font-family: var(--font-head); font-size: 3rem; color: #fff; margin-bottom: 1rem;">MISSION LOG</h2>
-        <div class="works-gateway">
-            <a href="#" class="work-col">
-                <img src="https://images.unsplash.com/photo-1552820728-8b83bb6b773f?q=80&w=2670&auto=format&fit=crop" alt="2D Project">
-                <div class="col-overlay"><div class="col-title">2D ARCADE</div></div>
+        <div class="work-header" style="text-align: center; margin-bottom: 3rem;">
+            <h2 style="font-size: 4rem; color: var(--paper);">SELECTED WORKS</h2>
+            <span style="font-family: var(--font-body); color: var(--rdr-red);">BOUNTY BOARD</span>
+        </div>
+        
+        <div class="work-gateway">
+            <a href="projects-2d.html" class="work-col">
+                <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2670&auto=format&fit=crop" alt="2D Games">
+                <div class="col-overlay">
+                    <span class="col-sub">01 // MOBILE</span>
+                    <div class="col-title">2D GAMES</div>
+                </div>
             </a>
-            <a href="#" class="work-col">
-                <img src="https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=2665&auto=format&fit=crop" alt="3D FPS">
-                <div class="col-overlay"><div class="col-title">3D SHOOTER</div></div>
+
+            <a href="projects-3d.html" class="work-col">
+                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop" alt="3D Action">
+                <div class="col-overlay">
+                    <span class="col-sub">02 // CONSOLE</span>
+                    <div class="col-title">3D ACTION</div>
+                </div>
             </a>
-            <a href="#" class="work-col">
-                <img src="https://images.unsplash.com/photo-1626379953822-baec19c3accd?q=80&w=2670&auto=format&fit=crop" alt="VR">
-                <div class="col-overlay"><div class="col-title">VR / AR</div></div>
+
+            <a href="projects-vr.html" class="work-col">
+                <img src="https://images.unsplash.com/photo-1622979135228-5118441e9635?q=80&w=2536&auto=format&fit=crop" alt="VR AR">
+                <div class="col-overlay">
+                    <span class="col-sub">03 // IMMERSIVE</span>
+                    <div class="col-title">VR / AR</div>
+                </div>
             </a>
         </div>
     </div>
 
+    <div class="container">
+        <a href="Resume.pdf" class="resume-box">
+            <div class="resume-info">
+                <h3 style="color: var(--paper);">RESUME</h3>
+                <p>View professional credentials.</p>
+            </div>
+            <div style="color: var(--rdr-red); font-family: var(--font-body);">DOWNLOAD PDF -></div>
+        </a>
+    </div>
+
     <footer id="contact">
-        <h2 class="footer-headline">GAME OVER?</h2>
-        <p style="font-family: var(--font-code); color: #888; margin: 1rem 0;">NO, JUST THE BEGINNING.</p>
-        <a href="mailto:abhilashsaji.dev@gmail.com" style="font-size: 2rem; color: #fff; text-decoration: none; border-bottom: 1px solid var(--accent);">Start New Game (Contact)</a>
+        <div>
+            <p style="font-family: var(--font-body); color: #666; margin-bottom: 1rem;">OUTLAW COUNTRY</p>
+            <h2 class="footer-headline">Let's Create<br>The Unknown.</h2>
+            <a href="mailto:abhilashsaji.dev@gmail.com" class="email-link">abhilashsaji.dev@gmail.com</a>
+        </div>
     </footer>
 
     <script>
-        const lenis = new Lenis({ smooth: true });
+        const lenis = new Lenis({ duration: 1.2, smooth: true });
         function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
         requestAnimationFrame(raf);
+        gsap.registerPlugin(ScrollTrigger);
 
-        // --- PRELOADER LOGIC ---
-        const bootLog = document.getElementById('boot-log');
-        const loadingBar = document.querySelector('.loading-bar-fill');
-        const logs = ["> BAKING NAVMESH...", "> COMPILING SHADERS...", "> LOADING SCENE: MAIN_MENU", "> <span style='color:#44ff00'>SYSTEM READY.</span>"];
-        let logIndex = 0;
+        /* --- DUST PARTICLE SCRIPT --- */
+        const dustContainer = document.getElementById('dust-container');
+        for (let i = 0; i < 30; i++) {
+            let p = document.createElement('div');
+            p.classList.add('dust-mote');
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.top = Math.random() * 100 + 'vh';
+            
+            gsap.to(p, {
+                y: '-=100',
+                x: '+=50',
+                opacity: 0,
+                duration: Math.random() * 5 + 5,
+                repeat: -1,
+                ease: "none"
+            });
+            dustContainer.appendChild(p);
+        }
 
-        const logInterval = setInterval(() => {
-            if(logIndex < logs.length) {
-                const div = document.createElement('div');
-                div.className = 'log-entry';
-                div.innerHTML = logs[logIndex];
-                bootLog.appendChild(div);
-                logIndex++;
-            }
-        }, 400);
-
+        /* --- ANIMATIONS --- */
         const tl = gsap.timeline();
-        tl.to(loadingBar, { width: "100%", duration: 2.5, ease: "power1.inOut" })
-          .to(".preloader", { y: "-100%", duration: 1, ease: "expo.inOut", delay: 0.2 })
-          .to(".preloader-overlay", { y: "-100%", duration: 1, ease: "expo.inOut" }, "-=0.8")
-          .from("#hero-text", { y: 100, opacity: 0, duration: 1, ease: "power3.out" }, "-=0.5");
+        const techText = new SplitType('#hero-text-tech', { types: 'words, chars' });
 
-        // --- CURSOR ---
+        tl.to(".preloader", { delay: 1.5, y: "-100%", duration: 1, ease: "expo.inOut" })
+          .to(".preloader-overlay", { y: "-100%", duration: 1, ease: "expo.inOut" }, "-=0.8")
+          .from(techText.chars, { y: 100, opacity: 0, rotateZ: 5, duration: 0.8, stagger: 0.02, ease: "back.out(1.7)" }, "-=0.5")
+          .from("#hero-sub", { opacity: 0, y: 10, duration: 0.5 }, "-=0.3");
+
+        /* Cursor Logic */
         const cursor = document.querySelector('.cursor');
         const follower = document.querySelector('.cursor-follower');
         window.addEventListener('mousemove', (e) => {
             gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1 });
-            gsap.to(follower, { x: e.clientX, y: e.clientY, duration: 0.2 });
+            gsap.to(follower, { x: e.clientX, y: e.clientY, duration: 0.3 });
         });
     </script>
 </body>

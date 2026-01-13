@@ -16,9 +16,10 @@
     <style>
         /* --- CORE --- */
         :root { 
-            --bg: transparent; /* Changed to transparent */
+            --bg: transparent; 
             --text: #e1e1e1; 
-            --accent: #ffae00; /* Uncharted Gold */
+            /* Treasure Gold Accent */
+            --accent: #ffae00; 
             --font-head: 'Clash Display', sans-serif; 
             --font-body: 'Satoshi', sans-serif; 
             --font-code: 'Space Mono', monospace; 
@@ -27,19 +28,16 @@
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
         ::selection { background: var(--accent); color: #000; }
         html { scroll-behavior: auto; }
-        body { background-color: var(--bg); color: var(--text); font-family: var(--font-body); overflow-x: hidden; }
+        body { background-color: #050505; color: var(--text); font-family: var(--font-body); overflow-x: hidden; }
 
         /* --- BACKGROUND CONTAINER --- */
         #gamer-bg-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
             z-index: -1; overflow: hidden;
-            /* FALLBACK IMAGE: Shows if video fails */
-            background-image: url('https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2670&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
+            background: #000;
         }
 
-        /* VIDEO ELEMENT */
+        /* VIDEO ELEMENT - CAVE / RUINS STYLE */
         #game-video-bg {
             position: absolute;
             top: 50%; left: 50%;
@@ -47,23 +45,24 @@
             width: auto; height: auto;
             transform: translate(-50%, -50%);
             object-fit: cover;
-            opacity: 0.65; /* Visibility adjust */
-            filter: contrast(1.1) sepia(10%); /* Cinematic Look */
+            /* Enhance Contrast for "Game Look" */
+            filter: contrast(1.2) brightness(0.8) sepia(20%);
         }
 
-        /* Cinematic Overlay */
+        /* Cinematic Gradient */
         .cinematic-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.7) 60%, #050505 100%);
+            /* Darker bottom for text readability */
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.5) 50%, #000 100%);
             z-index: 0;
         }
 
-        /* --- DUST PARTICLES --- */
+        /* --- PARTICLES: FIREFLIES / DUST --- */
         .dust-mote {
             position: absolute; 
-            background: rgba(255, 200, 100, 0.7); 
+            background: rgba(255, 174, 0, 0.8); /* Golden Firefly/Ember color */
             border-radius: 50%;
-            box-shadow: 0 0 6px rgba(255, 200, 100, 0.6);
+            box-shadow: 0 0 10px rgba(255, 174, 0, 0.6);
             z-index: 1;
             pointer-events: none;
         }
@@ -73,10 +72,10 @@
         .cursor-follower { position: fixed; width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.3); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: 0.1s; }
 
         /* --- NAV --- */
-        nav { position: fixed; top: 0; width: 100%; padding: 2rem 5vw; display: flex; justify-content: space-between; align-items: center; z-index: 100; background: linear-gradient(to bottom, rgba(0,0,0,0.85), transparent); }
-        .logo { font-weight: 700; font-family: var(--font-head); text-transform: uppercase; letter-spacing: 1px; font-size: 1.2rem; text-decoration: none; color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
+        nav { position: fixed; top: 0; width: 100%; padding: 2rem 5vw; display: flex; justify-content: space-between; align-items: center; z-index: 100; background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent); }
+        .logo { font-weight: 700; font-family: var(--font-head); text-transform: uppercase; letter-spacing: 1px; font-size: 1.2rem; text-decoration: none; color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,1); }
         .nav-links { display: flex; gap: 2rem; }
-        .nav-links a { font-family: var(--font-head); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; transition: color 0.3s; color: #ddd; text-decoration: none; text-shadow: 0 2px 5px rgba(0,0,0,0.8); }
+        .nav-links a { font-family: var(--font-head); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; transition: color 0.3s; color: #ccc; text-decoration: none; text-shadow: 0 2px 5px #000; }
         .nav-links a:hover { color: var(--accent); }
 
         /* --- HERO SECTION --- */
@@ -95,7 +94,8 @@
             font-weight: 700; 
             letter-spacing: -2px;
             color: #fff;
-            text-shadow: 0 10px 50px rgba(0,0,0,0.9);
+            /* Heavy Shadow for "Cinematic Title" effect */
+            text-shadow: 0 10px 50px rgba(0,0,0,1);
         }
         
         #hero-personal { 
@@ -103,7 +103,7 @@
             top: 50%; left: 50%; transform: translate(-50%, -50%);
             opacity: 0; z-index: 1; text-align: center; display: flex; flex-direction: column; align-items: center; 
         }
-        .hello-badge { font-family: var(--font-code); font-size: 0.8rem; margin-bottom: 2rem; border: 1px solid #fff; padding: 8px 20px; border-radius: 50px; color: #fff; text-transform: uppercase; letter-spacing: 3px; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(5px); }
+        .hello-badge { font-family: var(--font-code); font-size: 0.8rem; margin-bottom: 2rem; border: 1px solid #fff; padding: 8px 20px; border-radius: 50px; color: #fff; text-transform: uppercase; letter-spacing: 3px; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px); }
         
         .personal-text { 
             font-family: var(--font-head); 
@@ -114,7 +114,7 @@
             color: #fff; 
             margin: 0 auto; 
             text-align: center; 
-            text-shadow: 0 10px 40px rgba(0,0,0,0.9);
+            text-shadow: 0 10px 40px rgba(0,0,0,1);
         }
         
         .highlight-italic { 
@@ -130,17 +130,17 @@
         .about-section { padding: 8rem 0 2rem 0; position: relative; z-index: 2; }
         .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem; border-bottom: 1px solid #444; padding-bottom: 2rem; }
         .section-title { font-family: var(--font-head); font-size: 4rem; text-transform: uppercase; color: var(--accent); font-weight: 700; line-height: 1; text-shadow: 0 0 20px rgba(255, 174, 0, 0.4); }
-        .reading-text { font-size: clamp(1.2rem, 2.5vw, 2rem); line-height: 1.5; color: #ccc; max-width: 100%; text-shadow: 0 2px 4px rgba(0,0,0,0.9); }
+        .reading-text { font-size: clamp(1.2rem, 2.5vw, 2rem); line-height: 1.5; color: #ccc; max-width: 100%; text-shadow: 0 2px 5px #000; }
         .reading-text .word.active { color: #fff; }
         
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 5rem; }
         .stat-box h4 { font-size: 4rem; color: var(--accent); font-family: var(--font-head); line-height: 1; margin-bottom: 0.5rem; text-shadow: 0 0 15px rgba(255, 174, 0, 0.3); }
-        .stat-box p { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: #ddd; }
+        .stat-box p { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: #ccc; }
 
         /* --- WORKS --- */
         .works-area { margin-top: 2rem; width: 100%; position: relative; z-index: 2; }
         .work-header { display: flex; justify-content: center; align-items: center; flex-direction: column; margin-bottom: 2rem; }
-        .work-header h2 { font-family: var(--font-head); font-size: 4rem; text-transform: uppercase; line-height: 1; margin: 0; color: #fff; text-shadow: 0 0 20px rgba(255,255,255,0.3); }
+        .work-header h2 { font-family: var(--font-head); font-size: 4rem; text-transform: uppercase; line-height: 1; margin: 0; color: #fff; text-shadow: 0 0 20px rgba(255,255,255,0.2); }
         .work-header span { font-family: var(--font-code); color: #aaa; margin-top: 10px; letter-spacing: 2px; }
 
         .work-gateway { display: flex; height: 70vh; width: 100%; overflow: hidden; background: #000; gap: 2px; border: 1px solid #444; }
@@ -176,13 +176,12 @@
         .email-link { font-size: 1.5rem; color: #555; text-decoration: none; transition: 0.3s; font-family: var(--font-code); display: block; margin-bottom: 2rem;}
         .email-link:hover { color: #fff; }
 
-        /* PRELOADER */
+        /* GAME PRELOADER */
         .preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #050505; color: #fff; z-index: 99999; display: flex; flex-direction: column; justify-content: flex-end; padding: 2rem 5vw; font-family: var(--font-code); }
         .preloader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: var(--accent); z-index: 99998; transform: translateY(100%); }
         .console-log { font-size: 0.8rem; color: #666; margin-bottom: 1rem; height: 100px; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; }
         .console-line { margin-bottom: 4px; }
         .success { color: #4caf50; }
-        .warning { color: #ff9800; }
         .loading-bar-container { width: 100%; height: 2px; background: #222; margin-top: 10px; }
         .loading-bar { width: 0%; height: 100%; background: #fff; }
 
@@ -199,8 +198,8 @@
 <body>
 
     <div id="gamer-bg-container">
-        <video autoplay muted loop playsinline id="game-video-bg" poster="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2670">
-            <source src="https://videos.pexels.com/video-files/3205903/3205903-hd_1920_1080_25fps.mp4" type="video/mp4">
+        <video autoplay muted loop playsinline id="game-video-bg">
+            <source src="https://videos.pexels.com/video-files/1448735/1448735-hd_1920_1080_30fps.mp4" type="video/mp4">
         </video>
         
         <div class="cinematic-overlay"></div>
@@ -210,8 +209,7 @@
     <div class="cursor"></div><div class="cursor-follower"></div>
 
     <div class="preloader">
-        <div class="console-log" id="console-output">
-            </div>
+        <div class="console-log" id="console-output"></div>
         <div style="display:flex; justify-content:space-between; align-items:flex-end;">
             <div style="font-size: 3rem; font-weight: 700; font-family: var(--font-head); color: #fff;">
                 <span class="counter">0%</span>
@@ -328,14 +326,10 @@
         <div>
             <p style="font-family: var(--font-code); color: #666; margin-bottom: 1rem;">CONTACT</p>
             <h2 class="footer-headline">Let's Create<br>The Unknown.</h2>
-            
             <a href="mailto:abhilashsaji.dev@gmail.com" class="email-link magnetic">abhilashsaji.dev@gmail.com</a>
-            
             <div class="social-row">
                 <a href="https://www.linkedin.com/in/AbhilashSaji" target="_blank" class="magnetic">LinkedIn</a>
-                
                 <a href="https://wa.me/917511104768" target="_blank" class="magnetic">WhatsApp</a>
-                
                 <a href="tel:+917511104768" class="magnetic">Contact Number</a>
             </div>
         </div>
@@ -347,32 +341,32 @@
         requestAnimationFrame(raf);
         gsap.registerPlugin(ScrollTrigger);
 
-        /* --- PARTICLES: UNCHARTED DUST STYLE --- */
+        /* --- PARTICLES: FIREFLIES / EMBERS --- */
         const particleContainer = document.getElementById('particles-container');
-        const particleCount = 40; 
+        const particleCount = 20;
 
         for (let i = 0; i < particleCount; i++) {
             let p = document.createElement('div');
             p.classList.add('dust-mote');
             
             let x = Math.random() * 100;
-            let duration = 10 + Math.random() * 20;
-            let delay = Math.random() * -20; 
-            let size = 2 + Math.random() * 5; 
+            let duration = 5 + Math.random() * 10;
+            let delay = Math.random() * -10; 
+            let size = 3 + Math.random() * 5; 
             
             p.style.left = x + 'vw';
             p.style.width = size + 'px';
             p.style.height = size + 'px';
             
             gsap.to(p, {
-                y: '-110vh',
-                x: '+=' + (Math.random() * 50 - 25), 
+                y: '-100vh',
+                x: '+=' + (Math.random() * 100 - 50), 
                 opacity: 0,
                 duration: duration,
                 delay: delay,
                 repeat: -1,
                 ease: "none",
-                startAt: { y: '110vh', opacity: 0.6 }
+                startAt: { y: '100vh', opacity: 0.8 }
             });
             particleContainer.appendChild(p);
         }
@@ -388,32 +382,26 @@
         const techText = new SplitType('#hero-text-tech', { types: 'words, chars' });
         const personalText = new SplitType('#hero-text-personal', { types: 'words' });
         
-        /* --- CONSOLE LOG LOADER LOGIC --- */
         let count = 0; 
         const counter = document.querySelector('.counter');
         const loadingBar = document.querySelector('.loading-bar');
         const consoleOutput = document.getElementById('console-output');
         
         const logs = [
-            "> Loading Terrain Data...",
-            "> Generating Mesh Collider...",
-            "> <span class='success'>Vegetation Spawners Active</span>",
-            "> Baking Lightprobes...",
-            "> <span class='warning'>Optimizing Draw Calls...</span>",
+            "> Loading Ancient_Temple.scene...",
+            "> Baking Lightmaps...",
+            "> <span class='success'>Assets Loaded Successfully</span>",
             "> Initializing Character Controller...",
-            "> <span class='success'>World Loaded.</span>"
+            "> <span class='success'>Ready.</span>"
         ];
         
         const interval = setInterval(() => { 
             count += 2; 
             if(count > 100) count = 100; 
-            
             counter.innerText = count + "%"; 
             loadingBar.style.width = count + "%";
-
-            // Add logs based on percentage
-            if (count % 15 === 0 && count < 90) {
-                let logIndex = Math.floor(count / 15);
+            if (count % 20 === 0 && count < 90) {
+                let logIndex = Math.floor(count / 20);
                 if (logs[logIndex]) {
                     const line = document.createElement('div');
                     line.className = 'console-line';
@@ -422,7 +410,6 @@
                     consoleOutput.scrollTop = consoleOutput.scrollHeight;
                 }
             }
-
             if(count === 100) clearInterval(interval); 
         }, 30);
 

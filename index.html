@@ -25,61 +25,51 @@
         #gamer-bg-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
             z-index: -1; overflow: hidden;
-            /* Added a visible background image to look like a game level */
-            background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1635322966219-b75ed372eb01?q=80&w=2664&auto=format&fit=crop');
+            /* Dark Level Design Background */
+            background-image: linear-gradient(rgba(5,5,5,0.85), rgba(5,5,5,0.9)), url('https://images.unsplash.com/photo-1614726365723-49cfae927836?q=80&w=2574&auto=format&fit=crop');
             background-size: cover;
             background-position: center;
             pointer-events: none;
         }
 
-        /* The 3D Grid Floor - Much brighter now */
+        /* 3D Grid Floor (Unity Style) */
         .retro-grid {
             position: absolute; width: 200vw; height: 200vh;
-            left: -50%; top: -25%; /* Raised up to see more floor */
+            left: -50%; top: -25%; 
             background-image: 
-                linear-gradient(rgba(255, 51, 51, 0.4) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 51, 51, 0.4) 1px, transparent 1px);
-            background-size: 80px 80px;
-            transform: perspective(300px) rotateX(60deg); /* Aggressive perspective */
-            animation: moveGrid 8s linear infinite;
-            /* Gradient Mask to fade into horizon */
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            transform: perspective(300px) rotateX(60deg);
+            animation: moveGrid 20s linear infinite;
             mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 20%, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 80%);
             -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 20%, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 80%);
-            /* Glow effect */
-            filter: drop-shadow(0 0 5px rgba(255, 51, 51, 0.5));
         }
 
         @keyframes moveGrid {
             0% { transform: perspective(300px) rotateX(60deg) translateY(0); }
-            100% { transform: perspective(300px) rotateX(60deg) translateY(80px); }
+            100% { transform: perspective(300px) rotateX(60deg) translateY(60px); }
         }
 
-        /* Floating Cubes (Game Objects) */
-        .cube-floater {
+        /* --- EDITOR UI OVERLAY (Game Dev Signals) --- */
+        .editor-ui { position: fixed; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; z-index: 0; }
+        
+        /* Top Left Info */
+        .editor-stats { position: absolute; top: 120px; left: 5vw; font-family: var(--font-code); color: rgba(255,255,255,0.3); font-size: 0.7rem; }
+        
+        /* Bottom Right Axis Gizmo */
+        .gizmo-container { position: absolute; bottom: 50px; right: 5vw; width: 60px; height: 60px; opacity: 0.5; }
+        .gizmo-axis { position: absolute; bottom: 0; left: 0; background: #fff; transform-origin: bottom left; }
+        .g-y { width: 2px; height: 50px; background: #0f0; } /* Green Y */
+        .g-x { width: 50px; height: 2px; background: #f00; } /* Red X */
+        .g-z { width: 40px; height: 2px; background: #00f; transform: rotate(135deg); } /* Blue Z */
+
+        /* Floating Wireframes */
+        .wireframe-cube {
             position: absolute; 
-            border: 2px solid rgba(255, 51, 51, 0.6);
-            background: rgba(255, 51, 51, 0.1);
+            border: 1px solid rgba(255, 51, 51, 0.4);
+            background: transparent;
             z-index: 1;
-            box-shadow: 0 0 15px rgba(255, 51, 51, 0.2);
-        }
-
-        /* Horizon Glow */
-        .horizon-glow {
-            position: absolute; top: 40%; left: 0; width: 100%; height: 2px;
-            background: var(--accent);
-            box-shadow: 0 0 40px 20px rgba(255, 51, 51, 0.3);
-            opacity: 0.5;
-            z-index: 0;
-        }
-
-        /* Scanline Overlay */
-        .scanlines {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2));
-            background-size: 100% 4px;
-            z-index: 50;
-            opacity: 0.15;
-            pointer-events: none;
         }
 
         /* --- UI ELEMENTS --- */
@@ -109,7 +99,7 @@
             font-weight: 700; 
             letter-spacing: -2px;
             color: #fff;
-            text-shadow: 0 10px 30px rgba(0,0,0,1); /* Stronger shadow for readability */
+            text-shadow: 0 10px 30px rgba(0,0,0,1); 
         }
         
         #hero-personal { 
@@ -192,9 +182,15 @@
         .email-link { font-size: 1.5rem; color: #555; text-decoration: none; transition: 0.3s; font-family: var(--font-code); display: block; margin-bottom: 2rem;}
         .email-link:hover { color: #fff; }
 
-        /* PRELOADER */
-        .preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #fff; color: #000; z-index: 99999; display: flex; justify-content: space-between; align-items: flex-end; padding: 2rem; font-family: var(--font-head); }
-        .preloader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: var(--bg); z-index: 99998; transform: translateY(100%); }
+        /* GAME DEV PRELOADER STYLE */
+        .preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #050505; color: #fff; z-index: 99999; display: flex; flex-direction: column; justify-content: flex-end; padding: 2rem 5vw; font-family: var(--font-code); }
+        .preloader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: var(--accent); z-index: 99998; transform: translateY(100%); }
+        .console-log { font-size: 0.8rem; color: #666; margin-bottom: 1rem; height: 100px; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; }
+        .console-line { margin-bottom: 4px; }
+        .success { color: #4caf50; }
+        .warning { color: #ff9800; }
+        .loading-bar-container { width: 100%; height: 2px; background: #222; margin-top: 10px; }
+        .loading-bar { width: 0%; height: 100%; background: var(--accent); }
 
         @media (max-width: 768px) {
             .nav-links { display: none; }
@@ -203,20 +199,41 @@
             .col-overlay { transform: translateY(0); }
             .resume-box { flex-direction: column; align-items: flex-start; gap: 2rem; padding: 2rem; }
             .stats-grid { grid-template-columns: 1fr; gap: 3rem; }
-            #gamer-bg-container { background-image: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1635322966219-b75ed372eb01?q=80&w=2664&auto=format&fit=crop'); }
+            #gamer-bg-container { background-image: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1614726365723-49cfae927836?q=80&w=2574&auto=format&fit=crop'); }
         }
     </style>
 </head>
 <body>
-    <div class="scanlines"></div>
     <div id="gamer-bg-container">
-        <div class="horizon-glow"></div>
+        <div class="editor-ui">
+            <div class="editor-stats">
+                FPS: 60<br>
+                Triangles: 1.2M<br>
+                Draw Calls: 12<br>
+                Mode: Persp
+            </div>
+            <div class="gizmo-container">
+                <div class="gizmo-axis g-y"></div>
+                <div class="gizmo-axis g-x"></div>
+                <div class="gizmo-axis g-z"></div>
+            </div>
+        </div>
         <div class="retro-grid"></div>
         <div id="particles-container"></div>
     </div>
     <div class="cursor"></div><div class="cursor-follower"></div>
 
-    <div class="preloader"><div class="counter" style="font-size: 5rem; font-weight: 700;">0%</div><div>LOADING</div></div>
+    <div class="preloader">
+        <div class="console-log" id="console-output">
+            </div>
+        <div style="display:flex; justify-content:space-between; align-items:flex-end;">
+            <div style="font-size: 3rem; font-weight: 700; font-family: var(--font-head); color: #fff;">
+                <span class="counter">0%</span>
+            </div>
+            <div style="font-size: 0.8rem; letter-spacing: 2px; color: #888;">INITIALIZING ENGINE...</div>
+        </div>
+        <div class="loading-bar-container"><div class="loading-bar"></div></div>
+    </div>
 
     <div class="preloader-overlay"></div>
 
@@ -348,26 +365,23 @@
         requestAnimationFrame(raf);
         gsap.registerPlugin(ScrollTrigger);
 
-        /* --- UPDATED VISUALS SCRIPT --- */
-        // Spawns 3D-looking cubes instead of small dots
+        /* --- PARTICLES: WIREFRAMES (Added) --- */
         const particleContainer = document.getElementById('particles-container');
-        const particleCount = 12;
+        const particleCount = 15;
 
         for (let i = 0; i < particleCount; i++) {
             let p = document.createElement('div');
-            p.classList.add('cube-floater');
+            p.classList.add('wireframe-cube');
             
-            // Random positioning
             let x = Math.random() * 100;
             let duration = 8 + Math.random() * 15;
             let delay = Math.random() * -20; 
-            let size = 20 + Math.random() * 60; // Bigger squares
+            let size = 20 + Math.random() * 50;
             
             p.style.left = x + 'vw';
             p.style.width = size + 'px';
             p.style.height = size + 'px';
             
-            // GSAP Animation for floating and rotating
             gsap.to(p, {
                 y: '-110vh',
                 rotation: 180 + Math.random() * 360,
@@ -379,10 +393,8 @@
                 ease: "power1.inOut",
                 startAt: { y: '110vh', rotation: 0, opacity: 0.8, scale: 1 }
             });
-            
             particleContainer.appendChild(p);
         }
-        /* --- END VISUALS SCRIPT --- */
 
         const cursor = document.querySelector('.cursor');
         const follower = document.querySelector('.cursor-follower');
@@ -395,10 +407,45 @@
         const techText = new SplitType('#hero-text-tech', { types: 'words, chars' });
         const personalText = new SplitType('#hero-text-personal', { types: 'words' });
         
-        let count = 0; const counter = document.querySelector('.counter');
-        const interval = setInterval(() => { count+=10; if(count>100) count=100; counter.innerText=count+"%"; if(count===100) clearInterval(interval); }, 50);
+        /* --- CONSOLE LOG LOADER LOGIC --- */
+        let count = 0; 
+        const counter = document.querySelector('.counter');
+        const loadingBar = document.querySelector('.loading-bar');
+        const consoleOutput = document.getElementById('console-output');
+        
+        const logs = [
+            "> Loading UnityEngine.Core...",
+            "> Initializing Physics2D...",
+            "> <span class='success'>Assets Loaded Successfully</span>",
+            "> Baking Lightmaps (Progress 45%)...",
+            "> <span class='warning'>Warning: Shader compilation slow</span>",
+            "> Instantiating PlayerController...",
+            "> <span class='success'>Ready.</span>"
+        ];
+        
+        const interval = setInterval(() => { 
+            count += 2; 
+            if(count > 100) count = 100; 
+            
+            counter.innerText = count + "%"; 
+            loadingBar.style.width = count + "%";
 
-        tl.to(".preloader", { delay: 1, y: "-100%", duration: 1, ease: "expo.inOut" })
+            // Add logs based on percentage
+            if (count % 15 === 0 && count < 90) {
+                let logIndex = Math.floor(count / 15);
+                if (logs[logIndex]) {
+                    const line = document.createElement('div');
+                    line.className = 'console-line';
+                    line.innerHTML = logs[logIndex];
+                    consoleOutput.appendChild(line);
+                    consoleOutput.scrollTop = consoleOutput.scrollHeight;
+                }
+            }
+
+            if(count === 100) clearInterval(interval); 
+        }, 30);
+
+        tl.to(".preloader", { delay: 2.5, y: "-100%", duration: 1, ease: "expo.inOut" })
           .to(".preloader-overlay", { y: "-100%", duration: 1, ease: "expo.inOut" }, "-=0.8")
           .from(techText.chars, { y: 100, opacity: 0, rotateZ: 5, duration: 0.8, stagger: 0.02, ease: "back.out(1.7)" }, "-=0.5")
           .from("#hero-sub", { opacity: 0, y: 10, duration: 0.5 }, "-=0.3")

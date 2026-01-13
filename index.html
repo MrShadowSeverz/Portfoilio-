@@ -21,6 +21,53 @@
         html { scroll-behavior: auto; }
         body { background-color: var(--bg); color: var(--text); font-family: var(--font-body); overflow-x: hidden; }
 
+        /* --- NEW GAMER BACKGROUND (Added) --- */
+        #gamer-bg-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            z-index: -1; overflow: hidden; background: #020202;
+            pointer-events: none;
+        }
+
+        /* The 3D Grid Floor */
+        .retro-grid {
+            position: absolute; width: 200vw; height: 200vh;
+            left: -50%; top: -50%;
+            background-image: 
+                linear-gradient(rgba(255, 51, 51, 0.15) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 51, 51, 0.15) 1px, transparent 1px);
+            background-size: 100px 100px;
+            transform: perspective(500px) rotateX(60deg);
+            animation: moveGrid 15s linear infinite;
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 80%);
+            -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 80%);
+        }
+
+        @keyframes moveGrid {
+            0% { transform: perspective(500px) rotateX(60deg) translateY(0); }
+            100% { transform: perspective(500px) rotateX(60deg) translateY(100px); }
+        }
+
+        /* Vignette & Noise overlay for cinematic feel */
+        .vignette-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, transparent 0%, #050505 90%);
+            z-index: 2;
+        }
+        
+        .noise-layer {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0.03; z-index: 3;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Floating "Game Object" Particles */
+        .floater {
+            position: absolute; background: rgba(255, 51, 51, 0.1);
+            border: 1px solid rgba(255, 51, 51, 0.3);
+            width: 20px; height: 20px; z-index: 1;
+            box-shadow: 0 0 10px rgba(255, 51, 51, 0.1);
+        }
+
         /* --- UI ELEMENTS --- */
         .cursor { position: fixed; width: 12px; height: 12px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%); mix-blend-mode: difference; }
         .cursor-follower { position: fixed; width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.3); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: 0.1s; }
@@ -48,6 +95,8 @@
             font-weight: 700; 
             letter-spacing: -2px;
             color: #fff;
+            /* Added gentle shadow for readability over particles */
+            text-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
         
         #hero-personal { 
@@ -55,7 +104,7 @@
             top: 50%; left: 50%; transform: translate(-50%, -50%);
             opacity: 0; z-index: 1; text-align: center; display: flex; flex-direction: column; align-items: center; 
         }
-        .hello-badge { font-family: var(--font-code); font-size: 0.8rem; margin-bottom: 2rem; border: 1px solid #333; padding: 8px 20px; border-radius: 50px; color: #888; text-transform: uppercase; letter-spacing: 3px; background: rgba(255, 255, 255, 0.03); }
+        .hello-badge { font-family: var(--font-code); font-size: 0.8rem; margin-bottom: 2rem; border: 1px solid #333; padding: 8px 20px; border-radius: 50px; color: #888; text-transform: uppercase; letter-spacing: 3px; background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(5px); }
         
         .personal-text { 
             font-family: var(--font-head); 
@@ -66,6 +115,7 @@
             color: #fff; 
             margin: 0 auto; 
             text-align: center; 
+            text-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
         
         .highlight-italic { 
@@ -79,8 +129,7 @@
         /* --- ABOUT SECTION --- */
         .container { max-width: 1400px; margin: 0 auto; padding: 0 5vw; }
         
-        /* UPDATED: Reduced bottom padding to close gap */
-        .about-section { padding: 8rem 0 2rem 0; }
+        .about-section { padding: 8rem 0 2rem 0; position: relative; z-index: 2; }
         
         .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem; border-bottom: 1px solid #222; padding-bottom: 2rem; }
         .section-title { font-family: var(--font-head); font-size: 4rem; text-transform: uppercase; color: var(--accent); font-weight: 700; line-height: 1; }
@@ -91,8 +140,7 @@
         .stat-box p { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: #666; }
 
         /* --- WORKS AREA (3 COLUMNS) --- */
-        /* UPDATED: Reduced top margin to close gap */
-        .works-area { margin-top: 2rem; width: 100%; }
+        .works-area { margin-top: 2rem; width: 100%; position: relative; z-index: 2; }
         
         .work-header { display: flex; justify-content: center; align-items: center; flex-direction: column; margin-bottom: 2rem; }
         .work-header h2 { font-family: var(--font-head); font-size: 4rem; text-transform: uppercase; line-height: 1; margin: 0; color: #fff; }
@@ -114,8 +162,8 @@
         .work-col:hover .col-overlay { transform: translateY(0); }
 
         /* --- RESUME BOX --- */
-        .resume-container { margin-top: 3rem; width: 100%; }
-        .resume-box { display: flex; justify-content: space-between; align-items: center; padding: 4rem; border: 1px solid #222; text-decoration: none; transition: all 0.4s ease; background: rgba(255,255,255,0.02); }
+        .resume-container { margin-top: 3rem; width: 100%; position: relative; z-index: 2; }
+        .resume-box { display: flex; justify-content: space-between; align-items: center; padding: 4rem; border: 1px solid #222; text-decoration: none; transition: all 0.4s ease; background: rgba(5, 5, 5, 0.6); backdrop-filter: blur(5px); }
         .resume-box:hover { border-color: var(--accent); background: rgba(255, 51, 51, 0.05); }
         .resume-info h3 { font-family: var(--font-head); font-size: 2.5rem; text-transform: uppercase; color: #fff; margin-bottom: 0.5rem; }
         .resume-info p { font-family: var(--font-code); color: #666; font-size: 0.9rem; }
@@ -123,7 +171,7 @@
         .resume-box:hover .resume-action { background: var(--accent); color: #fff; }
 
         /* --- FOOTER --- */
-        footer { padding: 8rem 5vw; border-top: 1px solid #222; background: #080808; margin-top: 5rem; }
+        footer { padding: 8rem 5vw; border-top: 1px solid #222; background: #080808; margin-top: 5rem; position: relative; z-index: 2; }
         .footer-headline { font-family: var(--font-head); font-size: clamp(3rem, 6vw, 5rem); line-height: 1; text-transform: uppercase; color: #fff; margin-bottom: 2rem; }
         .social-row { display: flex; gap: 2rem; margin-top: 2rem; }
         .social-row a { color: #6e56cf; text-decoration: underline; text-transform: uppercase; font-family: var(--font-code); font-size: 0.9rem; transition: 0.3s; }
@@ -146,7 +194,13 @@
     </style>
 </head>
 <body>
-        <div class="cursor"></div><div class="cursor-follower"></div>
+    <div id="gamer-bg-container">
+        <div class="retro-grid"></div>
+        <div class="vignette-overlay"></div>
+        <div class="noise-layer"></div>
+        <div id="particles-container"></div>
+    </div>
+    <div class="cursor"></div><div class="cursor-follower"></div>
 
     <div class="preloader"><div class="counter" style="font-size: 5rem; font-weight: 700;">0%</div><div>LOADING</div></div>
 
@@ -279,6 +333,40 @@
         function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
         requestAnimationFrame(raf);
         gsap.registerPlugin(ScrollTrigger);
+
+        /* --- BACKGROUND PARTICLE SCRIPT (Added) --- */
+        // This spawns small tech-squares floating up like a Unity scene
+        const particleContainer = document.getElementById('particles-container');
+        const particleCount = 15;
+
+        for (let i = 0; i < particleCount; i++) {
+            let p = document.createElement('div');
+            p.classList.add('floater');
+            
+            // Random positioning
+            let x = Math.random() * 100;
+            let duration = 10 + Math.random() * 20; // 10s to 30s float speed
+            let delay = Math.random() * -20; // Start at different times
+            let size = 5 + Math.random() * 20;
+            
+            p.style.left = x + 'vw';
+            p.style.width = size + 'px';
+            p.style.height = size + 'px';
+            
+            // GSAP Animation for smooth floating
+            gsap.to(p, {
+                y: '-110vh',
+                rotation: 360,
+                duration: duration,
+                delay: delay,
+                repeat: -1,
+                ease: "none",
+                startAt: { y: '110vh' }
+            });
+            
+            particleContainer.appendChild(p);
+        }
+        /* --- END BACKGROUND SCRIPT --- */
 
         const cursor = document.querySelector('.cursor');
         const follower = document.querySelector('.cursor-follower');

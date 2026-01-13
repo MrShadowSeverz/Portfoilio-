@@ -21,66 +21,49 @@
         html { scroll-behavior: auto; }
         body { background-color: var(--bg); color: var(--text); font-family: var(--font-body); overflow-x: hidden; }
 
-        /* --- VISUALIZED GAMER BACKGROUND --- */
-        #gamer-bg-container {
+        /* --- VIDEO BACKGROUND SETUP --- */
+        #video-bg-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-            z-index: -1; overflow: hidden;
-            /* Dark Level Design Background */
-            background-image: linear-gradient(rgba(5,5,5,0.85), rgba(5,5,5,0.9)), url('https://images.unsplash.com/photo-1614726365723-49cfae927836?q=80&w=2574&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-            pointer-events: none;
+            z-index: -2; overflow: hidden;
         }
 
-        /* 3D Grid Floor (Unity Style) */
-        .retro-grid {
-            position: absolute; width: 200vw; height: 200vh;
-            left: -50%; top: -25%; 
-            background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            background-size: 60px 60px;
-            transform: perspective(300px) rotateX(60deg);
-            animation: moveGrid 20s linear infinite;
-            mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 20%, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 80%);
-            -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 20%, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 80%);
+        #bg-video {
+            position: absolute; top: 50%; left: 50%; 
+            min-width: 100%; min-height: 100%; 
+            width: auto; height: auto; 
+            transform: translate(-50%, -50%);
+            object-fit: cover;
         }
 
-        @keyframes moveGrid {
-            0% { transform: perspective(300px) rotateX(60deg) translateY(0); }
-            100% { transform: perspective(300px) rotateX(60deg) translateY(60px); }
+        /* Dark overlay to make text readable */
+        .video-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(5,5,5,0.7), rgba(5,5,5,0.85) 80%, #050505 100%);
+            z-index: -1;
         }
 
         /* --- EDITOR UI OVERLAY (Game Dev Signals) --- */
-        .editor-ui { position: fixed; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; z-index: 0; }
+        .editor-ui { position: fixed; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; z-index: -1; }
         
         /* Top Left Info */
-        .editor-stats { position: absolute; top: 120px; left: 5vw; font-family: var(--font-code); color: rgba(255,255,255,0.3); font-size: 0.7rem; }
+        .editor-stats { position: absolute; top: 120px; left: 5vw; font-family: var(--font-code); color: rgba(255,255,255,0.5); font-size: 0.7rem; text-shadow: 0 2px 4px rgba(0,0,0,1); }
         
         /* Bottom Right Axis Gizmo */
-        .gizmo-container { position: absolute; bottom: 50px; right: 5vw; width: 60px; height: 60px; opacity: 0.5; }
-        .gizmo-axis { position: absolute; bottom: 0; left: 0; background: #fff; transform-origin: bottom left; }
-        .g-y { width: 2px; height: 50px; background: #0f0; } /* Green Y */
-        .g-x { width: 50px; height: 2px; background: #f00; } /* Red X */
-        .g-z { width: 40px; height: 2px; background: #00f; transform: rotate(135deg); } /* Blue Z */
-
-        /* Floating Wireframes */
-        .wireframe-cube {
-            position: absolute; 
-            border: 1px solid rgba(255, 51, 51, 0.4);
-            background: transparent;
-            z-index: 1;
-        }
+        .gizmo-container { position: absolute; bottom: 50px; right: 5vw; width: 60px; height: 60px; opacity: 0.8; }
+        .gizmo-axis { position: absolute; bottom: 0; left: 0; background: #fff; transform-origin: bottom left; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
+        .g-y { width: 3px; height: 50px; background: #0f0; } /* Green Y */
+        .g-x { width: 50px; height: 3px; background: #f00; } /* Red X */
+        .g-z { width: 40px; height: 3px; background: #00f; transform: rotate(135deg); } /* Blue Z */
 
         /* --- UI ELEMENTS --- */
         .cursor { position: fixed; width: 12px; height: 12px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%); mix-blend-mode: difference; }
         .cursor-follower { position: fixed; width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.3); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: 0.1s; }
 
         /* --- NAV --- */
-        nav { position: fixed; top: 0; width: 100%; padding: 2rem 5vw; display: flex; justify-content: space-between; align-items: center; z-index: 100; background: rgba(5,5,5,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.05); }
+        nav { position: fixed; top: 0; width: 100%; padding: 2rem 5vw; display: flex; justify-content: space-between; align-items: center; z-index: 100; background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent); }
         .logo { font-weight: 700; font-family: var(--font-head); text-transform: uppercase; letter-spacing: 1px; font-size: 1.2rem; text-decoration: none; color: #fff; }
         .nav-links { display: flex; gap: 2rem; }
-        .nav-links a { font-family: var(--font-head); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; transition: color 0.3s; color: #999; text-decoration: none; }
+        .nav-links a { font-family: var(--font-head); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; transition: color 0.3s; color: #ccc; text-decoration: none; }
         .nav-links a:hover { color: var(--accent); }
 
         /* --- HERO SECTION --- */
@@ -99,7 +82,7 @@
             font-weight: 700; 
             letter-spacing: -2px;
             color: #fff;
-            text-shadow: 0 10px 30px rgba(0,0,0,1); 
+            text-shadow: 0 10px 50px rgba(0,0,0,0.8); 
         }
         
         #hero-personal { 
@@ -107,7 +90,7 @@
             top: 50%; left: 50%; transform: translate(-50%, -50%);
             opacity: 0; z-index: 1; text-align: center; display: flex; flex-direction: column; align-items: center; 
         }
-        .hello-badge { font-family: var(--font-code); font-size: 0.8rem; margin-bottom: 2rem; border: 1px solid #333; padding: 8px 20px; border-radius: 50px; color: #888; text-transform: uppercase; letter-spacing: 3px; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px); }
+        .hello-badge { font-family: var(--font-code); font-size: 0.8rem; margin-bottom: 2rem; border: 1px solid rgba(255,255,255,0.2); padding: 8px 20px; border-radius: 50px; color: #ccc; text-transform: uppercase; letter-spacing: 3px; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); }
         
         .personal-text { 
             font-family: var(--font-head); 
@@ -118,7 +101,7 @@
             color: #fff; 
             margin: 0 auto; 
             text-align: center; 
-            text-shadow: 0 10px 30px rgba(0,0,0,1);
+            text-shadow: 0 10px 40px rgba(0,0,0,1);
         }
         
         .highlight-italic { 
@@ -166,7 +149,7 @@
 
         /* --- RESUME BOX --- */
         .resume-container { margin-top: 3rem; width: 100%; position: relative; z-index: 2; }
-        .resume-box { display: flex; justify-content: space-between; align-items: center; padding: 4rem; border: 1px solid #333; text-decoration: none; transition: all 0.4s ease; background: rgba(10, 10, 10, 0.8); backdrop-filter: blur(10px); }
+        .resume-box { display: flex; justify-content: space-between; align-items: center; padding: 4rem; border: 1px solid #333; text-decoration: none; transition: all 0.4s ease; background: rgba(10, 10, 10, 0.6); backdrop-filter: blur(10px); }
         .resume-box:hover { border-color: var(--accent); background: rgba(255, 51, 51, 0.1); }
         .resume-info h3 { font-family: var(--font-head); font-size: 2.5rem; text-transform: uppercase; color: #fff; margin-bottom: 0.5rem; }
         .resume-info p { font-family: var(--font-code); color: #888; font-size: 0.9rem; }
@@ -183,7 +166,7 @@
         .email-link:hover { color: #fff; }
 
         /* GAME DEV PRELOADER STYLE */
-        .preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #050505; color: #fff; z-index: 99999; display: flex; flex-direction: column; justify-content: flex-end; padding: 2rem 5vw; font-family: var(--font-code); }
+        .preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #000; color: #fff; z-index: 99999; display: flex; flex-direction: column; justify-content: flex-end; padding: 2rem 5vw; font-family: var(--font-code); }
         .preloader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: var(--accent); z-index: 99998; transform: translateY(100%); }
         .console-log { font-size: 0.8rem; color: #666; margin-bottom: 1rem; height: 100px; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; }
         .console-line { margin-bottom: 4px; }
@@ -199,28 +182,31 @@
             .col-overlay { transform: translateY(0); }
             .resume-box { flex-direction: column; align-items: flex-start; gap: 2rem; padding: 2rem; }
             .stats-grid { grid-template-columns: 1fr; gap: 3rem; }
-            #gamer-bg-container { background-image: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1614726365723-49cfae927836?q=80&w=2574&auto=format&fit=crop'); }
         }
     </style>
 </head>
 <body>
-    <div id="gamer-bg-container">
-        <div class="editor-ui">
-            <div class="editor-stats">
-                FPS: 60<br>
-                Triangles: 1.2M<br>
-                Draw Calls: 12<br>
-                Mode: Persp
-            </div>
-            <div class="gizmo-container">
-                <div class="gizmo-axis g-y"></div>
-                <div class="gizmo-axis g-x"></div>
-                <div class="gizmo-axis g-z"></div>
-            </div>
-        </div>
-        <div class="retro-grid"></div>
-        <div id="particles-container"></div>
+
+    <div id="video-bg-container">
+        <video autoplay muted loop playsinline id="bg-video">
+            <source src="https://player.vimeo.com/external/536102604.sd.mp4?s=d7e35b0d0c6d7a5b7c7b7e5c5f4b5a2e0a2d4c0b&profile_id=165" type="video/mp4">
+        </video>
+        <div class="video-overlay"></div>
     </div>
+    <div class="editor-ui">
+        <div class="editor-stats">
+            FPS: 60<br>
+            Triangles: 2.4M<br>
+            Draw Calls: 24<br>
+            Mode: Play
+        </div>
+        <div class="gizmo-container">
+            <div class="gizmo-axis g-y"></div>
+            <div class="gizmo-axis g-x"></div>
+            <div class="gizmo-axis g-z"></div>
+        </div>
+    </div>
+
     <div class="cursor"></div><div class="cursor-follower"></div>
 
     <div class="preloader">
@@ -258,7 +244,7 @@
                 <span style="color: var(--accent);">Immersive</span><br>
                 Realities
             </h1>
-            <p style="margin-top: 2rem; max-width: 400px; color: #aaa; line-height: 1.6; text-shadow: 0 1px 3px rgba(0,0,0,1);" id="hero-sub">Bridging the gap between technical code and artistic vision.</p>
+            <p style="margin-top: 2rem; max-width: 400px; color: #ccc; line-height: 1.6; text-shadow: 0 1px 3px rgba(0,0,0,1);" id="hero-sub">Bridging the gap between technical code and artistic vision.</p>
         </div>
         
         <div id="hero-personal">
@@ -364,37 +350,6 @@
         function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
         requestAnimationFrame(raf);
         gsap.registerPlugin(ScrollTrigger);
-
-        /* --- PARTICLES: WIREFRAMES (Added) --- */
-        const particleContainer = document.getElementById('particles-container');
-        const particleCount = 15;
-
-        for (let i = 0; i < particleCount; i++) {
-            let p = document.createElement('div');
-            p.classList.add('wireframe-cube');
-            
-            let x = Math.random() * 100;
-            let duration = 8 + Math.random() * 15;
-            let delay = Math.random() * -20; 
-            let size = 20 + Math.random() * 50;
-            
-            p.style.left = x + 'vw';
-            p.style.width = size + 'px';
-            p.style.height = size + 'px';
-            
-            gsap.to(p, {
-                y: '-110vh',
-                rotation: 180 + Math.random() * 360,
-                scale: 0.5,
-                opacity: 0,
-                duration: duration,
-                delay: delay,
-                repeat: -1,
-                ease: "power1.inOut",
-                startAt: { y: '110vh', rotation: 0, opacity: 0.8, scale: 1 }
-            });
-            particleContainer.appendChild(p);
-        }
 
         const cursor = document.querySelector('.cursor');
         const follower = document.querySelector('.cursor-follower');

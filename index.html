@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Abhilash Saji | Unity Developer</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Space+Mono:wght@400;700&family=Rye&display=swap" rel="stylesheet">
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@200,400,600,700&f[]=satoshi@300,400,500,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
@@ -13,295 +14,348 @@
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
 
     <style>
-        /* --- RDR THEME VARIABLES --- */
-        :root { 
-            --bg: #0a0a0a; 
-            --rdr-red: #cc0000; /* The Iconic Red */
-            --paper: #e6dccf;   /* Vintage Paper Color */
-            --text: #e6dccf; 
-            --font-head: 'Playfair Display', serif; /* Western Style */
-            --font-body: 'Space Mono', monospace;   /* Technical/Gunsmith Style */
-        }
-        
+        /* --- CORE --- */
+        :root { --bg: #050505; --text: #e1e1e1; --accent: #ff3333; --font-head: 'Clash Display', sans-serif; --font-body: 'Satoshi', sans-serif; --font-code: 'Space Mono', monospace; --font-italic: 'Playfair Display', serif; }
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
-        ::selection { background: var(--rdr-red); color: #000; }
-        
-        body { 
-            background-color: var(--bg); 
-            color: var(--text); 
-            font-family: var(--font-body); 
-            overflow-x: hidden; 
-        }
+        ::selection { background: var(--accent); color: #000; }
+        html { scroll-behavior: auto; }
+        body { background-color: var(--bg); color: var(--text); font-family: var(--font-body); overflow-x: hidden; }
 
-        /* --- BACKGROUND: THE RED DEAD STYLE --- */
-        #rdr-bg {
+        /* --- VISUALIZED GAMER BACKGROUND --- */
+        #gamer-bg-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-            z-index: -2;
-            /* Iconic Red Gradient Background */
-            background: linear-gradient(to bottom, #4a0000 0%, #8a0303 50%, #000000 100%);
-        }
-
-        /* GRUNGE TEXTURE OVERLAY */
-        .grunge-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-            opacity: 0.15;
-            background-image: url("https://www.transparenttextures.com/patterns/black-felt.png"); /* Simple noise texture */
+            z-index: -1; overflow: hidden;
+            /* Dark Level Design Background */
+            background-image: linear-gradient(rgba(5,5,5,0.85), rgba(5,5,5,0.9)), url('https://images.unsplash.com/photo-1614726365723-49cfae927836?q=80&w=2574&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
             pointer-events: none;
         }
 
-        /* DUST PARTICLES (Western Atmosphere) */
-        .dust-mote {
-            position: absolute;
-            width: 2px; height: 2px;
-            background: rgba(255, 200, 150, 0.4);
-            border-radius: 50%;
-            box-shadow: 0 0 4px rgba(255, 200, 150, 0.4);
+        /* 3D Grid Floor (Unity Style) */
+        .retro-grid {
+            position: absolute; width: 200vw; height: 200vh;
+            left: -50%; top: -25%; 
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            transform: perspective(300px) rotateX(60deg);
+            animation: moveGrid 20s linear infinite;
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 20%, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 80%);
+            -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 20%, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 80%);
         }
 
-        /* --- TYPOGRAPHY STYLING --- */
-        h1, h2, h3, h4 { font-family: var(--font-head); font-weight: 700; letter-spacing: -1px; }
+        @keyframes moveGrid {
+            0% { transform: perspective(300px) rotateX(60deg) translateY(0); }
+            100% { transform: perspective(300px) rotateX(60deg) translateY(60px); }
+        }
+
+        /* --- EDITOR UI OVERLAY (Game Dev Signals) --- */
+        .editor-ui { position: fixed; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; z-index: 0; }
         
-        /* The "Red Dead" Title Style */
-        #hero-text-tech {
-            text-transform: uppercase;
-            font-size: clamp(3rem, 9vw, 8rem);
-            line-height: 0.85;
-            color: var(--rdr-red);
-            /* Grunge Text Effect */
-            -webkit-text-stroke: 2px var(--rdr-red); 
-            color: transparent; 
-            background: url('https://www.transparenttextures.com/patterns/aged-paper.png');
-            -webkit-background-clip: text;
-            background-clip: text;
-            filter: drop-shadow(0 0 15px rgba(0,0,0,0.8));
+        /* Top Left Info */
+        .editor-stats { position: absolute; top: 120px; left: 5vw; font-family: var(--font-code); color: rgba(255,255,255,0.3); font-size: 0.7rem; }
+        
+        /* Bottom Right Axis Gizmo */
+        .gizmo-container { position: absolute; bottom: 50px; right: 5vw; width: 60px; height: 60px; opacity: 0.5; }
+        .gizmo-axis { position: absolute; bottom: 0; left: 0; background: #fff; transform-origin: bottom left; }
+        .g-y { width: 2px; height: 50px; background: #0f0; } /* Green Y */
+        .g-x { width: 50px; height: 2px; background: #f00; } /* Red X */
+        .g-z { width: 40px; height: 2px; background: #00f; transform: rotate(135deg); } /* Blue Z */
+
+        /* Floating Wireframes */
+        .wireframe-cube {
+            position: absolute; 
+            border: 1px solid rgba(255, 51, 51, 0.4);
+            background: transparent;
+            z-index: 1;
         }
 
         /* --- UI ELEMENTS --- */
-        /* Custom Crosshair Cursor */
-        .cursor { 
-            position: fixed; width: 8px; height: 8px; 
-            background: var(--rdr-red); border-radius: 50%; 
-            pointer-events: none; z-index: 10000; 
-            transform: translate(-50%, -50%); 
-        }
-        .cursor-follower { 
-            position: fixed; width: 50px; height: 50px; 
-            border: 1px solid rgba(230, 220, 207, 0.5); /* Paper color */
-            border-radius: 50%; 
-            pointer-events: none; z-index: 9999; 
-            transform: translate(-50%, -50%); transition: 0.1s; 
-        }
-        /* Crosshair lines */
-        .cursor-follower::after, .cursor-follower::before {
-            content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background: rgba(230, 220, 207, 0.3);
-        }
-        .cursor-follower::after { width: 100%; height: 1px; }
-        .cursor-follower::before { width: 1px; height: 100%; }
+        .cursor { position: fixed; width: 12px; height: 12px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%); mix-blend-mode: difference; }
+        .cursor-follower { position: fixed; width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.3); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: 0.1s; }
 
         /* --- NAV --- */
-        nav { 
-            position: fixed; top: 0; width: 100%; padding: 2rem 5vw; 
-            display: flex; justify-content: space-between; align-items: center; z-index: 100; 
-            /* Vintage Fade */
-            background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
-        }
-        .logo { 
-            font-weight: 700; font-family: var(--font-head); text-transform: uppercase; 
-            letter-spacing: 2px; font-size: 1.5rem; text-decoration: none; color: var(--paper); 
-        }
+        nav { position: fixed; top: 0; width: 100%; padding: 2rem 5vw; display: flex; justify-content: space-between; align-items: center; z-index: 100; background: rgba(5,5,5,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .logo { font-weight: 700; font-family: var(--font-head); text-transform: uppercase; letter-spacing: 1px; font-size: 1.2rem; text-decoration: none; color: #fff; }
         .nav-links { display: flex; gap: 2rem; }
-        .nav-links a { 
-            font-family: var(--font-body); text-transform: uppercase; font-size: 0.8rem; 
-            letter-spacing: 2px; color: #999; text-decoration: none; transition: 0.3s; 
-        }
-        .nav-links a:hover { color: var(--rdr-red); }
+        .nav-links a { font-family: var(--font-head); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; transition: color 0.3s; color: #999; text-decoration: none; }
+        .nav-links a:hover { color: var(--accent); }
 
-        /* --- SECTIONS --- */
+        /* --- HERO SECTION --- */
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; width: 100%; }
+        
+        #hero-intro { 
+            position: absolute; width: 100%; max-width: 1400px; padding: 0 5vw; 
+            top: 50%; transform: translateY(-50%); z-index: 2; 
+        }
+        
+        #hero-intro h1 { 
+            font-family: var(--font-head); 
+            font-size: clamp(2.5rem, 8vw, 6.5rem); 
+            line-height: 0.9;
+            text-transform: uppercase; 
+            font-weight: 700; 
+            letter-spacing: -2px;
+            color: #fff;
+            text-shadow: 0 10px 30px rgba(0,0,0,1); 
+        }
+        
+        #hero-personal { 
+            position: absolute; width: 100%; 
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+            opacity: 0; z-index: 1; text-align: center; display: flex; flex-direction: column; align-items: center; 
+        }
+        .hello-badge { font-family: var(--font-code); font-size: 0.8rem; margin-bottom: 2rem; border: 1px solid #333; padding: 8px 20px; border-radius: 50px; color: #888; text-transform: uppercase; letter-spacing: 3px; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px); }
+        
+        .personal-text { 
+            font-family: var(--font-head); 
+            font-size: clamp(2.5rem, 6vw, 5rem); 
+            line-height: 1.1; 
+            font-weight: 700; 
+            max-width: 1300px; 
+            color: #fff; 
+            margin: 0 auto; 
+            text-align: center; 
+            text-shadow: 0 10px 30px rgba(0,0,0,1);
+        }
+        
+        .highlight-italic { 
+            font-family: var(--font-italic); 
+            font-style: italic; 
+            font-weight: 400; 
+            color: var(--accent); 
+            padding: 0 5px; 
+        }
+
+        /* --- ABOUT SECTION --- */
         .container { max-width: 1400px; margin: 0 auto; padding: 0 5vw; }
         
-        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; }
+        .about-section { padding: 8rem 0 2rem 0; position: relative; z-index: 2; }
         
-        #hero-sub {
-            font-family: var(--font-body); color: var(--paper); margin-top: 2rem; 
-            border-top: 1px solid var(--rdr-red); border-bottom: 1px solid var(--rdr-red);
-            padding: 10px 0; letter-spacing: 2px; text-transform: uppercase;
-        }
+        .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem; border-bottom: 1px solid #222; padding-bottom: 2rem; }
+        .section-title { font-family: var(--font-head); font-size: 4rem; text-transform: uppercase; color: var(--accent); font-weight: 700; line-height: 1; text-shadow: 0 0 20px rgba(255, 51, 51, 0.4); }
+        .reading-text { font-size: clamp(1.2rem, 2.5vw, 2rem); line-height: 1.5; color: #aaa; max-width: 100%; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+        .reading-text .word.active { color: #fff; }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 5rem; }
+        .stat-box h4 { font-size: 4rem; color: var(--accent); font-family: var(--font-head); line-height: 1; margin-bottom: 0.5rem; text-shadow: 0 0 15px rgba(255, 51, 51, 0.4); }
+        .stat-box p { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: #ccc; }
 
-        /* ABOUT */
-        .about-section { padding: 8rem 0; }
-        .section-title { 
-            font-size: 5rem; color: var(--rdr-red); 
-            text-shadow: 2px 2px 0px #000;
-        }
-        .reading-text { font-size: 1.5rem; line-height: 1.6; color: #999; font-family: var(--font-head); }
-        .reading-text .word.active { color: var(--paper); }
+        /* --- WORKS AREA (3 COLUMNS) --- */
+        .works-area { margin-top: 2rem; width: 100%; position: relative; z-index: 2; }
         
-        .stat-box h4 { font-size: 4rem; color: var(--rdr-red); font-family: var(--font-head); }
+        .work-header { display: flex; justify-content: center; align-items: center; flex-direction: column; margin-bottom: 2rem; }
+        .work-header h2 { font-family: var(--font-head); font-size: 4rem; text-transform: uppercase; line-height: 1; margin: 0; color: #fff; text-shadow: 0 0 20px rgba(255,255,255,0.2); }
+        .work-header span { font-family: var(--font-code); color: #888; margin-top: 10px; letter-spacing: 2px; }
 
-        /* WORKS (The Wanted Posters) */
-        .work-gateway { display: flex; height: 60vh; gap: 20px; margin-top: 2rem; }
-        .work-col { 
-            flex: 1; position: relative; overflow: hidden; 
-            border: 4px solid #333; /* Thick border */
-            background: #111;
-            transition: 0.5s; cursor: pointer; 
-        }
-        .work-col img { 
-            width: 100%; height: 100%; object-fit: cover; 
-            filter: sepia(0.8) contrast(1.2) brightness(0.6); /* Old Photo Filter */
-            transition: 0.5s; 
-        }
+        .work-gateway { display: flex; height: 70vh; width: 100%; overflow: hidden; background: #000; gap: 2px; border: 1px solid #333; }
+        .work-col { display: block; flex: 1; position: relative; transition: flex 0.6s cubic-bezier(0.25, 1, 0.5, 1), filter 0.4s; overflow: hidden; border-right: 1px solid rgba(255,255,255,0.1); text-decoration: none; }
+        .work-col:last-child { border-right: none; }
+        .work-col img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) brightness(0.4); transition: transform 0.8s ease, filter 0.5s ease; }
         
-        /* Hover Effect: Turns into full color */
-        .work-col:hover { flex: 2; border-color: var(--rdr-red); }
-        .work-col:hover img { filter: sepia(0) contrast(1) brightness(1); transform: scale(1.1); }
-        
-        .col-overlay { 
-            position: absolute; bottom: 0; left: 0; width: 100%; padding: 2rem; 
-            background: linear-gradient(to top, #000, transparent); 
-        }
-        .col-title { font-size: 2.5rem; color: var(--paper); text-transform: uppercase; }
-        .col-sub { color: var(--rdr-red); font-family: var(--font-body); letter-spacing: 2px; }
+        .col-overlay { position: absolute; bottom: 0; left: 0; width: 100%; padding: 2rem; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); transform: translateY(100%); transition: transform 0.5s ease; z-index: 2; }
+        .col-title { font-family: var(--font-head); font-size: 2.5rem; color: #fff; text-transform: uppercase; line-height: 1; }
+        .col-sub { font-family: var(--font-code); color: var(--accent); font-size: 0.8rem; margin-bottom: 10px; display: block; }
+        .view-btn { margin-top: 10px; font-family: var(--font-code); font-size: 0.7rem; border: 1px solid #fff; padding: 5px 15px; border-radius: 20px; color: #fff; display: inline-block; }
 
-        /* RESUME BOX */
-        .resume-box { 
-            display: flex; justify-content: space-between; align-items: center; padding: 4rem; 
-            border: 2px solid #333; background: rgba(20,20,20,0.8); margin-top: 4rem;
-            text-decoration: none; transition: 0.3s;
-        }
-        .resume-box:hover { border-color: var(--rdr-red); background: rgba(60, 0, 0, 0.2); }
+        .work-gateway:hover .work-col { filter: brightness(0.3); }
+        .work-col:hover { flex: 2.5; filter: brightness(1) !important; cursor: pointer; }
+        .work-col:hover img { filter: grayscale(0%) brightness(1); transform: scale(1.1); }
+        .work-col:hover .col-overlay { transform: translateY(0); }
 
-        /* FOOTER */
-        footer { padding: 8rem 5vw; background: #050000; border-top: 1px solid #333; margin-top: 5rem; }
-        .footer-headline { font-size: 4rem; color: var(--paper); margin-bottom: 2rem; }
-        .email-link { color: var(--rdr-red); font-size: 1.5rem; text-decoration: none; font-family: var(--font-body); }
+        /* --- RESUME BOX --- */
+        .resume-container { margin-top: 3rem; width: 100%; position: relative; z-index: 2; }
+        .resume-box { display: flex; justify-content: space-between; align-items: center; padding: 4rem; border: 1px solid #333; text-decoration: none; transition: all 0.4s ease; background: rgba(10, 10, 10, 0.8); backdrop-filter: blur(10px); }
+        .resume-box:hover { border-color: var(--accent); background: rgba(255, 51, 51, 0.1); }
+        .resume-info h3 { font-family: var(--font-head); font-size: 2.5rem; text-transform: uppercase; color: #fff; margin-bottom: 0.5rem; }
+        .resume-info p { font-family: var(--font-code); color: #888; font-size: 0.9rem; }
+        .resume-action { background: #fff; color: #000; padding: 15px 30px; border-radius: 50px; font-family: var(--font-head); font-weight: 600; text-transform: uppercase; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; transition: 0.3s; }
+        .resume-box:hover .resume-action { background: var(--accent); color: #fff; }
 
-        /* PRELOADER: GUN CHAMBER / VINTAGE STYLE */
-        .preloader { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100vh; 
-            background: #000; color: var(--rdr-red); z-index: 99999; 
-            display: flex; align-items: center; justify-content: center;
-        }
-        .loader-text {
-            font-family: var(--font-head); font-size: 3rem; font-weight: 700;
-            letter-spacing: 5px; text-transform: uppercase;
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
-        
-        .preloader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #4a0000; z-index: 99998; transform: translateY(100%); }
+        /* --- FOOTER --- */
+        footer { padding: 8rem 5vw; border-top: 1px solid #222; background: #080808; margin-top: 5rem; position: relative; z-index: 2; }
+        .footer-headline { font-family: var(--font-head); font-size: clamp(3rem, 6vw, 5rem); line-height: 1; text-transform: uppercase; color: #fff; margin-bottom: 2rem; }
+        .social-row { display: flex; gap: 2rem; margin-top: 2rem; }
+        .social-row a { color: #6e56cf; text-decoration: underline; text-transform: uppercase; font-family: var(--font-code); font-size: 0.9rem; transition: 0.3s; }
+        .social-row a:hover { color: var(--accent); }
+        .email-link { font-size: 1.5rem; color: #555; text-decoration: none; transition: 0.3s; font-family: var(--font-code); display: block; margin-bottom: 2rem;}
+        .email-link:hover { color: #fff; }
+
+        /* GAME DEV PRELOADER STYLE */
+        .preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #050505; color: #fff; z-index: 99999; display: flex; flex-direction: column; justify-content: flex-end; padding: 2rem 5vw; font-family: var(--font-code); }
+        .preloader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: var(--accent); z-index: 99998; transform: translateY(100%); }
+        .console-log { font-size: 0.8rem; color: #666; margin-bottom: 1rem; height: 100px; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; }
+        .console-line { margin-bottom: 4px; }
+        .success { color: #4caf50; }
+        .warning { color: #ff9800; }
+        .loading-bar-container { width: 100%; height: 2px; background: #222; margin-top: 10px; }
+        .loading-bar { width: 0%; height: 100%; background: var(--accent); }
 
         @media (max-width: 768px) {
             .nav-links { display: none; }
             .work-gateway { flex-direction: column; height: 100vh; }
+            .work-col:hover { flex: 1; }
+            .col-overlay { transform: translateY(0); }
+            .resume-box { flex-direction: column; align-items: flex-start; gap: 2rem; padding: 2rem; }
+            .stats-grid { grid-template-columns: 1fr; gap: 3rem; }
+            #gamer-bg-container { background-image: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1614726365723-49cfae927836?q=80&w=2574&auto=format&fit=crop'); }
         }
     </style>
 </head>
 <body>
-
-    <div id="rdr-bg"></div>
-    <div class="grunge-overlay"></div>
-    <div id="dust-container"></div>
-
+    <div id="gamer-bg-container">
+        <div class="editor-ui">
+            <div class="editor-stats">
+                FPS: 60<br>
+                Triangles: 1.2M<br>
+                Draw Calls: 12<br>
+                Mode: Persp
+            </div>
+            <div class="gizmo-container">
+                <div class="gizmo-axis g-y"></div>
+                <div class="gizmo-axis g-x"></div>
+                <div class="gizmo-axis g-z"></div>
+            </div>
+        </div>
+        <div class="retro-grid"></div>
+        <div id="particles-container"></div>
+    </div>
     <div class="cursor"></div><div class="cursor-follower"></div>
 
     <div class="preloader">
-        <div class="loader-text">LOADING</div>
+        <div class="console-log" id="console-output">
+            </div>
+        <div style="display:flex; justify-content:space-between; align-items:flex-end;">
+            <div style="font-size: 3rem; font-weight: 700; font-family: var(--font-head); color: #fff;">
+                <span class="counter">0%</span>
+            </div>
+            <div style="font-size: 0.8rem; letter-spacing: 2px; color: #888;">INITIALIZING ENGINE...</div>
+        </div>
+        <div class="loading-bar-container"><div class="loading-bar"></div></div>
     </div>
+
     <div class="preloader-overlay"></div>
 
     <nav>
         <a href="index.html" class="logo magnetic">Abhilash Saji.</a>
         <div class="nav-links">
-            <a href="#home" class="magnetic">Home</a>
+            <a href="#home" class="magnetic" style="color: var(--accent);">Home</a>
             <a href="#about" class="magnetic">About</a>
             <a href="#work" class="magnetic">Projects</a>
             <a href="#contact" class="magnetic">Contact</a>
-            <a href="Resume.pdf" class="magnetic">Resume</a>
+            <a href="Resume.pdf" download="AbhilashSaji_Resume.pdf" class="magnetic">Resume</a>
         </div>
     </nav>
 
     <section id="home" class="hero">
-        <div id="hero-intro" style="text-align: center; z-index: 2;">
-            <div style="font-family: var(--font-body); color: #999; margin-bottom: 1rem; letter-spacing: 4px; text-transform: uppercase;">Unity 3D /// Game Dev</div>
+        <div id="hero-intro">
+            <div style="display: flex; gap: 2rem; margin-bottom: 2rem; font-family: var(--font-head); text-transform: uppercase; color: var(--accent); font-size: 0.9rem; letter-spacing: 2px;">
+                <span>Unity 3D</span><span>///</span><span>Game Dev</span>
+            </div>
             <h1 id="hero-text-tech">
-                CRAFTING<br>
-                IMMERSIVE<br>
-                REALITIES
+                Crafting<br>
+                <span style="color: var(--accent);">Immersive</span><br>
+                Realities
             </h1>
-            <div id="hero-sub">Bridging code & artistic vision</div>
+            <p style="margin-top: 2rem; max-width: 400px; color: #aaa; line-height: 1.6; text-shadow: 0 1px 3px rgba(0,0,0,1);" id="hero-sub">Bridging the gap between technical code and artistic vision.</p>
+        </div>
+        
+        <div id="hero-personal">
+            <span class="hello-badge">Hello</span>
+            <div class="personal-text" id="hero-text-personal">
+                I’m Abhilash Saji, a Unity Developer who loves building <span class="highlight-italic">worlds</span> and crafting immersive <span class="highlight-italic">experiences.</span>
+            </div>
         </div>
     </section>
 
     <section id="about" class="container about-section">
         <div class="section-header">
             <h2 class="section-title">PROFILE</h2>
-            <span style="font-family: var(--font-body); color: var(--rdr-red); letter-spacing: 2px;">ABOUT</span>
+            <span style="font-family: var(--font-code); color: #888;">ABOUT</span>
         </div>
         <div>
-            <p class="reading-text">
-                I’m a <span style="color: var(--rdr-red);">Unity Developer</span> and <span style="color: var(--rdr-red);">Gameplay Programmer</span> focused on building polished, production-ready gameplay systems. My work turns ideas into responsive, optimized real-time experiences.
+            <p class="reading-text" style="font-size: clamp(1rem, 2vw, 1.35rem);">
+                I’m a <span style="color: var(--accent);">Unity Developer</span> and <span style="color: var(--accent);">Gameplay Programmer</span> focused on building polished, production-ready gameplay systems using <span style="color: var(--accent);">Unity Engine</span> and <span style="color: var(--accent);">C#</span>. My work emphasizes core gameplay programming, asset integration, and gameplay detailing, turning ideas and assets into responsive, optimized real-time experiences.
                 <br><br>
-                I prioritize <span style="color: var(--rdr-red);">game feel</span>, performance optimization, and technical stability.
+                I have hands-on experience developing 2D, 3D, AR, and VR projects, working with player controllers, combat mechanics, enemy AI, animations, UI systems, physics simulations, and scene management. I prioritize <span style="color: var(--accent);">game feel</span>, <span style="color: var(--accent);">performance optimization</span>, and technical stability, ensuring clean workflows, effective debugging, and smooth cross-platform deployment.
             </p>
             <div class="stats-grid">
+
                 <div class="stat-box"><h4>4+</h4><p>Core Projects</p></div>
+
                 <div class="stat-box"><h4>2+</h4><p>Certifications</p></div>
-                <div class="stat-box"><h4>FPS</h4><p>Specialization</p></div>
+
+                <div class="stat-box"><h4>FPS / TPS</h4><p>Specialization</p></div>
+
+            </div>
             </div>
         </div>
     </section>
 
-    <div id="work" class="container">
-        <div class="work-header" style="text-align: center; margin-bottom: 3rem;">
-            <h2 style="font-size: 4rem; color: var(--paper);">SELECTED WORKS</h2>
-            <span style="font-family: var(--font-body); color: var(--rdr-red);">BOUNTY BOARD</span>
+    <div id="work" class="container works-area">
+        <div class="work-header">
+            <h2>Selected Works</h2>
+            <span>PROJECTS</span>
         </div>
         
         <div class="work-gateway">
             <a href="projects-2d.html" class="work-col">
                 <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2670&auto=format&fit=crop" alt="2D Games">
                 <div class="col-overlay">
-                    <span class="col-sub">01 // MOBILE</span>
-                    <div class="col-title">2D GAMES</div>
+                    <span class="col-sub">01 / MOBILE & PC</span>
+                    <div class="col-title">2D Games</div>
+                    <span class="view-btn">View Collection</span>
                 </div>
             </a>
 
             <a href="projects-3d.html" class="work-col">
                 <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop" alt="3D Action">
                 <div class="col-overlay">
-                    <span class="col-sub">02 // CONSOLE</span>
-                    <div class="col-title">3D ACTION</div>
+                    <span class="col-sub">02 / CONSOLE QUALITY</span>
+                    <div class="col-title">3D Action</div>
+                    <span class="view-btn">View Collection</span>
                 </div>
             </a>
 
             <a href="projects-vr.html" class="work-col">
                 <img src="https://images.unsplash.com/photo-1622979135228-5118441e9635?q=80&w=2536&auto=format&fit=crop" alt="VR AR">
                 <div class="col-overlay">
-                    <span class="col-sub">03 // IMMERSIVE</span>
+                    <span class="col-sub">03 / IMMERSIVE TECH</span>
                     <div class="col-title">VR / AR</div>
+                    <span class="view-btn">View Collection</span>
                 </div>
             </a>
         </div>
     </div>
 
-    <div class="container">
-        <a href="Resume.pdf" class="resume-box">
+    <div class="container resume-container">
+        <a href="Resume.pdf" download="AbhilashSaji_Resume.pdf" class="resume-box magnetic-area">
             <div class="resume-info">
-                <h3 style="color: var(--paper);">RESUME</h3>
-                <p>View professional credentials.</p>
+                <h3>RESUME</h3>
+                <p>View my full professional experience & credentials.</p>
             </div>
-            <div style="color: var(--rdr-red); font-family: var(--font-body);">DOWNLOAD PDF -></div>
+            <div class="resume-action">
+                Download PDF 
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            </div>
         </a>
     </div>
 
     <footer id="contact">
         <div>
-            <p style="font-family: var(--font-body); color: #666; margin-bottom: 1rem;">OUTLAW COUNTRY</p>
+            <p style="font-family: var(--font-code); color: #666; margin-bottom: 1rem;">CONTACT</p>
             <h2 class="footer-headline">Let's Create<br>The Unknown.</h2>
-            <a href="mailto:abhilashsaji.dev@gmail.com" class="email-link">abhilashsaji.dev@gmail.com</a>
+            
+            <a href="mailto:abhilashsaji.dev@gmail.com" class="email-link magnetic">abhilashsaji.dev@gmail.com</a>
+            
+            <div class="social-row">
+                <a href="https://www.linkedin.com/in/AbhilashSaji" target="_blank" class="magnetic">LinkedIn</a>
+                
+                <a href="https://wa.me/917511104768" target="_blank" class="magnetic">WhatsApp</a>
+                
+                <a href="tel:+917511104768" class="magnetic">Contact Number</a>
+            </div>
         </div>
     </footer>
 
@@ -311,41 +365,99 @@
         requestAnimationFrame(raf);
         gsap.registerPlugin(ScrollTrigger);
 
-        /* --- DUST PARTICLE SCRIPT --- */
-        const dustContainer = document.getElementById('dust-container');
-        for (let i = 0; i < 30; i++) {
+        /* --- PARTICLES: WIREFRAMES (Added) --- */
+        const particleContainer = document.getElementById('particles-container');
+        const particleCount = 15;
+
+        for (let i = 0; i < particleCount; i++) {
             let p = document.createElement('div');
-            p.classList.add('dust-mote');
-            p.style.left = Math.random() * 100 + 'vw';
-            p.style.top = Math.random() * 100 + 'vh';
+            p.classList.add('wireframe-cube');
+            
+            let x = Math.random() * 100;
+            let duration = 8 + Math.random() * 15;
+            let delay = Math.random() * -20; 
+            let size = 20 + Math.random() * 50;
+            
+            p.style.left = x + 'vw';
+            p.style.width = size + 'px';
+            p.style.height = size + 'px';
             
             gsap.to(p, {
-                y: '-=100',
-                x: '+=50',
+                y: '-110vh',
+                rotation: 180 + Math.random() * 360,
+                scale: 0.5,
                 opacity: 0,
-                duration: Math.random() * 5 + 5,
+                duration: duration,
+                delay: delay,
                 repeat: -1,
-                ease: "none"
+                ease: "power1.inOut",
+                startAt: { y: '110vh', rotation: 0, opacity: 0.8, scale: 1 }
             });
-            dustContainer.appendChild(p);
+            particleContainer.appendChild(p);
         }
 
-        /* --- ANIMATIONS --- */
-        const tl = gsap.timeline();
-        const techText = new SplitType('#hero-text-tech', { types: 'words, chars' });
-
-        tl.to(".preloader", { delay: 1.5, y: "-100%", duration: 1, ease: "expo.inOut" })
-          .to(".preloader-overlay", { y: "-100%", duration: 1, ease: "expo.inOut" }, "-=0.8")
-          .from(techText.chars, { y: 100, opacity: 0, rotateZ: 5, duration: 0.8, stagger: 0.02, ease: "back.out(1.7)" }, "-=0.5")
-          .from("#hero-sub", { opacity: 0, y: 10, duration: 0.5 }, "-=0.3");
-
-        /* Cursor Logic */
         const cursor = document.querySelector('.cursor');
         const follower = document.querySelector('.cursor-follower');
         window.addEventListener('mousemove', (e) => {
             gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1 });
             gsap.to(follower, { x: e.clientX, y: e.clientY, duration: 0.3 });
         });
+
+        const tl = gsap.timeline();
+        const techText = new SplitType('#hero-text-tech', { types: 'words, chars' });
+        const personalText = new SplitType('#hero-text-personal', { types: 'words' });
+        
+        /* --- CONSOLE LOG LOADER LOGIC --- */
+        let count = 0; 
+        const counter = document.querySelector('.counter');
+        const loadingBar = document.querySelector('.loading-bar');
+        const consoleOutput = document.getElementById('console-output');
+        
+        const logs = [
+            "> Loading UnityEngine.Core...",
+            "> Initializing Physics2D...",
+            "> <span class='success'>Assets Loaded Successfully</span>",
+            "> Baking Lightmaps (Progress 45%)...",
+            "> <span class='warning'>Warning: Shader compilation slow</span>",
+            "> Instantiating PlayerController...",
+            "> <span class='success'>Ready.</span>"
+        ];
+        
+        const interval = setInterval(() => { 
+            count += 2; 
+            if(count > 100) count = 100; 
+            
+            counter.innerText = count + "%"; 
+            loadingBar.style.width = count + "%";
+
+            // Add logs based on percentage
+            if (count % 15 === 0 && count < 90) {
+                let logIndex = Math.floor(count / 15);
+                if (logs[logIndex]) {
+                    const line = document.createElement('div');
+                    line.className = 'console-line';
+                    line.innerHTML = logs[logIndex];
+                    consoleOutput.appendChild(line);
+                    consoleOutput.scrollTop = consoleOutput.scrollHeight;
+                }
+            }
+
+            if(count === 100) clearInterval(interval); 
+        }, 30);
+
+        tl.to(".preloader", { delay: 2.5, y: "-100%", duration: 1, ease: "expo.inOut" })
+          .to(".preloader-overlay", { y: "-100%", duration: 1, ease: "expo.inOut" }, "-=0.8")
+          .from(techText.chars, { y: 100, opacity: 0, rotateZ: 5, duration: 0.8, stagger: 0.02, ease: "back.out(1.7)" }, "-=0.5")
+          .from("#hero-sub", { opacity: 0, y: 10, duration: 0.5 }, "-=0.3")
+          .to({}, { duration: 1.0 }) 
+          .to("#hero-intro", { filter: "blur(20px)", opacity: 0, scale: 0.9, duration: 0.5, ease: "power2.in" })
+          .to("#hero-personal", { opacity: 1, duration: 0.1 })
+          .from("#hero-personal", { filter: "blur(20px)", scale: 1.1, duration: 0.7, ease: "expo.out" }, "+=0.1")
+          .from(".hello-badge", { opacity: 0, y: -20, duration: 0.5 }, "-=0.5")
+          .from(personalText.words, { y: 40, opacity: 0, duration: 0.6, stagger: 0.02, ease: "power3.out" }, "-=0.5");
+
+        const readingText = new SplitType('.reading-text', { types: 'words' });
+        gsap.fromTo(readingText.words, { opacity: 0.2, color: "#aaa" }, { opacity: 1, color: "#fff", stagger: 0.05, scrollTrigger: { trigger: ".reading-text", start: "top 85%", end: "bottom 65%", scrub: true }});
     </script>
 </body>
 </html>

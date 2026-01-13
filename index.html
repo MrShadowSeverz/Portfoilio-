@@ -16,10 +16,9 @@
     <style>
         /* --- CORE --- */
         :root { 
-            --bg: transparent; 
+            --bg: transparent; /* CRITICAL: Must be transparent */
             --text: #e1e1e1; 
-            /* Treasure Gold Accent */
-            --accent: #ffae00; 
+            --accent: #ffae00; /* Uncharted Gold */
             --font-head: 'Clash Display', sans-serif; 
             --font-body: 'Satoshi', sans-serif; 
             --font-code: 'Space Mono', monospace; 
@@ -27,17 +26,25 @@
         }
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
         ::selection { background: var(--accent); color: #000; }
-        html { scroll-behavior: auto; }
-        body { background-color: #050505; color: var(--text); font-family: var(--font-body); overflow-x: hidden; }
+        html { scroll-behavior: auto; background: #000; } /* Black fallback for HTML */
+        
+        /* CRITICAL FIX: Body must be transparent to see the fixed video behind it */
+        body { 
+            background-color: transparent; 
+            color: var(--text); 
+            font-family: var(--font-body); 
+            overflow-x: hidden; 
+        }
 
         /* --- BACKGROUND CONTAINER --- */
         #gamer-bg-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-            z-index: -1; overflow: hidden;
+            z-index: -1; /* Behind everything */
+            overflow: hidden;
             background: #000;
         }
 
-        /* VIDEO ELEMENT - CAVE / RUINS STYLE */
+        /* VIDEO ELEMENT */
         #game-video-bg {
             position: absolute;
             top: 50%; left: 50%;
@@ -45,24 +52,24 @@
             width: auto; height: auto;
             transform: translate(-50%, -50%);
             object-fit: cover;
-            /* Enhance Contrast for "Game Look" */
-            filter: contrast(1.2) brightness(0.8) sepia(20%);
+            opacity: 0.8; /* High visibility */
+            filter: contrast(1.1) brightness(0.8) sepia(10%); /* Cinematic Look */
         }
 
-        /* Cinematic Gradient */
+        /* Cinematic Overlay */
         .cinematic-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            /* Darker bottom for text readability */
-            background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.5) 50%, #000 100%);
+            /* Gradient to make text readable */
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6) 60%, #000 100%);
             z-index: 0;
         }
 
-        /* --- PARTICLES: FIREFLIES / DUST --- */
+        /* --- DUST PARTICLES --- */
         .dust-mote {
             position: absolute; 
-            background: rgba(255, 174, 0, 0.8); /* Golden Firefly/Ember color */
+            background: rgba(255, 200, 100, 0.8); 
             border-radius: 50%;
-            box-shadow: 0 0 10px rgba(255, 174, 0, 0.6);
+            box-shadow: 0 0 8px rgba(255, 200, 100, 0.6);
             z-index: 1;
             pointer-events: none;
         }
@@ -75,11 +82,12 @@
         nav { position: fixed; top: 0; width: 100%; padding: 2rem 5vw; display: flex; justify-content: space-between; align-items: center; z-index: 100; background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent); }
         .logo { font-weight: 700; font-family: var(--font-head); text-transform: uppercase; letter-spacing: 1px; font-size: 1.2rem; text-decoration: none; color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,1); }
         .nav-links { display: flex; gap: 2rem; }
-        .nav-links a { font-family: var(--font-head); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; transition: color 0.3s; color: #ccc; text-decoration: none; text-shadow: 0 2px 5px #000; }
+        .nav-links a { font-family: var(--font-head); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; transition: color 0.3s; color: #ddd; text-decoration: none; text-shadow: 0 2px 5px #000; }
         .nav-links a:hover { color: var(--accent); }
 
         /* --- HERO SECTION --- */
-        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; width: 100%; }
+        /* Ensure Hero is transparent */
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; width: 100%; background: transparent; }
         
         #hero-intro { 
             position: absolute; width: 100%; max-width: 1400px; padding: 0 5vw; 
@@ -94,7 +102,6 @@
             font-weight: 700; 
             letter-spacing: -2px;
             color: #fff;
-            /* Heavy Shadow for "Cinematic Title" effect */
             text-shadow: 0 10px 50px rgba(0,0,0,1);
         }
         
@@ -103,7 +110,7 @@
             top: 50%; left: 50%; transform: translate(-50%, -50%);
             opacity: 0; z-index: 1; text-align: center; display: flex; flex-direction: column; align-items: center; 
         }
-        .hello-badge { font-family: var(--font-code); font-size: 0.8rem; margin-bottom: 2rem; border: 1px solid #fff; padding: 8px 20px; border-radius: 50px; color: #fff; text-transform: uppercase; letter-spacing: 3px; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px); }
+        .hello-badge { font-family: var(--font-code); font-size: 0.8rem; margin-bottom: 2rem; border: 1px solid #fff; padding: 8px 20px; border-radius: 50px; color: #fff; text-transform: uppercase; letter-spacing: 3px; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); }
         
         .personal-text { 
             font-family: var(--font-head); 
@@ -126,16 +133,17 @@
         }
 
         /* --- SECTIONS --- */
+        /* Content areas need backgrounds to be readable, or gradients */
         .container { max-width: 1400px; margin: 0 auto; padding: 0 5vw; }
         .about-section { padding: 8rem 0 2rem 0; position: relative; z-index: 2; }
-        .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem; border-bottom: 1px solid #444; padding-bottom: 2rem; }
+        .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 2rem; }
         .section-title { font-family: var(--font-head); font-size: 4rem; text-transform: uppercase; color: var(--accent); font-weight: 700; line-height: 1; text-shadow: 0 0 20px rgba(255, 174, 0, 0.4); }
         .reading-text { font-size: clamp(1.2rem, 2.5vw, 2rem); line-height: 1.5; color: #ccc; max-width: 100%; text-shadow: 0 2px 5px #000; }
         .reading-text .word.active { color: #fff; }
         
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 5rem; }
         .stat-box h4 { font-size: 4rem; color: var(--accent); font-family: var(--font-head); line-height: 1; margin-bottom: 0.5rem; text-shadow: 0 0 15px rgba(255, 174, 0, 0.3); }
-        .stat-box p { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: #ccc; }
+        .stat-box p { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: #ddd; }
 
         /* --- WORKS --- */
         .works-area { margin-top: 2rem; width: 100%; position: relative; z-index: 2; }
@@ -160,7 +168,7 @@
 
         /* --- RESUME --- */
         .resume-container { margin-top: 3rem; width: 100%; position: relative; z-index: 2; }
-        .resume-box { display: flex; justify-content: space-between; align-items: center; padding: 4rem; border: 1px solid #444; text-decoration: none; transition: all 0.4s ease; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(10px); }
+        .resume-box { display: flex; justify-content: space-between; align-items: center; padding: 4rem; border: 1px solid #444; text-decoration: none; transition: all 0.4s ease; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(10px); }
         .resume-box:hover { border-color: var(--accent); background: rgba(255, 174, 0, 0.1); }
         .resume-info h3 { font-family: var(--font-head); font-size: 2.5rem; text-transform: uppercase; color: #fff; margin-bottom: 0.5rem; }
         .resume-info p { font-family: var(--font-code); color: #aaa; font-size: 0.9rem; }
@@ -176,7 +184,7 @@
         .email-link { font-size: 1.5rem; color: #555; text-decoration: none; transition: 0.3s; font-family: var(--font-code); display: block; margin-bottom: 2rem;}
         .email-link:hover { color: #fff; }
 
-        /* GAME PRELOADER */
+        /* PRELOADER */
         .preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #050505; color: #fff; z-index: 99999; display: flex; flex-direction: column; justify-content: flex-end; padding: 2rem 5vw; font-family: var(--font-code); }
         .preloader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: var(--accent); z-index: 99998; transform: translateY(100%); }
         .console-log { font-size: 0.8rem; color: #666; margin-bottom: 1rem; height: 100px; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; }

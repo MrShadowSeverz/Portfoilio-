@@ -1,458 +1,512 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abhilash Saji | Tarnished Dev</title>
-    
-    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@200,400,600,700&f[]=satoshi@300,400,500,700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@1,600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="https://unpkg.com/split-type"></script>
-    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abhilash Saji | Tarnished Dev</title>
+    
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@200,400,600,700&f[]=satoshi@300,400,500,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=Playfair+Display:ital,wght@1,600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/split-type"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
 
-    <style>
-        /* --- ELDEN RING THEME --- */
-        :root { 
-            --text: #e0d8c3; 
-            --accent: #e2c476; /* Golden Order */
-            --font-head: 'Cinzel', serif; 
-            --font-body: 'Satoshi', sans-serif; 
-            --font-code: 'Space Mono', monospace; 
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
-        ::selection { background: var(--accent); color: #000; }
-        
-        /* FORCE TRANSPARENCY */
-        html, body { 
-            margin: 0; padding: 0; 
-            background: transparent !important; 
-            color: var(--text); 
-            font-family: var(--font-body); 
-            overflow-x: hidden; 
-        }
+    <style>
+        /* --- ELDEN RING THEME --- */
+        :root { 
+            --text: #e6dfc8; 
+            --accent: #e2c476; /* Golden Order */
+            --glow: #ffae00; 
+            --font-head: 'Cinzel', serif; 
+            --font-body: 'Satoshi', sans-serif; 
+            --font-code: 'Space Mono', monospace; 
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        ::selection { background: var(--accent); color: #000; }
+        
+        /* FORCE TRANSPARENCY */
+        html, body { 
+            margin: 0; padding: 0; 
+            background: transparent !important; 
+            color: var(--text); 
+            font-family: var(--font-body); 
+            overflow-x: hidden; 
+        }
 
-        /* --- BACKGROUND SYSTEM --- */
-        #gamer-bg-container {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-            z-index: -999;
-            overflow: hidden;
-            /* FALLBACK: Dark Golden Fog Gradient (Shows if image fails) */
-            background: radial-gradient(circle at center, #1a150e 0%, #000000 100%);
-        }
+        /* --- BACKGROUND SYSTEM --- */
+        #gamer-bg-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            z-index: -999;
+            overflow: hidden;
+            /* FALLBACK */
+            background: radial-gradient(circle at bottom, #1a150e 0%, #050505 100%);
+        }
 
-        /* THE LANDSCAPE IMAGE */
-        #bg-image {
-            position: absolute; top: -10%; left: -10%; width: 120%; height: 120%;
-            /* Reliable "Golden Mist" Landscape */
-            background-image: url('https://images.unsplash.com/photo-1519074069444-1ba4fff66d16?q=80&w=2574&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-            opacity: 0.5; /* Dimmed for mood */
-            /* Camera Pan Animation */
-            animation: majesticPan 60s infinite alternate ease-in-out;
-            /* Souls-like Filter */
-            filter: contrast(1.2) brightness(0.7) sepia(40%) hue-rotate(5deg);
-        }
+        /* THE LANDSCAPE IMAGE (Limgrave Vibe) */
+        #bg-image {
+            position: absolute; top: -5%; left: -5%; width: 110%; height: 110%;
+            /* Lush, Misty Forest Image */
+            background-image: url('https://images.unsplash.com/photo-1542259681-d306b9b2829d?q=80&w=2669&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.5;
+            animation: slowDrift 60s infinite alternate ease-in-out;
+            /* Filter to make it look like a game render */
+            filter: contrast(1.1) brightness(0.7) sepia(20%) saturate(1.2);
+        }
 
-        @keyframes majesticPan {
-            0% { transform: scale(1) translate(0, 0); }
-            100% { transform: scale(1.1) translate(-20px, -10px); }
-        }
+        @keyframes slowDrift {
+            0% { transform: scale(1) translate(0, 0); }
+            100% { transform: scale(1.1) translate(-20px, -10px); }
+        }
 
-        /* Dark Vignette */
-        .vignette {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, transparent 30%, #000 100%);
-            z-index: 1;
-            pointer-events: none;
-        }
+        /* --- THE SITE OF GRACE GLOW (Bottom Center) --- */
+        .site-of-grace-glow {
+            position: absolute; 
+            bottom: -150px; 
+            left: 50%; 
+            transform: translateX(-50%);
+            width: 80vw; 
+            height: 60vh;
+            /* Golden Light Source */
+            background: radial-gradient(ellipse at center bottom, rgba(255, 200, 80, 0.25) 0%, rgba(220, 179, 92, 0.05) 40%, transparent 70%);
+            z-index: 1;
+            pointer-events: none;
+            mix-blend-mode: screen;
+            animation: gracePulse 5s infinite ease-in-out;
+        }
 
-        /* Golden Haze Overlay */
-        .grace-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to top, rgba(226, 196, 118, 0.1), transparent 50%, #000 100%);
-            z-index: 2;
-        }
+        .grace-core {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 3px;
+            height: 40vh;
+            background: linear-gradient(to top, rgba(255, 215, 100, 0.9), transparent);
+            box-shadow: 0 0 40px rgba(255, 180, 0, 0.6);
+            z-index: 2;
+            opacity: 0.8;
+        }
 
-        /* --- PARTICLES: GOLDEN RUNES --- */
-        .golden-rune {
-            position: absolute; 
-            background: var(--accent);
-            border-radius: 50%;
-            box-shadow: 0 0 15px var(--accent);
-            z-index: 3;
-            pointer-events: none;
-            opacity: 0;
-        }
+        @keyframes gracePulse {
+            0%, 100% { opacity: 0.8; transform: translateX(-50%) scale(1); }
+            50% { opacity: 1; transform: translateX(-50%) scale(1.05); }
+        }
 
-        /* --- UI ELEMENTS --- */
-        .cursor { position: fixed; width: 8px; height: 8px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%); box-shadow: 0 0 10px var(--accent); }
-        .cursor-follower { position: fixed; width: 50px; height: 50px; border: 1px solid rgba(226, 196, 118, 0.3); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: 0.15s; }
+        /* Vignette to frame the screen */
+        .vignette {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, transparent 40%, #000 100%);
+            z-index: 3;
+            pointer-events: none;
+        }
 
-        /* --- NAV --- */
-        nav { position: fixed; top: 0; width: 100%; padding: 2rem 5vw; display: flex; justify-content: space-between; align-items: center; z-index: 100; background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent); }
-        .logo { font-weight: 700; font-family: var(--font-head); text-transform: uppercase; letter-spacing: 2px; font-size: 1.3rem; text-decoration: none; color: #fff; text-shadow: 0 0 10px rgba(226, 196, 118, 0.5); }
-        .nav-links { display: flex; gap: 2rem; }
-        .nav-links a { font-family: var(--font-head); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; transition: color 0.3s; color: #bbb; text-decoration: none; }
-        .nav-links a:hover { color: var(--accent); text-shadow: 0 0 8px var(--accent); }
+        /* --- GOLDEN PARTICLES --- */
+        .golden-particle {
+            position: absolute; 
+            background: #fffbe6; 
+            box-shadow: 0 0 15px var(--glow);
+            border-radius: 50%;
+            z-index: 4;
+            pointer-events: none;
+            opacity: 0;
+        }
 
-        /* --- HERO SECTION --- */
-        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; width: 100%; }
-        
-        #hero-intro { 
-            position: absolute; width: 100%; max-width: 1400px; padding: 0 5vw; 
-            top: 50%; transform: translateY(-50%); z-index: 20; 
-        }
-        
-        #hero-intro h1 { 
-            font-family: var(--font-head); 
-            font-size: clamp(3rem, 10vw, 8rem); 
-            line-height: 0.85;
-            text-transform: uppercase; 
-            font-weight: 400; 
-            letter-spacing: -2px;
-            color: #fff;
-            text-shadow: 0 10px 50px rgba(0,0,0,1);
-        }
-        
-        #hero-personal { 
-            position: absolute; width: 100%; 
-            top: 50%; left: 50%; transform: translate(-50%, -50%);
-            opacity: 0; z-index: 10; text-align: center; display: flex; flex-direction: column; align-items: center; 
-        }
-        .hello-badge { font-family: var(--font-head); font-size: 0.9rem; margin-bottom: 2rem; border: 1px solid var(--accent); padding: 10px 30px; color: var(--accent); text-transform: uppercase; letter-spacing: 4px; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(5px); }
-        
-        .personal-text { 
-            font-family: var(--font-head); 
-            font-size: clamp(2.5rem, 6vw, 5rem); 
-            line-height: 1.2; 
-            font-weight: 400; 
-            max-width: 1300px; 
-            color: #e0d8c3; 
-            margin: 0 auto; 
-            text-align: center; 
-            text-shadow: 0 10px 40px rgba(0,0,0,1);
-        }
-        
-        .highlight-italic { 
-            font-family: 'Playfair Display', serif; 
-            font-style: italic; 
-            font-weight: 400; 
-            color: var(--accent); 
-            padding: 0 5px; 
-            text-shadow: 0 0 15px rgba(226, 196, 118, 0.4);
-        }
+        /* --- UI ELEMENTS --- */
+        .cursor { position: fixed; width: 8px; height: 8px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%); box-shadow: 0 0 10px var(--accent); }
+        .cursor-follower { position: fixed; width: 50px; height: 50px; border: 1px solid rgba(220, 179, 92, 0.4); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: 0.15s; }
 
-        /* --- SECTIONS --- */
-        .container { max-width: 1400px; margin: 0 auto; padding: 0 5vw; position: relative; z-index: 5; }
-        .about-section { padding: 8rem 0 2rem 0; }
-        .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem; border-bottom: 1px solid rgba(226, 196, 118, 0.3); padding-bottom: 2rem; }
-        .section-title { font-family: var(--font-head); font-size: 4rem; text-transform: uppercase; color: var(--accent); font-weight: 400; line-height: 1; text-shadow: 0 0 20px rgba(226, 196, 118, 0.2); }
-        .reading-text { font-size: clamp(1.2rem, 2.5vw, 2rem); line-height: 1.6; color: #999; max-width: 100%; text-shadow: 0 2px 10px #000; font-family: 'Playfair Display', serif; }
-        .reading-text .word.active { color: #e0d8c3; }
-        
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 5rem; }
-        .stat-box h4 { font-size: 4rem; color: var(--accent); font-family: var(--font-head); line-height: 1; margin-bottom: 0.5rem; text-shadow: 0 0 15px rgba(226, 196, 118, 0.2); }
-        .stat-box p { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; color: #888; font-family: var(--font-head); }
+        /* --- NAV --- */
+        nav { position: fixed; top: 0; width: 100%; padding: 2rem 5vw; display: flex; justify-content: space-between; align-items: center; z-index: 100; background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent); }
+        .logo { font-weight: 700; font-family: var(--font-head); text-transform: uppercase; letter-spacing: 2px; font-size: 1.3rem; text-decoration: none; color: #fff; text-shadow: 0 0 15px rgba(220, 179, 92, 0.6); }
+        .nav-links { display: flex; gap: 2rem; }
+        .nav-links a { font-family: var(--font-head); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; transition: color 0.3s; color: #aaa; text-decoration: none; }
+        .nav-links a:hover { color: var(--accent); text-shadow: 0 0 10px var(--accent); }
 
-        /* --- WORKS --- */
-        .works-area { margin-top: 2rem; width: 100%; position: relative; z-index: 5; }
-        .work-header { display: flex; justify-content: center; align-items: center; flex-direction: column; margin-bottom: 2rem; }
-        .work-header h2 { font-family: var(--font-head); font-size: 4rem; text-transform: uppercase; line-height: 1; margin: 0; color: #e0d8c3; text-shadow: 0 0 30px rgba(0,0,0,0.8); }
-        .work-header span { font-family: var(--font-code); color: var(--accent); margin-top: 10px; letter-spacing: 2px; }
+        /* --- HERO SECTION --- */
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; width: 100%; }
+        
+        #hero-intro { 
+            position: absolute; width: 100%; max-width: 1400px; padding: 0 5vw; 
+            top: 50%; transform: translateY(-50%); z-index: 20; 
+        }
+        
+        #hero-intro h1 { 
+            font-family: var(--font-head); 
+            font-size: clamp(3rem, 10vw, 8rem); 
+            line-height: 0.9;
+            text-transform: uppercase; 
+            font-weight: 400; 
+            letter-spacing: 0px;
+            color: #fff;
+            text-shadow: 0 5px 30px rgba(0,0,0,1);
+        }
+        
+        #hero-personal { 
+            position: absolute; width: 100%; 
+            top: 55%; left: 50%; transform: translate(-50%, -50%);
+            opacity: 0; z-index: 10; text-align: center; display: flex; flex-direction: column; align-items: center; 
+        }
+        
+        .hello-badge { 
+            font-family: var(--font-head); 
+            font-size: 0.8rem; 
+            margin-bottom: 2rem; 
+            border: 1px solid rgba(220, 179, 92, 0.5); 
+            padding: 10px 25px; 
+            color: var(--accent); 
+            text-transform: uppercase; 
+            letter-spacing: 3px; 
+            background: rgba(0, 0, 0, 0.7); 
+            backdrop-filter: blur(5px); 
+            box-shadow: 0 0 20px rgba(220, 179, 92, 0.1);
+        }
+        
+        .personal-text { 
+            font-family: var(--font-head); 
+            font-size: clamp(2rem, 5vw, 4rem); 
+            line-height: 1.3; 
+            font-weight: 400; 
+            max-width: 1200px; 
+            color: #e6dfc8; 
+            margin: 0 auto; 
+            text-align: center; 
+            text-shadow: 0 5px 20px rgba(0,0,0,1);
+        }
+        
+        .highlight-italic { 
+            font-family: 'Playfair Display', serif; 
+            font-style: italic; 
+            font-weight: 400; 
+            color: var(--accent); 
+            padding: 0 5px; 
+            text-shadow: 0 0 15px rgba(220, 179, 92, 0.4);
+        }
 
-        .work-gateway { display: flex; height: 70vh; width: 100%; overflow: hidden; background: #080808; gap: 4px; border: 1px solid #333; }
-        .work-col { display: block; flex: 1; position: relative; transition: flex 0.6s cubic-bezier(0.25, 1, 0.5, 1), filter 0.4s; overflow: hidden; border-right: 1px solid rgba(255,255,255,0.05); text-decoration: none; }
-        .work-col:last-child { border-right: none; }
-        .work-col img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) brightness(0.4) sepia(20%); transition: transform 0.8s ease, filter 0.5s ease; }
-        
-        .col-overlay { position: absolute; bottom: 0; left: 0; width: 100%; padding: 2rem; background: linear-gradient(to top, rgba(0,0,0,0.95), transparent); transform: translateY(100%); transition: transform 0.5s ease; z-index: 2; }
-        .col-title { font-family: var(--font-head); font-size: 2.5rem; color: #fff; text-transform: uppercase; line-height: 1; }
-        .col-sub { font-family: var(--font-code); color: var(--accent); font-size: 0.8rem; margin-bottom: 10px; display: block; }
-        .view-btn { margin-top: 10px; font-family: var(--font-head); font-size: 0.8rem; border: 1px solid var(--accent); padding: 8px 20px; color: var(--accent); display: inline-block; letter-spacing: 1px; }
+        /* --- SECTIONS --- */
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 5vw; position: relative; z-index: 5; }
+        .about-section { padding: 8rem 0 2rem 0; }
+        .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem; border-bottom: 1px solid rgba(220, 179, 92, 0.2); padding-bottom: 2rem; }
+        .section-title { font-family: var(--font-head); font-size: 3.5rem; text-transform: uppercase; color: var(--accent); font-weight: 400; line-height: 1; text-shadow: 0 0 20px rgba(220, 179, 92, 0.15); }
+        .reading-text { font-size: clamp(1.2rem, 2.5vw, 1.8rem); line-height: 1.6; color: #999; max-width: 100%; text-shadow: 0 2px 5px #000; font-family: 'Playfair Display', serif; }
+        .reading-text .word.active { color: #e6dfc8; }
+        
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 5rem; }
+        .stat-box h4 { font-size: 3.5rem; color: var(--accent); font-family: var(--font-head); line-height: 1; margin-bottom: 0.5rem; text-shadow: 0 0 15px rgba(220, 179, 92, 0.2); }
+        .stat-box p { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; color: #888; font-family: var(--font-head); }
 
-        .work-gateway:hover .work-col { filter: brightness(0.3); }
-        .work-col:hover { flex: 2.5; filter: brightness(1) !important; cursor: pointer; }
-        .work-col:hover img { filter: grayscale(0%) brightness(0.9) sepia(10%); transform: scale(1.1); }
-        .work-col:hover .col-overlay { transform: translateY(0); }
+        /* --- WORKS --- */
+        .works-area { margin-top: 2rem; width: 100%; position: relative; z-index: 5; }
+        .work-header { display: flex; justify-content: center; align-items: center; flex-direction: column; margin-bottom: 2rem; }
+        .work-header h2 { font-family: var(--font-head); font-size: 3.5rem; text-transform: uppercase; line-height: 1; margin: 0; color: #e6dfc8; }
+        .work-header span { font-family: var(--font-code); color: var(--accent); margin-top: 10px; letter-spacing: 2px; }
 
-        /* --- RESUME --- */
-        .resume-container { margin-top: 3rem; width: 100%; position: relative; z-index: 5; }
-        .resume-box { display: flex; justify-content: space-between; align-items: center; padding: 4rem; border: 1px solid #333; text-decoration: none; transition: all 0.4s ease; background: rgba(10, 10, 10, 0.7); backdrop-filter: blur(10px); }
-        .resume-box:hover { border-color: var(--accent); background: rgba(226, 196, 118, 0.05); }
-        .resume-info h3 { font-family: var(--font-head); font-size: 2.5rem; text-transform: uppercase; color: #fff; margin-bottom: 0.5rem; }
-        .resume-info p { font-family: var(--font-code); color: #888; font-size: 0.9rem; }
-        .resume-action { background: var(--accent); color: #000; padding: 15px 30px; font-family: var(--font-head); font-weight: 700; text-transform: uppercase; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; transition: 0.3s; letter-spacing: 1px; }
-        .resume-box:hover .resume-action { background: #fff; color: #000; box-shadow: 0 0 20px var(--accent); }
+        .work-gateway { display: flex; height: 70vh; width: 100%; overflow: hidden; background: #080808; gap: 4px; border: 1px solid #333; }
+        .work-col { display: block; flex: 1; position: relative; transition: flex 0.6s cubic-bezier(0.25, 1, 0.5, 1), filter 0.4s; overflow: hidden; border-right: 1px solid rgba(255,255,255,0.05); text-decoration: none; }
+        .work-col:last-child { border-right: none; }
+        .work-col img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) brightness(0.4) sepia(20%); transition: transform 0.8s ease, filter 0.5s ease; }
+        
+        .col-overlay { position: absolute; bottom: 0; left: 0; width: 100%; padding: 2rem; background: linear-gradient(to top, rgba(0,0,0,0.95), transparent); transform: translateY(100%); transition: transform 0.5s ease; z-index: 2; }
+        .col-title { font-family: var(--font-head); font-size: 2rem; color: #fff; text-transform: uppercase; line-height: 1; }
+        .col-sub { font-family: var(--font-code); color: var(--accent); font-size: 0.8rem; margin-bottom: 10px; display: block; }
+        .view-btn { margin-top: 10px; font-family: var(--font-head); font-size: 0.8rem; border: 1px solid var(--accent); padding: 8px 20px; color: var(--accent); display: inline-block; letter-spacing: 1px; }
 
-        /* --- FOOTER --- */
-        footer { padding: 8rem 5vw; border-top: 1px solid #222; background: #080808; margin-top: 5rem; position: relative; z-index: 5; }
-        .footer-headline { font-family: var(--font-head); font-size: clamp(3rem, 6vw, 5rem); line-height: 1; text-transform: uppercase; color: #e0d8c3; margin-bottom: 2rem; }
-        .social-row { display: flex; gap: 2rem; margin-top: 2rem; }
-        .social-row a { color: var(--accent); text-decoration: underline; text-transform: uppercase; font-family: var(--font-head); font-size: 0.9rem; transition: 0.3s; letter-spacing: 1px; }
-        .social-row a:hover { color: #fff; text-shadow: 0 0 10px var(--accent); }
-        .email-link { font-size: 1.5rem; color: #666; text-decoration: none; transition: 0.3s; font-family: var(--font-head); display: block; margin-bottom: 2rem;}
-        .email-link:hover { color: #fff; }
+        .work-gateway:hover .work-col { filter: brightness(0.3); }
+        .work-col:hover { flex: 2.5; filter: brightness(1) !important; cursor: pointer; }
+        .work-col:hover img { filter: grayscale(0%) brightness(0.9) sepia(10%); transform: scale(1.1); }
+        .work-col:hover .col-overlay { transform: translateY(0); }
 
-        /* PRELOADER */
-        .preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #000; color: #fff; z-index: 99999; display: flex; flex-direction: column; justify-content: flex-end; padding: 2rem 5vw; font-family: var(--font-code); }
-        .preloader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #151515; z-index: 99998; transform: translateY(100%); }
-        .console-log { font-size: 0.8rem; color: #888; margin-bottom: 1rem; height: 100px; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; font-family: var(--font-code); }
-        .console-line { margin-bottom: 4px; }
-        .success { color: var(--accent); }
-        .loading-bar-container { width: 100%; height: 2px; background: #222; margin-top: 10px; }
-        .loading-bar { width: 0%; height: 100%; background: var(--accent); box-shadow: 0 0 20px var(--accent); }
+        /* --- RESUME --- */
+        .resume-container { margin-top: 3rem; width: 100%; position: relative; z-index: 5; }
+        .resume-box { display: flex; justify-content: space-between; align-items: center; padding: 4rem; border: 1px solid #333; text-decoration: none; transition: all 0.4s ease; background: rgba(10, 10, 10, 0.7); backdrop-filter: blur(10px); }
+        .resume-box:hover { border-color: var(--accent); background: rgba(220, 179, 92, 0.05); }
+        .resume-info h3 { font-family: var(--font-head); font-size: 2.5rem; text-transform: uppercase; color: #fff; margin-bottom: 0.5rem; }
+        .resume-info p { font-family: var(--font-code); color: #888; font-size: 0.9rem; }
+        .resume-action { background: var(--accent); color: #000; padding: 15px 30px; font-family: var(--font-head); font-weight: 700; text-transform: uppercase; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; transition: 0.3s; letter-spacing: 1px; }
+        .resume-box:hover .resume-action { background: #fff; color: #000; box-shadow: 0 0 20px var(--accent); }
 
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .work-gateway { flex-direction: column; height: 100vh; }
-            .work-col:hover { flex: 1; }
-            .col-overlay { transform: translateY(0); }
-            .resume-box { flex-direction: column; align-items: flex-start; gap: 2rem; padding: 2rem; }
-            .stats-grid { grid-template-columns: 1fr; gap: 3rem; }
-        }
-    </style>
+        /* --- FOOTER --- */
+        footer { padding: 8rem 5vw; border-top: 1px solid #222; background: #080808; margin-top: 5rem; position: relative; z-index: 5; }
+        .footer-headline { font-family: var(--font-head); font-size: clamp(3rem, 6vw, 5rem); line-height: 1; text-transform: uppercase; color: #e6dfc8; margin-bottom: 2rem; }
+        .social-row { display: flex; gap: 2rem; margin-top: 2rem; }
+        .social-row a { color: var(--accent); text-decoration: underline; text-transform: uppercase; font-family: var(--font-head); font-size: 0.9rem; transition: 0.3s; letter-spacing: 1px; }
+        .social-row a:hover { color: #fff; text-shadow: 0 0 10px var(--accent); }
+        .email-link { font-size: 1.5rem; color: #666; text-decoration: none; transition: 0.3s; font-family: var(--font-head); display: block; margin-bottom: 2rem;}
+        .email-link:hover { color: #fff; }
+
+        /* PRELOADER WITH SCENERY */
+        .preloader { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh; 
+            z-index: 99999; 
+            display: flex; flex-direction: column; justify-content: flex-end; padding: 2rem 5vw; 
+            font-family: var(--font-code); 
+            /* Elden Ring Style Loading Screen Art */
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1518066000714-58c45f1a2c0a?q=80&w=2574');
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+        }
+        .preloader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #151515; z-index: 99998; transform: translateY(100%); }
+        .console-log { font-size: 0.8rem; color: #ccc; margin-bottom: 1rem; height: 100px; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; font-family: var(--font-code); text-shadow: 0 2px 4px #000; }
+        .console-line { margin-bottom: 4px; }
+        .success { color: var(--accent); }
+        .loading-bar-container { width: 100%; height: 3px; background: rgba(255,255,255,0.2); margin-top: 10px; }
+        .loading-bar { width: 0%; height: 100%; background: var(--accent); box-shadow: 0 0 20px var(--accent); }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .work-gateway { flex-direction: column; height: 100vh; }
+            .work-col:hover { flex: 1; }
+            .col-overlay { transform: translateY(0); }
+            .resume-box { flex-direction: column; align-items: flex-start; gap: 2rem; padding: 2rem; }
+            .stats-grid { grid-template-columns: 1fr; gap: 3rem; }
+        }
+    </style>
 </head>
 <body>
 
-    <div id="gamer-bg-container">
-        <div id="bg-image"></div>
-        
-        <div class="vignette"></div>
-        <div class="grace-overlay"></div>
-        <div id="particles-container"></div>
-    </div>
-    
-    <div class="cursor"></div><div class="cursor-follower"></div>
+    <div id="gamer-bg-container">
+        <div id="bg-image"></div>
+        
+        <div class="site-of-grace-glow"></div>
+        <div class="grace-core"></div>
+        
+        <div class="vignette"></div>
+        <div id="particles-container"></div>
+    </div>
+    
+    <div class="cursor"></div><div class="cursor-follower"></div>
 
-    <div class="preloader">
-        <div class="console-log" id="console-output"></div>
-        <div style="display:flex; justify-content:space-between; align-items:flex-end;">
-            <div style="font-size: 3rem; font-weight: 700; font-family: var(--font-head); color: var(--accent);">
-                <span class="counter">0%</span>
-            </div>
-            <div style="font-size: 0.8rem; letter-spacing: 2px; color: #888; text-transform: uppercase;">Discovering Grace...</div>
-        </div>
-        <div class="loading-bar-container"><div class="loading-bar"></div></div>
-    </div>
+    <div class="preloader">
+        <div class="console-log" id="console-output"></div>
+        <div style="display:flex; justify-content:space-between; align-items:flex-end;">
+            <div style="font-size: 3rem; font-weight: 700; font-family: var(--font-head); color: var(--accent); text-shadow: 0 0 10px rgba(0,0,0,0.8);">
+                <span class="counter">0%</span>
+            </div>
+            <div style="font-size: 0.8rem; letter-spacing: 2px; color: #ddd; text-transform: uppercase; text-shadow: 0 0 5px #000;">Entering Limgrave...</div>
+        </div>
+        <div class="loading-bar-container"><div class="loading-bar"></div></div>
+    </div>
 
-    <div class="preloader-overlay"></div>
+    <div class="preloader-overlay"></div>
 
-    <nav>
-        <a href="index.html" class="logo magnetic">Abhilash Saji.</a>
-        <div class="nav-links">
-            <a href="#home" class="magnetic" style="color: var(--accent);">Home</a>
-            <a href="#about" class="magnetic">About</a>
-            <a href="#work" class="magnetic">Projects</a>
-            <a href="#contact" class="magnetic">Contact</a>
-            <a href="Resume.pdf" download="AbhilashSaji_Resume.pdf" class="magnetic">Resume</a>
-        </div>
-    </nav>
+    <nav>
+        <a href="index.html" class="logo magnetic">Abhilash Saji.</a>
+        <div class="nav-links">
+            <a href="#home" class="magnetic" style="color: var(--accent);">Home</a>
+            <a href="#about" class="magnetic">About</a>
+            <a href="#work" class="magnetic">Projects</a>
+            <a href="#contact" class="magnetic">Contact</a>
+            <a href="Resume.pdf" download="AbhilashSaji_Resume.pdf" class="magnetic">Resume</a>
+        </div>
+    </nav>
 
-    <section id="home" class="hero">
-        <div id="hero-intro">
-            <div style="display: flex; gap: 2rem; margin-bottom: 2rem; font-family: var(--font-head); text-transform: uppercase; color: var(--accent); font-size: 0.9rem; letter-spacing: 2px;">
-                <span>Tarnished</span><span>///</span><span>Dev</span>
-            </div>
-            <h1 id="hero-text-tech">
-                Rise,<br>
-                <span style="color: var(--accent);">Tarnished</span><br>
-                Dev
-            </h1>
-            <p style="margin-top: 2rem; max-width: 400px; color: #bbb; line-height: 1.6; text-shadow: 0 1px 3px rgba(0,0,0,1);" id="hero-sub">Forging immersive worlds in the lands between code and art.</p>
-        </div>
-        
-        <div id="hero-personal">
-            <span class="hello-badge">Grace Found</span>
-            <div class="personal-text" id="hero-text-personal">
-                I’m Abhilash Saji, a Unity Developer seeking the <span class="highlight-italic">Elden Ring</span> of immersive gameplay.
-            </div>
-        </div>
-    </section>
+    <section id="home" class="hero">
+        <div id="hero-intro">
+            <div style="display: flex; gap: 2rem; margin-bottom: 2rem; font-family: var(--font-head); text-transform: uppercase; color: var(--accent); font-size: 0.9rem; letter-spacing: 2px;">
+                <span>Tarnished</span><span>///</span><span>Dev</span>
+            </div>
+            <h1 id="hero-text-tech">
+                Rise,<br>
+                <span style="color: var(--accent);">Tarnished</span><br>
+                Dev
+            </h1>
+            <p style="margin-top: 2rem; max-width: 400px; color: #bbb; line-height: 1.6; text-shadow: 0 1px 3px rgba(0,0,0,1);" id="hero-sub">Forging immersive worlds in the lands between code and art.</p>
+        </div>
+        
+        <div id="hero-personal">
+            <span class="hello-badge">Grace Found</span>
+            <div class="personal-text" id="hero-text-personal">
+                I’m Abhilash Saji, a Unity Developer seeking the <span class="highlight-italic">Elden Ring</span> of immersive gameplay.
+            </div>
+        </div>
+    </section>
 
-    <section id="about" class="container about-section">
-        <div class="section-header">
-            <h2 class="section-title">Attributes</h2>
-            <span style="font-family: var(--font-code); color: #888;">STATS</span>
-        </div>
-        <div>
-            <p class="reading-text" style="font-size: clamp(1rem, 2vw, 1.35rem);">
-                I am a <span style="color: var(--accent);">Unity Developer</span> and <span style="color: var(--accent);">Gameplay Programmer</span>. My journey involves crafting polished systems, integrating assets, and optimizing performance to create responsive, real-time experiences. Like a true Lord, I command C# and the Unity Engine to bend reality to my will.
-            </p>
-            <div class="stats-grid">
-                <div class="stat-box"><h4>4+</h4><p>Great Runes (Projects)</p></div>
-                <div class="stat-box"><h4>2+</h4><p>Covenants (Certs)</p></div>
-                <div class="stat-box"><h4>FPS</h4><p>Build Type</p></div>
-            </div>
-            </div>
-        </div>
-    </section>
+    <section id="about" class="container about-section">
+        <div class="section-header">
+            <h2 class="section-title">Attributes</h2>
+            <span style="font-family: var(--font-code); color: #888;">STATS</span>
+        </div>
+        <div>
+            <p class="reading-text" style="font-size: clamp(1rem, 2vw, 1.35rem);">
+                I am a <span style="color: var(--accent);">Unity Developer</span> and <span style="color: var(--accent);">Gameplay Programmer</span>. My journey involves crafting polished systems, integrating assets, and optimizing performance to create responsive, real-time experiences. Like a true Lord, I command C# and the Unity Engine to bend reality to my will.
+            </p>
+            <div class="stats-grid">
+                <div class="stat-box"><h4>4+</h4><p>Great Runes (Projects)</p></div>
+                <div class="stat-box"><h4>2+</h4><p>Covenants (Certs)</p></div>
+                <div class="stat-box"><h4>FPS</h4><p>Build Type</p></div>
+            </div>
+            </div>
+        </div>
+    </section>
 
-    <div id="work" class="container works-area">
-        <div class="work-header">
-            <h2>Quests</h2>
-            <span>PROJECTS</span>
-        </div>
-        
-        <div class="work-gateway">
-            <a href="projects-2d.html" class="work-col">
-                <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2670&auto=format&fit=crop" alt="2D Games">
-                <div class="col-overlay">
-                    <span class="col-sub">01 / MOBILE & PC</span>
-                    <div class="col-title">2D Games</div>
-                    <span class="view-btn">View Details</span>
-                </div>
-            </a>
+    <div id="work" class="container works-area">
+        <div class="work-header">
+            <h2>Quests</h2>
+            <span>PROJECTS</span>
+        </div>
+        
+        <div class="work-gateway">
+            <a href="projects-2d.html" class="work-col">
+                <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2670&auto=format&fit=crop" alt="2D Games">
+                <div class="col-overlay">
+                    <span class="col-sub">01 / MOBILE & PC</span>
+                    <div class="col-title">2D Games</div>
+                    <span class="view-btn">View Details</span>
+                </div>
+            </a>
 
-            <a href="projects-3d.html" class="work-col">
-                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop" alt="3D Action">
-                <div class="col-overlay">
-                    <span class="col-sub">02 / CONSOLE QUALITY</span>
-                    <div class="col-title">3D Action</div>
-                    <span class="view-btn">View Details</span>
-                </div>
-            </a>
+            <a href="projects-3d.html" class="work-col">
+                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop" alt="3D Action">
+                <div class="col-overlay">
+                    <span class="col-sub">02 / CONSOLE QUALITY</span>
+                    <div class="col-title">3D Action</div>
+                    <span class="view-btn">View Details</span>
+                </div>
+            </a>
 
-            <a href="projects-vr.html" class="work-col">
-                <img src="https://images.unsplash.com/photo-1622979135228-5118441e9635?q=80&w=2536&auto=format&fit=crop" alt="VR AR">
-                <div class="col-overlay">
-                    <span class="col-sub">03 / IMMERSIVE TECH</span>
-                    <div class="col-title">VR / AR</div>
-                    <span class="view-btn">View Details</span>
-                </div>
-            </a>
-        </div>
-    </div>
+            <a href="projects-vr.html" class="work-col">
+                <img src="https://images.unsplash.com/photo-1622979135228-5118441e9635?q=80&w=2536&auto=format&fit=crop" alt="VR AR">
+                <div class="col-overlay">
+                    <span class="col-sub">03 / IMMERSIVE TECH</span>
+                    <div class="col-title">VR / AR</div>
+                    <span class="view-btn">View Details</span>
+                </div>
+            </a>
+        </div>
+    </div>
 
-    <div class="container resume-container">
-        <a href="Resume.pdf" download="AbhilashSaji_Resume.pdf" class="resume-box magnetic-area">
-            <div class="resume-info">
-                <h3>Character Sheet</h3>
-                <p>View full stats and inventory.</p>
-            </div>
-            <div class="resume-action">
-                Acquire PDF 
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-            </div>
-        </a>
-    </div>
+    <div class="container resume-container">
+        <a href="Resume.pdf" download="AbhilashSaji_Resume.pdf" class="resume-box magnetic-area">
+            <div class="resume-info">
+                <h3>Character Sheet</h3>
+                <p>View full stats and inventory.</p>
+            </div>
+            <div class="resume-action">
+                Acquire PDF 
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            </div>
+        </a>
+    </div>
 
-    <footer id="contact">
-        <div>
-            <p style="font-family: var(--font-code); color: #666; margin-bottom: 1rem;">SUMMON SIGN</p>
-            <h2 class="footer-headline">Seek Audience<br>With Me.</h2>
-            <a href="mailto:abhilashsaji.dev@gmail.com" class="email-link magnetic">abhilashsaji.dev@gmail.com</a>
-            <div class="social-row">
-                <a href="https://www.linkedin.com/in/AbhilashSaji" target="_blank" class="magnetic">LinkedIn</a>
-                <a href="https://wa.me/917511104768" target="_blank" class="magnetic">WhatsApp</a>
-                <a href="tel:+917511104768" class="magnetic">Contact Number</a>
-            </div>
-        </div>
-    </footer>
+    <footer id="contact">
+        <div>
+            <p style="font-family: var(--font-code); color: #666; margin-bottom: 1rem;">SUMMON SIGN</p>
+            <h2 class="footer-headline">Seek Audience<br>With Me.</h2>
+            <a href="mailto:abhilashsaji.dev@gmail.com" class="email-link magnetic">abhilashsaji.dev@gmail.com</a>
+            <div class="social-row">
+                <a href="https://www.linkedin.com/in/AbhilashSaji" target="_blank" class="magnetic">LinkedIn</a>
+                <a href="https://wa.me/917511104768" target="_blank" class="magnetic">WhatsApp</a>
+                <a href="tel:+917511104768" class="magnetic">Contact Number</a>
+            </div>
+        </div>
+    </footer>
 
-    <script>
-        const lenis = new Lenis({ duration: 1.2, smooth: true });
-        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
-        requestAnimationFrame(raf);
-        gsap.registerPlugin(ScrollTrigger);
+    <script>
+        const lenis = new Lenis({ duration: 1.2, smooth: true });
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+        gsap.registerPlugin(ScrollTrigger);
 
-        /* --- PARTICLES: GOLDEN RUNES/LEAVES --- */
-        const particleContainer = document.getElementById('particles-container');
-        const particleCount = 30; 
+        /* --- PARTICLES: GOLDEN RUNES/LEAVES --- */
+        const particleContainer = document.getElementById('particles-container');
+        const particleCount = 35; 
 
-        for (let i = 0; i < particleCount; i++) {
-            let p = document.createElement('div');
-            p.classList.add('golden-rune');
-            
-            let x = Math.random() * 100;
-            let duration = 6 + Math.random() * 12;
-            let delay = Math.random() * -10; 
-            let size = 2 + Math.random() * 6; 
-            
-            p.style.left = x + 'vw';
-            p.style.width = size + 'px';
-            p.style.height = size + 'px';
-            
-            // Float upwards like Erdtree leaves
-            gsap.to(p, {
-                y: '-100vh',
-                x: '+=' + (Math.random() * 200 - 100), 
-                opacity: 0,
-                duration: duration,
-                delay: delay,
-                repeat: -1,
-                ease: "none",
-                startAt: { y: '100vh', opacity: Math.random() * 0.8 + 0.2 }
-            });
-            particleContainer.appendChild(p);
-        }
+        for (let i = 0; i < particleCount; i++) {
+            let p = document.createElement('div');
+            p.classList.add('golden-particle');
+            
+            // Spawn mostly from bottom center (Grace source)
+            let xStart = 50 + (Math.random() * 30 - 15); 
+            
+            let duration = 5 + Math.random() * 8;
+            let delay = Math.random() * -5; 
+            let size = 3 + Math.random() * 5; 
+            
+            p.style.left = xStart + 'vw';
+            p.style.width = size + 'px';
+            p.style.height = size + 'px';
+            
+            // Float upwards in a curved path
+            gsap.to(p, {
+                y: '-100vh',
+                x: '+=' + (Math.random() * 100 - 50), 
+                opacity: 0,
+                duration: duration,
+                delay: delay,
+                repeat: -1,
+                ease: "power1.out",
+                startAt: { y: '110vh', opacity: Math.random() * 0.8 + 0.2 }
+            });
+            particleContainer.appendChild(p);
+        }
 
-        /* --- INTERACTIVE PARALLAX --- */
-        document.addEventListener('mousemove', (e) => {
-            const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
-            const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
-            gsap.to('#bg-image', { x: moveX, y: moveY, duration: 1, ease: "power2.out" });
-        });
+        /* --- INTERACTIVE PARALLAX --- */
+        document.addEventListener('mousemove', (e) => {
+            const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
+            const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
+            gsap.to('#bg-image', { x: moveX, y: moveY, duration: 1, ease: "power2.out" });
+        });
 
-        const cursor = document.querySelector('.cursor');
-        const follower = document.querySelector('.cursor-follower');
-        window.addEventListener('mousemove', (e) => {
-            gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1 });
-            gsap.to(follower, { x: e.clientX, y: e.clientY, duration: 0.3 });
-        });
+        const cursor = document.querySelector('.cursor');
+        const follower = document.querySelector('.cursor-follower');
+        window.addEventListener('mousemove', (e) => {
+            gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1 });
+            gsap.to(follower, { x: e.clientX, y: e.clientY, duration: 0.3 });
+        });
 
-        const tl = gsap.timeline();
-        const techText = new SplitType('#hero-text-tech', { types: 'words, chars' });
-        const personalText = new SplitType('#hero-text-personal', { types: 'words' });
-        
-        /* --- CONSOLE LOG LOADER LOGIC --- */
-        let count = 0; 
-        const counter = document.querySelector('.counter');
-        const loadingBar = document.querySelector('.loading-bar');
-        const consoleOutput = document.getElementById('console-output');
-        
-        const logs = [
-            "> Touching Grace...",
-            "> Discovering Map Fragment...",
-            "> <span class='success'>Invading World...</span>",
-            "> Summoning Torrent...",
-            "> <span class='success'>Site of Grace Discovered.</span>"
-        ];
-        
-        const interval = setInterval(() => { 
-            count += 2; 
-            if(count > 100) count = 100; 
-            counter.innerText = count + "%"; 
-            loadingBar.style.width = count + "%";
-            if (count % 20 === 0 && count < 90) {
-                let logIndex = Math.floor(count / 20);
-                if (logs[logIndex]) {
-                    const line = document.createElement('div');
-                    line.className = 'console-line';
-                    line.innerHTML = logs[logIndex];
-                    consoleOutput.appendChild(line);
-                    consoleOutput.scrollTop = consoleOutput.scrollHeight;
-                }
-            }
-            if(count === 100) clearInterval(interval); 
-        }, 30);
+        const tl = gsap.timeline();
+        const techText = new SplitType('#hero-text-tech', { types: 'words, chars' });
+        const personalText = new SplitType('#hero-text-personal', { types: 'words' });
+        
+        /* --- CONSOLE LOG LOADER LOGIC --- */
+        let count = 0; 
+        const counter = document.querySelector('.counter');
+        const loadingBar = document.querySelector('.loading-bar');
+        const consoleOutput = document.getElementById('console-output');
+        
+        const logs = [
+            "> Touching Grace...",
+            "> Discovering Map Fragment...",
+            "> <span class='success'>Invading World...</span>",
+            "> Summoning Torrent...",
+            "> <span class='success'>Site of Grace Discovered.</span>"
+        ];
+        
+        const interval = setInterval(() => { 
+            count += 2; 
+            if(count > 100) count = 100; 
+            counter.innerText = count + "%"; 
+            loadingBar.style.width = count + "%";
+            if (count % 20 === 0 && count < 90) {
+                let logIndex = Math.floor(count / 20);
+                if (logs[logIndex]) {
+                    const line = document.createElement('div');
+                    line.className = 'console-line';
+                    line.innerHTML = logs[logIndex];
+                    consoleOutput.appendChild(line);
+                    consoleOutput.scrollTop = consoleOutput.scrollHeight;
+                }
+            }
+            if(count === 100) clearInterval(interval); 
+        }, 30);
 
-        tl.to(".preloader", { delay: 2.5, y: "-100%", duration: 1, ease: "expo.inOut" })
-          .to(".preloader-overlay", { y: "-100%", duration: 1, ease: "expo.inOut" }, "-=0.8")
-          .from(techText.chars, { y: 100, opacity: 0, rotateZ: 5, duration: 0.8, stagger: 0.02, ease: "back.out(1.7)" }, "-=0.5")
-          .from("#hero-sub", { opacity: 0, y: 10, duration: 0.5 }, "-=0.3")
-          .to({}, { duration: 1.0 }) 
-          .to("#hero-intro", { filter: "blur(20px)", opacity: 0, scale: 0.9, duration: 0.5, ease: "power2.in" })
-          .to("#hero-personal", { opacity: 1, duration: 0.1 })
-          .from("#hero-personal", { filter: "blur(20px)", scale: 1.1, duration: 0.7, ease: "expo.out" }, "+=0.1")
-          .from(".hello-badge", { opacity: 0, y: -20, duration: 0.5 }, "-=0.5")
-          .from(personalText.words, { y: 40, opacity: 0, duration: 0.6, stagger: 0.02, ease: "power3.out" }, "-=0.5");
+        tl.to(".preloader", { delay: 2.5, y: "-100%", duration: 1, ease: "expo.inOut" })
+          .to(".preloader-overlay", { y: "-100%", duration: 1, ease: "expo.inOut" }, "-=0.8")
+          .from(techText.chars, { y: 100, opacity: 0, rotateZ: 5, duration: 0.8, stagger: 0.02, ease: "back.out(1.7)" }, "-=0.5")
+          .from("#hero-sub", { opacity: 0, y: 10, duration: 0.5 }, "-=0.3")
+          .to({}, { duration: 1.0 }) 
+          .to("#hero-intro", { filter: "blur(20px)", opacity: 0, scale: 0.9, duration: 0.5, ease: "power2.in" })
+          .to("#hero-personal", { opacity: 1, duration: 0.1 })
+          .from("#hero-personal", { filter: "blur(20px)", scale: 1.1, duration: 0.7, ease: "expo.out" }, "+=0.1")
+          .from(".hello-badge", { opacity: 0, y: -20, duration: 0.5 }, "-=0.5")
+          .from(personalText.words, { y: 40, opacity: 0, duration: 0.6, stagger: 0.02, ease: "power3.out" }, "-=0.5");
 
-        const readingText = new SplitType('.reading-text', { types: 'words' });
-        gsap.fromTo(readingText.words, { opacity: 0.2, color: "#aaa" }, { opacity: 1, color: "#fff", stagger: 0.05, scrollTrigger: { trigger: ".reading-text", start: "top 85%", end: "bottom 65%", scrub: true }});
-    </script>
+        const readingText = new SplitType('.reading-text', { types: 'words' });
+        gsap.fromTo(readingText.words, { opacity: 0.2, color: "#aaa" }, { opacity: 1, color: "#fff", stagger: 0.05, scrollTrigger: { trigger: ".reading-text", start: "top 85%", end: "bottom 65%", scrub: true }});
+    </script>
 </body>
 </html>

@@ -16,7 +16,6 @@
     <style>
         /* --- CORE --- */
         :root { 
-            --bg: transparent; /* CRITICAL: Must be transparent */
             --text: #e1e1e1; 
             --accent: #ffae00; /* Uncharted Gold */
             --font-head: 'Clash Display', sans-serif; 
@@ -26,11 +25,11 @@
         }
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
         ::selection { background: var(--accent); color: #000; }
-        html { scroll-behavior: auto; background: #000; } /* Black fallback for HTML */
         
-        /* CRITICAL FIX: Body must be transparent to see the fixed video behind it */
-        body { 
-            background-color: transparent; 
+        /* FORCE TRANSPARENCY ON EVERYTHING SO BG SHOWS */
+        html, body { 
+            margin: 0; padding: 0; 
+            background: transparent !important; /* Critical Fix */
             color: var(--text); 
             font-family: var(--font-body); 
             overflow-x: hidden; 
@@ -39,9 +38,14 @@
         /* --- BACKGROUND CONTAINER --- */
         #gamer-bg-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-            z-index: -1; /* Behind everything */
+            z-index: -999; /* Way behind everything */
             overflow: hidden;
-            background: #000;
+            background-color: #000;
+            
+            /* INSTANT FALLBACK IMAGE (Uncharted Cave) - Shows if video fails */
+            background-image: url('https://images.unsplash.com/photo-1504194921103-f8b80c338d47?q=80&w=2600&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
         }
 
         /* VIDEO ELEMENT */
@@ -52,16 +56,16 @@
             width: auto; height: auto;
             transform: translate(-50%, -50%);
             object-fit: cover;
-            opacity: 0.8; /* High visibility */
-            filter: contrast(1.1) brightness(0.8) sepia(10%); /* Cinematic Look */
+            opacity: 0; /* Hidden until loaded to prevent black flash */
+            transition: opacity 1s ease;
+            filter: contrast(1.1) brightness(0.7) sepia(15%);
         }
 
         /* Cinematic Overlay */
         .cinematic-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            /* Gradient to make text readable */
-            background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6) 60%, #000 100%);
-            z-index: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6) 60%, #050505 100%);
+            z-index: 1;
         }
 
         /* --- DUST PARTICLES --- */
@@ -70,7 +74,7 @@
             background: rgba(255, 200, 100, 0.8); 
             border-radius: 50%;
             box-shadow: 0 0 8px rgba(255, 200, 100, 0.6);
-            z-index: 1;
+            z-index: 2;
             pointer-events: none;
         }
 
@@ -86,8 +90,7 @@
         .nav-links a:hover { color: var(--accent); }
 
         /* --- HERO SECTION --- */
-        /* Ensure Hero is transparent */
-        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; width: 100%; background: transparent; }
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; width: 100%; }
         
         #hero-intro { 
             position: absolute; width: 100%; max-width: 1400px; padding: 0 5vw; 
@@ -133,7 +136,6 @@
         }
 
         /* --- SECTIONS --- */
-        /* Content areas need backgrounds to be readable, or gradients */
         .container { max-width: 1400px; margin: 0 auto; padding: 0 5vw; }
         .about-section { padding: 8rem 0 2rem 0; position: relative; z-index: 2; }
         .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 2rem; }
@@ -168,7 +170,7 @@
 
         /* --- RESUME --- */
         .resume-container { margin-top: 3rem; width: 100%; position: relative; z-index: 2; }
-        .resume-box { display: flex; justify-content: space-between; align-items: center; padding: 4rem; border: 1px solid #444; text-decoration: none; transition: all 0.4s ease; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(10px); }
+        .resume-box { display: flex; justify-content: space-between; align-items: center; padding: 4rem; border: 1px solid #444; text-decoration: none; transition: all 0.4s ease; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(10px); }
         .resume-box:hover { border-color: var(--accent); background: rgba(255, 174, 0, 0.1); }
         .resume-info h3 { font-family: var(--font-head); font-size: 2.5rem; text-transform: uppercase; color: #fff; margin-bottom: 0.5rem; }
         .resume-info p { font-family: var(--font-code); color: #aaa; font-size: 0.9rem; }
@@ -190,6 +192,7 @@
         .console-log { font-size: 0.8rem; color: #666; margin-bottom: 1rem; height: 100px; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; }
         .console-line { margin-bottom: 4px; }
         .success { color: #4caf50; }
+        .warning { color: #ff9800; }
         .loading-bar-container { width: 100%; height: 2px; background: #222; margin-top: 10px; }
         .loading-bar { width: 0%; height: 100%; background: #fff; }
 
@@ -207,7 +210,7 @@
 
     <div id="gamer-bg-container">
         <video autoplay muted loop playsinline id="game-video-bg">
-            <source src="https://videos.pexels.com/video-files/1448735/1448735-hd_1920_1080_30fps.mp4" type="video/mp4">
+            <source src="https://videos.pexels.com/video-files/5091624/5091624-uhd_2560_1440_24fps.mp4" type="video/mp4">
         </video>
         
         <div class="cinematic-overlay"></div>
@@ -348,6 +351,16 @@
         function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
         requestAnimationFrame(raf);
         gsap.registerPlugin(ScrollTrigger);
+
+        /* --- VIDEO LOAD HANDLER --- */
+        const video = document.getElementById('game-video-bg');
+        // Force play via JS to overcome some browser policies
+        video.play().catch(e => console.log("Auto-play blocked, waiting for interaction", e));
+        
+        // Fade in video once it can play
+        video.oncanplay = function() {
+            gsap.to(video, { opacity: 0.8, duration: 2 });
+        };
 
         /* --- PARTICLES: FIREFLIES / EMBERS --- */
         const particleContainer = document.getElementById('particles-container');

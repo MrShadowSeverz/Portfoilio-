@@ -15,7 +15,8 @@
 
     <style>
         /* --- CORE --- */
-        :root { --bg: #050505; --text: #e1e1e1; --accent: #ff3333; --font-head: 'Clash Display', sans-serif; --font-body: 'Satoshi', sans-serif; --font-code: 'Space Mono', monospace; --font-italic: 'Playfair Display', serif; }
+        /* Changed Accent to a "Treasure Gold/Orange" to fit Uncharted, kept BG dark */
+        :root { --bg: #050505; --text: #e1e1e1; --accent: #ffae00; --font-head: 'Clash Display', sans-serif; --font-body: 'Satoshi', sans-serif; --font-code: 'Space Mono', monospace; --font-italic: 'Playfair Display', serif; }
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
         ::selection { background: var(--accent); color: #000; }
         html { scroll-behavior: auto; }
@@ -37,34 +38,25 @@
             width: auto; height: auto;
             transform: translate(-50%, -50%);
             object-fit: cover;
-            opacity: 0.6; /* Slight dim for readability */
+            /* Sepia filter for that "Adventure Movie" look */
+            filter: sepia(20%) contrast(1.1);
         }
 
-        /* 3D Grid Floor (Subtle overlay) */
-        .retro-grid {
-            position: absolute; width: 200vw; height: 200vh;
-            left: -50%; top: -25%; 
-            background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-            background-size: 60px 60px;
-            transform: perspective(300px) rotateX(60deg);
-            animation: moveGrid 20s linear infinite;
-            mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 20%, rgba(0,0,0,0.5) 60%, rgba(0,0,0,0) 90%);
-            -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 20%, rgba(0,0,0,0.5) 60%, rgba(0,0,0,0) 90%);
+        /* Cinematic Gradient Overlay (Darker at bottom for text readability) */
+        .cinematic-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6) 50%, #050505 100%);
+            z-index: 0;
         }
 
-        @keyframes moveGrid {
-            0% { transform: perspective(300px) rotateX(60deg) translateY(0); }
-            100% { transform: perspective(300px) rotateX(60deg) translateY(60px); }
-        }
-
-        /* Floating Wireframes */
-        .wireframe-cube {
+        /* --- PARTICLES: DUST MOTES (Naughty Dog Style) --- */
+        .dust-mote {
             position: absolute; 
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            background: transparent;
+            background: rgba(255, 200, 100, 0.6); /* Gold dust */
+            border-radius: 50%;
+            box-shadow: 0 0 4px rgba(255, 200, 100, 0.4);
             z-index: 1;
+            pointer-events: none;
         }
 
         /* --- UI ELEMENTS --- */
@@ -72,10 +64,10 @@
         .cursor-follower { position: fixed; width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.3); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: 0.1s; }
 
         /* --- NAV --- */
-        nav { position: fixed; top: 0; width: 100%; padding: 2rem 5vw; display: flex; justify-content: space-between; align-items: center; z-index: 100; background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent); border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .logo { font-weight: 700; font-family: var(--font-head); text-transform: uppercase; letter-spacing: 1px; font-size: 1.2rem; text-decoration: none; color: #fff; }
+        nav { position: fixed; top: 0; width: 100%; padding: 2rem 5vw; display: flex; justify-content: space-between; align-items: center; z-index: 100; background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent); }
+        .logo { font-weight: 700; font-family: var(--font-head); text-transform: uppercase; letter-spacing: 1px; font-size: 1.2rem; text-decoration: none; color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
         .nav-links { display: flex; gap: 2rem; }
-        .nav-links a { font-family: var(--font-head); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; transition: color 0.3s; color: #ccc; text-decoration: none; }
+        .nav-links a { font-family: var(--font-head); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; transition: color 0.3s; color: #ddd; text-decoration: none; text-shadow: 0 2px 5px rgba(0,0,0,0.8); }
         .nav-links a:hover { color: var(--accent); }
 
         /* --- HERO SECTION --- */
@@ -94,7 +86,8 @@
             font-weight: 700; 
             letter-spacing: -2px;
             color: #fff;
-            text-shadow: 0 10px 40px rgba(0,0,0,0.9);
+            /* Strong shadow to pop against the jungle background */
+            text-shadow: 0 10px 40px rgba(0,0,0,0.8);
         }
         
         #hero-personal { 
@@ -102,7 +95,7 @@
             top: 50%; left: 50%; transform: translate(-50%, -50%);
             opacity: 0; z-index: 1; text-align: center; display: flex; flex-direction: column; align-items: center; 
         }
-        .hello-badge { font-family: var(--font-code); font-size: 0.8rem; margin-bottom: 2rem; border: 1px solid #fff; padding: 8px 20px; border-radius: 50px; color: #fff; text-transform: uppercase; letter-spacing: 3px; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); }
+        .hello-badge { font-family: var(--font-code); font-size: 0.8rem; margin-bottom: 2rem; border: 1px solid #fff; padding: 8px 20px; border-radius: 50px; color: #fff; text-transform: uppercase; letter-spacing: 3px; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(5px); }
         
         .personal-text { 
             font-family: var(--font-head); 
@@ -129,12 +122,12 @@
         
         .about-section { padding: 8rem 0 2rem 0; position: relative; z-index: 2; }
         
-        .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem; border-bottom: 1px solid #222; padding-bottom: 2rem; }
-        .section-title { font-family: var(--font-head); font-size: 4rem; text-transform: uppercase; color: var(--accent); font-weight: 700; line-height: 1; text-shadow: 0 0 20px rgba(255, 51, 51, 0.4); }
+        .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem; border-bottom: 1px solid #333; padding-bottom: 2rem; }
+        .section-title { font-family: var(--font-head); font-size: 4rem; text-transform: uppercase; color: var(--accent); font-weight: 700; line-height: 1; text-shadow: 0 0 20px rgba(255, 174, 0, 0.2); }
         .reading-text { font-size: clamp(1.2rem, 2.5vw, 2rem); line-height: 1.5; color: #ccc; max-width: 100%; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
         .reading-text .word.active { color: #fff; }
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 5rem; }
-        .stat-box h4 { font-size: 4rem; color: var(--accent); font-family: var(--font-head); line-height: 1; margin-bottom: 0.5rem; text-shadow: 0 0 15px rgba(255, 51, 51, 0.4); }
+        .stat-box h4 { font-size: 4rem; color: var(--accent); font-family: var(--font-head); line-height: 1; margin-bottom: 0.5rem; text-shadow: 0 0 15px rgba(255, 174, 0, 0.3); }
         .stat-box p { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: #ccc; }
 
         /* --- WORKS AREA (3 COLUMNS) --- */
@@ -162,11 +155,11 @@
         /* --- RESUME BOX --- */
         .resume-container { margin-top: 3rem; width: 100%; position: relative; z-index: 2; }
         .resume-box { display: flex; justify-content: space-between; align-items: center; padding: 4rem; border: 1px solid #333; text-decoration: none; transition: all 0.4s ease; background: rgba(10, 10, 10, 0.8); backdrop-filter: blur(10px); }
-        .resume-box:hover { border-color: var(--accent); background: rgba(255, 51, 51, 0.1); }
+        .resume-box:hover { border-color: var(--accent); background: rgba(255, 174, 0, 0.1); }
         .resume-info h3 { font-family: var(--font-head); font-size: 2.5rem; text-transform: uppercase; color: #fff; margin-bottom: 0.5rem; }
         .resume-info p { font-family: var(--font-code); color: #888; font-size: 0.9rem; }
         .resume-action { background: #fff; color: #000; padding: 15px 30px; border-radius: 50px; font-family: var(--font-head); font-weight: 600; text-transform: uppercase; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; transition: 0.3s; }
-        .resume-box:hover .resume-action { background: var(--accent); color: #fff; }
+        .resume-box:hover .resume-action { background: var(--accent); color: #000; }
 
         /* --- FOOTER --- */
         footer { padding: 8rem 5vw; border-top: 1px solid #222; background: #080808; margin-top: 5rem; position: relative; z-index: 2; }
@@ -185,7 +178,7 @@
         .success { color: #4caf50; }
         .warning { color: #ff9800; }
         .loading-bar-container { width: 100%; height: 2px; background: #222; margin-top: 10px; }
-        .loading-bar { width: 0%; height: 100%; background: var(--accent); }
+        .loading-bar { width: 0%; height: 100%; background: #000; } /* Bar becomes dark on complete */
 
         @media (max-width: 768px) {
             .nav-links { display: none; }
@@ -201,10 +194,10 @@
 
     <div id="gamer-bg-container">
         <video autoplay muted loop playsinline id="game-video-bg">
-            <source src="https://videos.pexels.com/video-files/852423/852423-hd_1920_1080_30fps.mp4" type="video/mp4">
+            <source src="https://videos.pexels.com/video-files/5091624/5091624-uhd_2560_1440_24fps.mp4" type="video/mp4">
         </video>
         
-        <div class="retro-grid"></div>
+        <div class="cinematic-overlay"></div>
         <div id="particles-container"></div>
     </div>
     
@@ -217,7 +210,7 @@
             <div style="font-size: 3rem; font-weight: 700; font-family: var(--font-head); color: #fff;">
                 <span class="counter">0%</span>
             </div>
-            <div style="font-size: 0.8rem; letter-spacing: 2px; color: #888;">INITIALIZING ENGINE...</div>
+            <div style="font-size: 0.8rem; letter-spacing: 2px; color: #888;">LOADING ASSETS...</div>
         </div>
         <div class="loading-bar-container"><div class="loading-bar"></div></div>
     </div>
@@ -245,7 +238,7 @@
                 <span style="color: var(--accent);">Immersive</span><br>
                 Realities
             </h1>
-            <p style="margin-top: 2rem; max-width: 400px; color: #ccc; line-height: 1.6; text-shadow: 0 1px 3px rgba(0,0,0,1);" id="hero-sub">Bridging the gap between technical code and artistic vision.</p>
+            <p style="margin-top: 2rem; max-width: 400px; color: #ddd; line-height: 1.6; text-shadow: 0 1px 3px rgba(0,0,0,1);" id="hero-sub">Bridging the gap between technical code and artistic vision.</p>
         </div>
         
         <div id="hero-personal">
@@ -352,18 +345,18 @@
         requestAnimationFrame(raf);
         gsap.registerPlugin(ScrollTrigger);
 
-        /* --- PARTICLES: WIREFRAMES --- */
+        /* --- PARTICLES: UNCHARTED STYLE DUST (Added) --- */
         const particleContainer = document.getElementById('particles-container');
-        const particleCount = 15;
+        const particleCount = 40; // More dust for jungle feel
 
         for (let i = 0; i < particleCount; i++) {
             let p = document.createElement('div');
-            p.classList.add('wireframe-cube');
+            p.classList.add('dust-mote');
             
             let x = Math.random() * 100;
-            let duration = 8 + Math.random() * 15;
+            let duration = 10 + Math.random() * 20;
             let delay = Math.random() * -20; 
-            let size = 20 + Math.random() * 50;
+            let size = 2 + Math.random() * 4; // Small dust specks
             
             p.style.left = x + 'vw';
             p.style.width = size + 'px';
@@ -371,14 +364,13 @@
             
             gsap.to(p, {
                 y: '-110vh',
-                rotation: 180 + Math.random() * 360,
-                scale: 0.5,
+                x: '+=' + (Math.random() * 50 - 25), // Drift sideways
                 opacity: 0,
                 duration: duration,
                 delay: delay,
                 repeat: -1,
-                ease: "power1.inOut",
-                startAt: { y: '110vh', rotation: 0, opacity: 0.8, scale: 1 }
+                ease: "none",
+                startAt: { y: '110vh', opacity: 0.6 }
             });
             particleContainer.appendChild(p);
         }
@@ -401,13 +393,13 @@
         const consoleOutput = document.getElementById('console-output');
         
         const logs = [
-            "> Loading UnityEngine.Core...",
-            "> Initializing Physics2D...",
-            "> <span class='success'>Assets Loaded Successfully</span>",
-            "> Baking Lightmaps (Progress 45%)...",
-            "> <span class='warning'>Warning: Shader compilation slow</span>",
-            "> Instantiating PlayerController...",
-            "> <span class='success'>Ready.</span>"
+            "> Loading Terrain Data...",
+            "> Generating Mesh Collider...",
+            "> <span class='success'>Vegetation Spawners Active</span>",
+            "> Baking Lightprobes...",
+            "> <span class='warning'>Optimizing Draw Calls...</span>",
+            "> Initializing Character Controller...",
+            "> <span class='success'>World Loaded.</span>"
         ];
         
         const interval = setInterval(() => { 

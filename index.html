@@ -1,452 +1,429 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abhilash Saji | Unity Developer</title>
-    
-    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@200,400,600,700&f[]=satoshi@300,400,500,700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="https://unpkg.com/split-type"></script>
-    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abhilash Saji | Unity Developer</title>
+    
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@200,400,600,700&f[]=satoshi@300,400,500,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/split-type"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
 
-    <style>
-        /* --- CORE --- */
-        :root { 
-            --text: #e1e1e1; 
-            --accent: #ffae00; /* Uncharted Gold */
-            --font-head: 'Clash Display', sans-serif; 
-            --font-body: 'Satoshi', sans-serif; 
-            --font-code: 'Space Mono', monospace; 
-            --font-italic: 'Playfair Display', serif; 
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
-        ::selection { background: var(--accent); color: #000; }
-        
-        /* FORCE TRANSPARENCY ON EVERYTHING SO BG SHOWS */
-        html, body { 
-            margin: 0; padding: 0; 
-            background: transparent !important; /* Critical Fix */
-            color: var(--text); 
-            font-family: var(--font-body); 
-            overflow-x: hidden; 
-        }
+    <style>
+        /* --- CORE --- */
+        :root { 
+            --text: #e1e1e1; 
+            /* Changed accent to Cyan/Blue to match the new background */
+            --accent: #00f2ff; 
+            --font-head: 'Clash Display', sans-serif; 
+            --font-body: 'Satoshi', sans-serif; 
+            --font-code: 'Space Mono', monospace; 
+            --font-italic: 'Playfair Display', serif; 
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        ::selection { background: var(--accent); color: #000; }
+        
+        /* Force transparency so background shows */
+        html, body { 
+            margin: 0; padding: 0; 
+            background: transparent !important; 
+            color: var(--text); 
+            font-family: var(--font-body); 
+            overflow-x: hidden; 
+        }
 
-        /* --- BACKGROUND CONTAINER --- */
-        #gamer-bg-container {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-            z-index: -999; /* Way behind everything */
-            overflow: hidden;
-            background-color: #000;
-            
-            /* INSTANT FALLBACK IMAGE (Uncharted Cave) - Shows if video fails */
-            background-image: url('https://images.unsplash.com/photo-1504194921103-f8b80c338d47?q=80&w=2600&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-        }
+        /* --- BACKGROUND CONTAINER --- */
+        #gamer-bg-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            z-index: -999;
+            overflow: hidden;
+            background-color: #050510; /* Dark Blue tint fallback */
+            
+            /* YOUR SPECIFIC IMAGE FILE */
+            background-image: url('ChatGPT Image Jan 13, 2026, 12_28_28 PM.png');
+            
+            background-size: cover;
+            background-position: center;
+            /* Slight adjustments to make text readable over the artwork */
+            filter: brightness(0.8) contrast(1.1); 
+        }
 
-        /* VIDEO ELEMENT */
-        #game-video-bg {
-            position: absolute;
-            top: 50%; left: 50%;
-            min-width: 100%; min-height: 100%;
-            width: auto; height: auto;
-            transform: translate(-50%, -50%);
-            object-fit: cover;
-            opacity: 0; /* Hidden until loaded to prevent black flash */
-            transition: opacity 1s ease;
-            filter: contrast(1.1) brightness(0.7) sepia(15%);
-        }
+        /* Blue Gradient Overlay for readability */
+        .cinematic-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(0,10,30,0.2), rgba(0,10,30,0.5) 60%, #020205 100%);
+            z-index: 1;
+        }
 
-        /* Cinematic Overlay */
-        .cinematic-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6) 60%, #050505 100%);
-            z-index: 1;
-        }
+        /* --- PARTICLES: MAGIC BLUE FIREFLIES --- */
+        .dust-mote {
+            position: absolute; 
+            background: rgba(100, 240, 255, 0.8); /* Cyan glow */
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(100, 240, 255, 0.6), 0 0 20px rgba(100, 240, 255, 0.3);
+            z-index: 2;
+            pointer-events: none;
+        }
 
-        /* --- DUST PARTICLES --- */
-        .dust-mote {
-            position: absolute; 
-            background: rgba(255, 200, 100, 0.8); 
-            border-radius: 50%;
-            box-shadow: 0 0 8px rgba(255, 200, 100, 0.6);
-            z-index: 2;
-            pointer-events: none;
-        }
+        /* --- UI ELEMENTS --- */
+        .cursor { position: fixed; width: 12px; height: 12px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%); mix-blend-mode: difference; }
+        .cursor-follower { position: fixed; width: 40px; height: 40px; border: 1px solid rgba(100, 240, 255, 0.3); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: 0.1s; }
 
-        /* --- UI ELEMENTS --- */
-        .cursor { position: fixed; width: 12px; height: 12px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%); mix-blend-mode: difference; }
-        .cursor-follower { position: fixed; width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.3); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: 0.1s; }
+        /* --- NAV --- */
+        nav { position: fixed; top: 0; width: 100%; padding: 2rem 5vw; display: flex; justify-content: space-between; align-items: center; z-index: 100; background: linear-gradient(to bottom, rgba(0,5,15,0.9), transparent); }
+        .logo { font-weight: 700; font-family: var(--font-head); text-transform: uppercase; letter-spacing: 1px; font-size: 1.2rem; text-decoration: none; color: #fff; text-shadow: 0 0 15px var(--accent); }
+        .nav-links { display: flex; gap: 2rem; }
+        .nav-links a { font-family: var(--font-head); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; transition: color 0.3s; color: #aaddff; text-decoration: none; }
+        .nav-links a:hover { color: var(--accent); text-shadow: 0 0 10px var(--accent); }
 
-        /* --- NAV --- */
-        nav { position: fixed; top: 0; width: 100%; padding: 2rem 5vw; display: flex; justify-content: space-between; align-items: center; z-index: 100; background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent); }
-        .logo { font-weight: 700; font-family: var(--font-head); text-transform: uppercase; letter-spacing: 1px; font-size: 1.2rem; text-decoration: none; color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,1); }
-        .nav-links { display: flex; gap: 2rem; }
-        .nav-links a { font-family: var(--font-head); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; transition: color 0.3s; color: #ddd; text-decoration: none; text-shadow: 0 2px 5px #000; }
-        .nav-links a:hover { color: var(--accent); }
+        /* --- HERO SECTION --- */
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; width: 100%; }
+        
+        #hero-intro { 
+            position: absolute; width: 100%; max-width: 1400px; padding: 0 5vw; 
+            top: 50%; transform: translateY(-50%); z-index: 2; 
+        }
+        
+        #hero-intro h1 { 
+            font-family: var(--font-head); 
+            font-size: clamp(2.5rem, 8vw, 6.5rem); 
+            line-height: 0.9;
+            text-transform: uppercase; 
+            font-weight: 700; 
+            letter-spacing: -2px;
+            color: #fff;
+            text-shadow: 0 0 30px rgba(0, 242, 255, 0.3);
+        }
+        
+        #hero-personal { 
+            position: absolute; width: 100%; 
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+            opacity: 0; z-index: 1; text-align: center; display: flex; flex-direction: column; align-items: center; 
+        }
+        .hello-badge { font-family: var(--font-code); font-size: 0.8rem; margin-bottom: 2rem; border: 1px solid var(--accent); padding: 8px 20px; border-radius: 50px; color: var(--accent); text-transform: uppercase; letter-spacing: 3px; background: rgba(0, 40, 50, 0.6); backdrop-filter: blur(5px); }
+        
+        .personal-text { 
+            font-family: var(--font-head); 
+            font-size: clamp(2.5rem, 6vw, 5rem); 
+            line-height: 1.1; 
+            font-weight: 700; 
+            max-width: 1300px; 
+            color: #fff; 
+            margin: 0 auto; 
+            text-align: center; 
+            text-shadow: 0 5px 20px rgba(0,0,0,0.8);
+        }
+        
+        .highlight-italic { 
+            font-family: var(--font-italic); 
+            font-style: italic; 
+            font-weight: 400; 
+            color: var(--accent); 
+            padding: 0 5px; 
+            text-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
+        }
 
-        /* --- HERO SECTION --- */
-        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; width: 100%; }
-        
-        #hero-intro { 
-            position: absolute; width: 100%; max-width: 1400px; padding: 0 5vw; 
-            top: 50%; transform: translateY(-50%); z-index: 2; 
-        }
-        
-        #hero-intro h1 { 
-            font-family: var(--font-head); 
-            font-size: clamp(2.5rem, 8vw, 6.5rem); 
-            line-height: 0.9;
-            text-transform: uppercase; 
-            font-weight: 700; 
-            letter-spacing: -2px;
-            color: #fff;
-            text-shadow: 0 10px 50px rgba(0,0,0,1);
-        }
-        
-        #hero-personal { 
-            position: absolute; width: 100%; 
-            top: 50%; left: 50%; transform: translate(-50%, -50%);
-            opacity: 0; z-index: 1; text-align: center; display: flex; flex-direction: column; align-items: center; 
-        }
-        .hello-badge { font-family: var(--font-code); font-size: 0.8rem; margin-bottom: 2rem; border: 1px solid #fff; padding: 8px 20px; border-radius: 50px; color: #fff; text-transform: uppercase; letter-spacing: 3px; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); }
-        
-        .personal-text { 
-            font-family: var(--font-head); 
-            font-size: clamp(2.5rem, 6vw, 5rem); 
-            line-height: 1.1; 
-            font-weight: 700; 
-            max-width: 1300px; 
-            color: #fff; 
-            margin: 0 auto; 
-            text-align: center; 
-            text-shadow: 0 10px 40px rgba(0,0,0,1);
-        }
-        
-        .highlight-italic { 
-            font-family: var(--font-italic); 
-            font-style: italic; 
-            font-weight: 400; 
-            color: var(--accent); 
-            padding: 0 5px; 
-        }
+        /* --- SECTIONS --- */
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 5vw; }
+        .about-section { padding: 8rem 0 2rem 0; position: relative; z-index: 2; }
+        .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem; border-bottom: 1px solid rgba(0, 242, 255, 0.2); padding-bottom: 2rem; }
+        .section-title { font-family: var(--font-head); font-size: 4rem; text-transform: uppercase; color: var(--accent); font-weight: 700; line-height: 1; text-shadow: 0 0 20px rgba(0, 242, 255, 0.4); }
+        .reading-text { font-size: clamp(1.2rem, 2.5vw, 2rem); line-height: 1.5; color: #aaddff; max-width: 100%; text-shadow: 0 2px 5px #000; }
+        .reading-text .word.active { color: #fff; text-shadow: 0 0 10px #fff; }
+        
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 5rem; }
+        .stat-box h4 { font-size: 4rem; color: var(--accent); font-family: var(--font-head); line-height: 1; margin-bottom: 0.5rem; text-shadow: 0 0 15px rgba(0, 242, 255, 0.3); }
+        .stat-box p { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: #aaddff; }
 
-        /* --- SECTIONS --- */
-        .container { max-width: 1400px; margin: 0 auto; padding: 0 5vw; }
-        .about-section { padding: 8rem 0 2rem 0; position: relative; z-index: 2; }
-        .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 2rem; }
-        .section-title { font-family: var(--font-head); font-size: 4rem; text-transform: uppercase; color: var(--accent); font-weight: 700; line-height: 1; text-shadow: 0 0 20px rgba(255, 174, 0, 0.4); }
-        .reading-text { font-size: clamp(1.2rem, 2.5vw, 2rem); line-height: 1.5; color: #ccc; max-width: 100%; text-shadow: 0 2px 5px #000; }
-        .reading-text .word.active { color: #fff; }
-        
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 5rem; }
-        .stat-box h4 { font-size: 4rem; color: var(--accent); font-family: var(--font-head); line-height: 1; margin-bottom: 0.5rem; text-shadow: 0 0 15px rgba(255, 174, 0, 0.3); }
-        .stat-box p { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: #ddd; }
+        /* --- WORKS --- */
+        .works-area { margin-top: 2rem; width: 100%; position: relative; z-index: 2; }
+        .work-header { display: flex; justify-content: center; align-items: center; flex-direction: column; margin-bottom: 2rem; }
+        .work-header h2 { font-family: var(--font-head); font-size: 4rem; text-transform: uppercase; line-height: 1; margin: 0; color: #fff; text-shadow: 0 0 20px rgba(0, 242, 255, 0.2); }
+        .work-header span { font-family: var(--font-code); color: #88a; margin-top: 10px; letter-spacing: 2px; }
 
-        /* --- WORKS --- */
-        .works-area { margin-top: 2rem; width: 100%; position: relative; z-index: 2; }
-        .work-header { display: flex; justify-content: center; align-items: center; flex-direction: column; margin-bottom: 2rem; }
-        .work-header h2 { font-family: var(--font-head); font-size: 4rem; text-transform: uppercase; line-height: 1; margin: 0; color: #fff; text-shadow: 0 0 20px rgba(255,255,255,0.2); }
-        .work-header span { font-family: var(--font-code); color: #aaa; margin-top: 10px; letter-spacing: 2px; }
+        .work-gateway { display: flex; height: 70vh; width: 100%; overflow: hidden; background: rgba(0,10,20,0.5); gap: 2px; border: 1px solid #004455; }
+        .work-col { display: block; flex: 1; position: relative; transition: flex 0.6s cubic-bezier(0.25, 1, 0.5, 1), filter 0.4s; overflow: hidden; border-right: 1px solid rgba(0, 242, 255, 0.1); text-decoration: none; }
+        .work-col:last-child { border-right: none; }
+        .work-col img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) brightness(0.6) hue-rotate(180deg); transition: transform 0.8s ease, filter 0.5s ease; }
+        
+        .col-overlay { position: absolute; bottom: 0; left: 0; width: 100%; padding: 2rem; background: linear-gradient(to top, rgba(0,10,30,0.95), transparent); transform: translateY(100%); transition: transform 0.5s ease; z-index: 2; }
+        .col-title { font-family: var(--font-head); font-size: 2.5rem; color: #fff; text-transform: uppercase; line-height: 1; }
+        .col-sub { font-family: var(--font-code); color: var(--accent); font-size: 0.8rem; margin-bottom: 10px; display: block; }
+        .view-btn { margin-top: 10px; font-family: var(--font-code); font-size: 0.7rem; border: 1px solid var(--accent); padding: 5px 15px; border-radius: 20px; color: var(--accent); display: inline-block; }
 
-        .work-gateway { display: flex; height: 70vh; width: 100%; overflow: hidden; background: #000; gap: 2px; border: 1px solid #444; }
-        .work-col { display: block; flex: 1; position: relative; transition: flex 0.6s cubic-bezier(0.25, 1, 0.5, 1), filter 0.4s; overflow: hidden; border-right: 1px solid rgba(255,255,255,0.1); text-decoration: none; }
-        .work-col:last-child { border-right: none; }
-        .work-col img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) brightness(0.5); transition: transform 0.8s ease, filter 0.5s ease; }
-        
-        .col-overlay { position: absolute; bottom: 0; left: 0; width: 100%; padding: 2rem; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); transform: translateY(100%); transition: transform 0.5s ease; z-index: 2; }
-        .col-title { font-family: var(--font-head); font-size: 2.5rem; color: #fff; text-transform: uppercase; line-height: 1; }
-        .col-sub { font-family: var(--font-code); color: var(--accent); font-size: 0.8rem; margin-bottom: 10px; display: block; }
-        .view-btn { margin-top: 10px; font-family: var(--font-code); font-size: 0.7rem; border: 1px solid #fff; padding: 5px 15px; border-radius: 20px; color: #fff; display: inline-block; }
+        .work-gateway:hover .work-col { filter: brightness(0.3); }
+        .work-col:hover { flex: 2.5; filter: brightness(1) !important; cursor: pointer; }
+        .work-col:hover img { filter: grayscale(0%) brightness(1); transform: scale(1.1); }
+        .work-col:hover .col-overlay { transform: translateY(0); }
 
-        .work-gateway:hover .work-col { filter: brightness(0.3); }
-        .work-col:hover { flex: 2.5; filter: brightness(1) !important; cursor: pointer; }
-        .work-col:hover img { filter: grayscale(0%) brightness(1); transform: scale(1.1); }
-        .work-col:hover .col-overlay { transform: translateY(0); }
+        /* --- RESUME --- */
+        .resume-container { margin-top: 3rem; width: 100%; position: relative; z-index: 2; }
+        .resume-box { display: flex; justify-content: space-between; align-items: center; padding: 4rem; border: 1px solid #004455; text-decoration: none; transition: all 0.4s ease; background: rgba(0, 10, 30, 0.7); backdrop-filter: blur(10px); }
+        .resume-box:hover { border-color: var(--accent); background: rgba(0, 242, 255, 0.05); }
+        .resume-info h3 { font-family: var(--font-head); font-size: 2.5rem; text-transform: uppercase; color: #fff; margin-bottom: 0.5rem; }
+        .resume-info p { font-family: var(--font-code); color: #aaddff; font-size: 0.9rem; }
+        .resume-action { background: var(--accent); color: #000; padding: 15px 30px; border-radius: 50px; font-family: var(--font-head); font-weight: 600; text-transform: uppercase; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; transition: 0.3s; }
+        .resume-box:hover .resume-action { background: #fff; color: #000; box-shadow: 0 0 20px var(--accent); }
 
-        /* --- RESUME --- */
-        .resume-container { margin-top: 3rem; width: 100%; position: relative; z-index: 2; }
-        .resume-box { display: flex; justify-content: space-between; align-items: center; padding: 4rem; border: 1px solid #444; text-decoration: none; transition: all 0.4s ease; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(10px); }
-        .resume-box:hover { border-color: var(--accent); background: rgba(255, 174, 0, 0.1); }
-        .resume-info h3 { font-family: var(--font-head); font-size: 2.5rem; text-transform: uppercase; color: #fff; margin-bottom: 0.5rem; }
-        .resume-info p { font-family: var(--font-code); color: #aaa; font-size: 0.9rem; }
-        .resume-action { background: #fff; color: #000; padding: 15px 30px; border-radius: 50px; font-family: var(--font-head); font-weight: 600; text-transform: uppercase; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; transition: 0.3s; }
-        .resume-box:hover .resume-action { background: var(--accent); color: #000; }
+        /* --- FOOTER --- */
+        footer { padding: 8rem 5vw; border-top: 1px solid #004455; background: #020205; margin-top: 5rem; position: relative; z-index: 2; }
+        .footer-headline { font-family: var(--font-head); font-size: clamp(3rem, 6vw, 5rem); line-height: 1; text-transform: uppercase; color: #fff; margin-bottom: 2rem; }
+        .social-row { display: flex; gap: 2rem; margin-top: 2rem; }
+        .social-row a { color: #00f2ff; text-decoration: underline; text-transform: uppercase; font-family: var(--font-code); font-size: 0.9rem; transition: 0.3s; }
+        .social-row a:hover { color: #fff; text-shadow: 0 0 10px var(--accent); }
+        .email-link { font-size: 1.5rem; color: #5588aa; text-decoration: none; transition: 0.3s; font-family: var(--font-code); display: block; margin-bottom: 2rem;}
+        .email-link:hover { color: #fff; }
 
-        /* --- FOOTER --- */
-        footer { padding: 8rem 5vw; border-top: 1px solid #222; background: #080808; margin-top: 5rem; position: relative; z-index: 2; }
-        .footer-headline { font-family: var(--font-head); font-size: clamp(3rem, 6vw, 5rem); line-height: 1; text-transform: uppercase; color: #fff; margin-bottom: 2rem; }
-        .social-row { display: flex; gap: 2rem; margin-top: 2rem; }
-        .social-row a { color: #6e56cf; text-decoration: underline; text-transform: uppercase; font-family: var(--font-code); font-size: 0.9rem; transition: 0.3s; }
-        .social-row a:hover { color: var(--accent); }
-        .email-link { font-size: 1.5rem; color: #555; text-decoration: none; transition: 0.3s; font-family: var(--font-code); display: block; margin-bottom: 2rem;}
-        .email-link:hover { color: #fff; }
+        /* PRELOADER */
+        .preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #020205; color: #fff; z-index: 99999; display: flex; flex-direction: column; justify-content: flex-end; padding: 2rem 5vw; font-family: var(--font-code); }
+        .preloader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: var(--accent); z-index: 99998; transform: translateY(100%); }
+        .console-log { font-size: 0.8rem; color: #aaddff; margin-bottom: 1rem; height: 100px; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; }
+        .console-line { margin-bottom: 4px; }
+        .success { color: var(--accent); }
+        .loading-bar-container { width: 100%; height: 2px; background: #004455; margin-top: 10px; }
+        .loading-bar { width: 0%; height: 100%; background: var(--accent); box-shadow: 0 0 15px var(--accent); }
 
-        /* PRELOADER */
-        .preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #050505; color: #fff; z-index: 99999; display: flex; flex-direction: column; justify-content: flex-end; padding: 2rem 5vw; font-family: var(--font-code); }
-        .preloader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: var(--accent); z-index: 99998; transform: translateY(100%); }
-        .console-log { font-size: 0.8rem; color: #666; margin-bottom: 1rem; height: 100px; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; }
-        .console-line { margin-bottom: 4px; }
-        .success { color: #4caf50; }
-        .warning { color: #ff9800; }
-        .loading-bar-container { width: 100%; height: 2px; background: #222; margin-top: 10px; }
-        .loading-bar { width: 0%; height: 100%; background: #fff; }
-
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .work-gateway { flex-direction: column; height: 100vh; }
-            .work-col:hover { flex: 1; }
-            .col-overlay { transform: translateY(0); }
-            .resume-box { flex-direction: column; align-items: flex-start; gap: 2rem; padding: 2rem; }
-            .stats-grid { grid-template-columns: 1fr; gap: 3rem; }
-        }
-    </style>
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .work-gateway { flex-direction: column; height: 100vh; }
+            .work-col:hover { flex: 1; }
+            .col-overlay { transform: translateY(0); }
+            .resume-box { flex-direction: column; align-items: flex-start; gap: 2rem; padding: 2rem; }
+            .stats-grid { grid-template-columns: 1fr; gap: 3rem; }
+        }
+    </style>
 </head>
 <body>
 
-    <div id="gamer-bg-container">
-        <video autoplay muted loop playsinline id="game-video-bg">
-            <source src="https://videos.pexels.com/video-files/5091624/5091624-uhd_2560_1440_24fps.mp4" type="video/mp4">
-        </video>
-        
-        <div class="cinematic-overlay"></div>
-        <div id="particles-container"></div>
-    </div>
-    
-    <div class="cursor"></div><div class="cursor-follower"></div>
+    <div id="gamer-bg-container">
+        <div class="cinematic-overlay"></div>
+        <div id="particles-container"></div>
+    </div>
+    
+    <div class="cursor"></div><div class="cursor-follower"></div>
 
-    <div class="preloader">
-        <div class="console-log" id="console-output"></div>
-        <div style="display:flex; justify-content:space-between; align-items:flex-end;">
-            <div style="font-size: 3rem; font-weight: 700; font-family: var(--font-head); color: #fff;">
-                <span class="counter">0%</span>
-            </div>
-            <div style="font-size: 0.8rem; letter-spacing: 2px; color: #888;">LOADING ASSETS...</div>
-        </div>
-        <div class="loading-bar-container"><div class="loading-bar"></div></div>
-    </div>
+    <div class="preloader">
+        <div class="console-log" id="console-output"></div>
+        <div style="display:flex; justify-content:space-between; align-items:flex-end;">
+            <div style="font-size: 3rem; font-weight: 700; font-family: var(--font-head); color: #fff;">
+                <span class="counter">0%</span>
+            </div>
+            <div style="font-size: 0.8rem; letter-spacing: 2px; color: var(--accent);">INITIALIZING WORLD...</div>
+        </div>
+        <div class="loading-bar-container"><div class="loading-bar"></div></div>
+    </div>
 
-    <div class="preloader-overlay"></div>
+    <div class="preloader-overlay"></div>
 
-    <nav>
-        <a href="index.html" class="logo magnetic">Abhilash Saji.</a>
-        <div class="nav-links">
-            <a href="#home" class="magnetic" style="color: var(--accent);">Home</a>
-            <a href="#about" class="magnetic">About</a>
-            <a href="#work" class="magnetic">Projects</a>
-            <a href="#contact" class="magnetic">Contact</a>
-            <a href="Resume.pdf" download="AbhilashSaji_Resume.pdf" class="magnetic">Resume</a>
-        </div>
-    </nav>
+    <nav>
+        <a href="index.html" class="logo magnetic">Abhilash Saji.</a>
+        <div class="nav-links">
+            <a href="#home" class="magnetic" style="color: var(--accent);">Home</a>
+            <a href="#about" class="magnetic">About</a>
+            <a href="#work" class="magnetic">Projects</a>
+            <a href="#contact" class="magnetic">Contact</a>
+            <a href="Resume.pdf" download="AbhilashSaji_Resume.pdf" class="magnetic">Resume</a>
+        </div>
+    </nav>
 
-    <section id="home" class="hero">
-        <div id="hero-intro">
-            <div style="display: flex; gap: 2rem; margin-bottom: 2rem; font-family: var(--font-head); text-transform: uppercase; color: var(--accent); font-size: 0.9rem; letter-spacing: 2px;">
-                <span>Unity 3D</span><span>///</span><span>Game Dev</span>
-            </div>
-            <h1 id="hero-text-tech">
-                Crafting<br>
-                <span style="color: var(--accent);">Immersive</span><br>
-                Realities
-            </h1>
-            <p style="margin-top: 2rem; max-width: 400px; color: #eee; line-height: 1.6; text-shadow: 0 1px 3px rgba(0,0,0,1);" id="hero-sub">Bridging the gap between technical code and artistic vision.</p>
-        </div>
-        
-        <div id="hero-personal">
-            <span class="hello-badge">Hello</span>
-            <div class="personal-text" id="hero-text-personal">
-                I’m Abhilash Saji, a Unity Developer who loves building <span class="highlight-italic">worlds</span> and crafting immersive <span class="highlight-italic">experiences.</span>
-            </div>
-        </div>
-    </section>
+    <section id="home" class="hero">
+        <div id="hero-intro">
+            <div style="display: flex; gap: 2rem; margin-bottom: 2rem; font-family: var(--font-head); text-transform: uppercase; color: var(--accent); font-size: 0.9rem; letter-spacing: 2px;">
+                <span>Unity 3D</span><span>///</span><span>Game Dev</span>
+            </div>
+            <h1 id="hero-text-tech">
+                Crafting<br>
+                <span style="color: var(--accent);">Immersive</span><br>
+                Realities
+            </h1>
+            <p style="margin-top: 2rem; max-width: 400px; color: #aaddff; line-height: 1.6; text-shadow: 0 1px 3px rgba(0,0,0,1);" id="hero-sub">Bridging the gap between technical code and artistic vision.</p>
+        </div>
+        
+        <div id="hero-personal">
+            <span class="hello-badge">Hello</span>
+            <div class="personal-text" id="hero-text-personal">
+                I’m Abhilash Saji, a Unity Developer who loves building <span class="highlight-italic">worlds</span> and crafting immersive <span class="highlight-italic">experiences.</span>
+            </div>
+        </div>
+    </section>
 
-    <section id="about" class="container about-section">
-        <div class="section-header">
-            <h2 class="section-title">PROFILE</h2>
-            <span style="font-family: var(--font-code); color: #888;">ABOUT</span>
-        </div>
-        <div>
-            <p class="reading-text" style="font-size: clamp(1rem, 2vw, 1.35rem);">
-                I’m a <span style="color: var(--accent);">Unity Developer</span> and <span style="color: var(--accent);">Gameplay Programmer</span> focused on building polished, production-ready gameplay systems using <span style="color: var(--accent);">Unity Engine</span> and <span style="color: var(--accent);">C#</span>. My work emphasizes core gameplay programming, asset integration, and gameplay detailing, turning ideas and assets into responsive, optimized real-time experiences.
-                <br><br>
-                I have hands-on experience developing 2D, 3D, AR, and VR projects, working with player controllers, combat mechanics, enemy AI, animations, UI systems, physics simulations, and scene management. I prioritize <span style="color: var(--accent);">game feel</span>, <span style="color: var(--accent);">performance optimization</span>, and technical stability, ensuring clean workflows, effective debugging, and smooth cross-platform deployment.
-            </p>
-            <div class="stats-grid">
-                <div class="stat-box"><h4>4+</h4><p>Core Projects</p></div>
-                <div class="stat-box"><h4>2+</h4><p>Certifications</p></div>
-                <div class="stat-box"><h4>FPS / TPS</h4><p>Specialization</p></div>
-            </div>
-            </div>
-        </div>
-    </section>
+    <section id="about" class="container about-section">
+        <div class="section-header">
+            <h2 class="section-title">PROFILE</h2>
+            <span style="font-family: var(--font-code); color: #5588aa;">ABOUT</span>
+        </div>
+        <div>
+            <p class="reading-text" style="font-size: clamp(1rem, 2vw, 1.35rem);">
+                I’m a <span style="color: var(--accent);">Unity Developer</span> and <span style="color: var(--accent);">Gameplay Programmer</span> focused on building polished, production-ready gameplay systems using <span style="color: var(--accent);">Unity Engine</span> and <span style="color: var(--accent);">C#</span>. My work emphasizes core gameplay programming, asset integration, and gameplay detailing, turning ideas and assets into responsive, optimized real-time experiences.
+                <br><br>
+                I have hands-on experience developing 2D, 3D, AR, and VR projects, working with player controllers, combat mechanics, enemy AI, animations, UI systems, physics simulations, and scene management. I prioritize <span style="color: var(--accent);">game feel</span>, <span style="color: var(--accent);">performance optimization</span>, and technical stability, ensuring clean workflows, effective debugging, and smooth cross-platform deployment.
+            </p>
+            <div class="stats-grid">
+                <div class="stat-box"><h4>4+</h4><p>Core Projects</p></div>
+                <div class="stat-box"><h4>2+</h4><p>Certifications</p></div>
+                <div class="stat-box"><h4>FPS / TPS</h4><p>Specialization</p></div>
+            </div>
+            </div>
+        </div>
+    </section>
 
-    <div id="work" class="container works-area">
-        <div class="work-header">
-            <h2>Selected Works</h2>
-            <span>PROJECTS</span>
-        </div>
-        
-        <div class="work-gateway">
-            <a href="projects-2d.html" class="work-col">
-                <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2670&auto=format&fit=crop" alt="2D Games">
-                <div class="col-overlay">
-                    <span class="col-sub">01 / MOBILE & PC</span>
-                    <div class="col-title">2D Games</div>
-                    <span class="view-btn">View Collection</span>
-                </div>
-            </a>
+    <div id="work" class="container works-area">
+        <div class="work-header">
+            <h2>Selected Works</h2>
+            <span>PROJECTS</span>
+        </div>
+        
+        <div class="work-gateway">
+            <a href="projects-2d.html" class="work-col">
+                <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2670&auto=format&fit=crop" alt="2D Games">
+                <div class="col-overlay">
+                    <span class="col-sub">01 / MOBILE & PC</span>
+                    <div class="col-title">2D Games</div>
+                    <span class="view-btn">View Collection</span>
+                </div>
+            </a>
 
-            <a href="projects-3d.html" class="work-col">
-                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop" alt="3D Action">
-                <div class="col-overlay">
-                    <span class="col-sub">02 / CONSOLE QUALITY</span>
-                    <div class="col-title">3D Action</div>
-                    <span class="view-btn">View Collection</span>
-                </div>
-            </a>
+            <a href="projects-3d.html" class="work-col">
+                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop" alt="3D Action">
+                <div class="col-overlay">
+                    <span class="col-sub">02 / CONSOLE QUALITY</span>
+                    <div class="col-title">3D Action</div>
+                    <span class="view-btn">View Collection</span>
+                </div>
+            </a>
 
-            <a href="projects-vr.html" class="work-col">
-                <img src="https://images.unsplash.com/photo-1622979135228-5118441e9635?q=80&w=2536&auto=format&fit=crop" alt="VR AR">
-                <div class="col-overlay">
-                    <span class="col-sub">03 / IMMERSIVE TECH</span>
-                    <div class="col-title">VR / AR</div>
-                    <span class="view-btn">View Collection</span>
-                </div>
-            </a>
-        </div>
-    </div>
+            <a href="projects-vr.html" class="work-col">
+                <img src="https://images.unsplash.com/photo-1622979135228-5118441e9635?q=80&w=2536&auto=format&fit=crop" alt="VR AR">
+                <div class="col-overlay">
+                    <span class="col-sub">03 / IMMERSIVE TECH</span>
+                    <div class="col-title">VR / AR</div>
+                    <span class="view-btn">View Collection</span>
+                </div>
+            </a>
+        </div>
+    </div>
 
-    <div class="container resume-container">
-        <a href="Resume.pdf" download="AbhilashSaji_Resume.pdf" class="resume-box magnetic-area">
-            <div class="resume-info">
-                <h3>RESUME</h3>
-                <p>View my full professional experience & credentials.</p>
-            </div>
-            <div class="resume-action">
-                Download PDF 
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-            </div>
-        </a>
-    </div>
+    <div class="container resume-container">
+        <a href="Resume.pdf" download="AbhilashSaji_Resume.pdf" class="resume-box magnetic-area">
+            <div class="resume-info">
+                <h3>RESUME</h3>
+                <p>View my full professional experience & credentials.</p>
+            </div>
+            <div class="resume-action">
+                Download PDF 
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            </div>
+        </a>
+    </div>
 
-    <footer id="contact">
-        <div>
-            <p style="font-family: var(--font-code); color: #666; margin-bottom: 1rem;">CONTACT</p>
-            <h2 class="footer-headline">Let's Create<br>The Unknown.</h2>
-            <a href="mailto:abhilashsaji.dev@gmail.com" class="email-link magnetic">abhilashsaji.dev@gmail.com</a>
-            <div class="social-row">
-                <a href="https://www.linkedin.com/in/AbhilashSaji" target="_blank" class="magnetic">LinkedIn</a>
-                <a href="https://wa.me/917511104768" target="_blank" class="magnetic">WhatsApp</a>
-                <a href="tel:+917511104768" class="magnetic">Contact Number</a>
-            </div>
-        </div>
-    </footer>
+    <footer id="contact">
+        <div>
+            <p style="font-family: var(--font-code); color: #5588aa; margin-bottom: 1rem;">CONTACT</p>
+            <h2 class="footer-headline">Let's Create<br>The Unknown.</h2>
+            <a href="mailto:abhilashsaji.dev@gmail.com" class="email-link magnetic">abhilashsaji.dev@gmail.com</a>
+            <div class="social-row">
+                <a href="https://www.linkedin.com/in/AbhilashSaji" target="_blank" class="magnetic">LinkedIn</a>
+                <a href="https://wa.me/917511104768" target="_blank" class="magnetic">WhatsApp</a>
+                <a href="tel:+917511104768" class="magnetic">Contact Number</a>
+            </div>
+        </div>
+    </footer>
 
-    <script>
-        const lenis = new Lenis({ duration: 1.2, smooth: true });
-        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
-        requestAnimationFrame(raf);
-        gsap.registerPlugin(ScrollTrigger);
+    <script>
+        const lenis = new Lenis({ duration: 1.2, smooth: true });
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+        gsap.registerPlugin(ScrollTrigger);
 
-        /* --- VIDEO LOAD HANDLER --- */
-        const video = document.getElementById('game-video-bg');
-        // Force play via JS to overcome some browser policies
-        video.play().catch(e => console.log("Auto-play blocked, waiting for interaction", e));
-        
-        // Fade in video once it can play
-        video.oncanplay = function() {
-            gsap.to(video, { opacity: 0.8, duration: 2 });
-        };
+        /* --- PARTICLES: MAGIC BLUE FIREFLIES --- */
+        const particleContainer = document.getElementById('particles-container');
+        const particleCount = 20;
 
-        /* --- PARTICLES: FIREFLIES / EMBERS --- */
-        const particleContainer = document.getElementById('particles-container');
-        const particleCount = 20;
+        for (let i = 0; i < particleCount; i++) {
+            let p = document.createElement('div');
+            p.classList.add('dust-mote');
+            
+            let x = Math.random() * 100;
+            let duration = 5 + Math.random() * 10;
+            let delay = Math.random() * -10; 
+            let size = 3 + Math.random() * 5; 
+            
+            p.style.left = x + 'vw';
+            p.style.width = size + 'px';
+            p.style.height = size + 'px';
+            
+            gsap.to(p, {
+                y: '-100vh',
+                x: '+=' + (Math.random() * 100 - 50), 
+                opacity: 0,
+                duration: duration,
+                delay: delay,
+                repeat: -1,
+                ease: "none",
+                startAt: { y: '100vh', opacity: 0.8 }
+            });
+            particleContainer.appendChild(p);
+        }
 
-        for (let i = 0; i < particleCount; i++) {
-            let p = document.createElement('div');
-            p.classList.add('dust-mote');
-            
-            let x = Math.random() * 100;
-            let duration = 5 + Math.random() * 10;
-            let delay = Math.random() * -10; 
-            let size = 3 + Math.random() * 5; 
-            
-            p.style.left = x + 'vw';
-            p.style.width = size + 'px';
-            p.style.height = size + 'px';
-            
-            gsap.to(p, {
-                y: '-100vh',
-                x: '+=' + (Math.random() * 100 - 50), 
-                opacity: 0,
-                duration: duration,
-                delay: delay,
-                repeat: -1,
-                ease: "none",
-                startAt: { y: '100vh', opacity: 0.8 }
-            });
-            particleContainer.appendChild(p);
-        }
+        const cursor = document.querySelector('.cursor');
+        const follower = document.querySelector('.cursor-follower');
+        window.addEventListener('mousemove', (e) => {
+            gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1 });
+            gsap.to(follower, { x: e.clientX, y: e.clientY, duration: 0.3 });
+        });
 
-        const cursor = document.querySelector('.cursor');
-        const follower = document.querySelector('.cursor-follower');
-        window.addEventListener('mousemove', (e) => {
-            gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1 });
-            gsap.to(follower, { x: e.clientX, y: e.clientY, duration: 0.3 });
-        });
+        const tl = gsap.timeline();
+        const techText = new SplitType('#hero-text-tech', { types: 'words, chars' });
+        const personalText = new SplitType('#hero-text-personal', { types: 'words' });
+        
+        let count = 0; 
+        const counter = document.querySelector('.counter');
+        const loadingBar = document.querySelector('.loading-bar');
+        const consoleOutput = document.getElementById('console-output');
+        
+        const logs = [
+            "> Loading Blue_Valley.scene...",
+            "> Compiling Shaders...",
+            "> <span class='success'>Assets Loaded Successfully</span>",
+            "> Initializing Magic System...",
+            "> <span class='success'>Ready.</span>"
+        ];
+        
+        const interval = setInterval(() => { 
+            count += 2; 
+            if(count > 100) count = 100; 
+            counter.innerText = count + "%"; 
+            loadingBar.style.width = count + "%";
+            if (count % 20 === 0 && count < 90) {
+                let logIndex = Math.floor(count / 20);
+                if (logs[logIndex]) {
+                    const line = document.createElement('div');
+                    line.className = 'console-line';
+                    line.innerHTML = logs[logIndex];
+                    consoleOutput.appendChild(line);
+                    consoleOutput.scrollTop = consoleOutput.scrollHeight;
+                }
+            }
+            if(count === 100) clearInterval(interval); 
+        }, 30);
 
-        const tl = gsap.timeline();
-        const techText = new SplitType('#hero-text-tech', { types: 'words, chars' });
-        const personalText = new SplitType('#hero-text-personal', { types: 'words' });
-        
-        let count = 0; 
-        const counter = document.querySelector('.counter');
-        const loadingBar = document.querySelector('.loading-bar');
-        const consoleOutput = document.getElementById('console-output');
-        
-        const logs = [
-            "> Loading Ancient_Temple.scene...",
-            "> Baking Lightmaps...",
-            "> <span class='success'>Assets Loaded Successfully</span>",
-            "> Initializing Character Controller...",
-            "> <span class='success'>Ready.</span>"
-        ];
-        
-        const interval = setInterval(() => { 
-            count += 2; 
-            if(count > 100) count = 100; 
-            counter.innerText = count + "%"; 
-            loadingBar.style.width = count + "%";
-            if (count % 20 === 0 && count < 90) {
-                let logIndex = Math.floor(count / 20);
-                if (logs[logIndex]) {
-                    const line = document.createElement('div');
-                    line.className = 'console-line';
-                    line.innerHTML = logs[logIndex];
-                    consoleOutput.appendChild(line);
-                    consoleOutput.scrollTop = consoleOutput.scrollHeight;
-                }
-            }
-            if(count === 100) clearInterval(interval); 
-        }, 30);
+        tl.to(".preloader", { delay: 2.5, y: "-100%", duration: 1, ease: "expo.inOut" })
+          .to(".preloader-overlay", { y: "-100%", duration: 1, ease: "expo.inOut" }, "-=0.8")
+          .from(techText.chars, { y: 100, opacity: 0, rotateZ: 5, duration: 0.8, stagger: 0.02, ease: "back.out(1.7)" }, "-=0.5")
+          .from("#hero-sub", { opacity: 0, y: 10, duration: 0.5 }, "-=0.3")
+          .to({}, { duration: 1.0 }) 
+          .to("#hero-intro", { filter: "blur(20px)", opacity: 0, scale: 0.9, duration: 0.5, ease: "power2.in" })
+          .to("#hero-personal", { opacity: 1, duration: 0.1 })
+          .from("#hero-personal", { filter: "blur(20px)", scale: 1.1, duration: 0.7, ease: "expo.out" }, "+=0.1")
+          .from(".hello-badge", { opacity: 0, y: -20, duration: 0.5 }, "-=0.5")
+          .from(personalText.words, { y: 40, opacity: 0, duration: 0.6, stagger: 0.02, ease: "power3.out" }, "-=0.5");
 
-        tl.to(".preloader", { delay: 2.5, y: "-100%", duration: 1, ease: "expo.inOut" })
-          .to(".preloader-overlay", { y: "-100%", duration: 1, ease: "expo.inOut" }, "-=0.8")
-          .from(techText.chars, { y: 100, opacity: 0, rotateZ: 5, duration: 0.8, stagger: 0.02, ease: "back.out(1.7)" }, "-=0.5")
-          .from("#hero-sub", { opacity: 0, y: 10, duration: 0.5 }, "-=0.3")
-          .to({}, { duration: 1.0 }) 
-          .to("#hero-intro", { filter: "blur(20px)", opacity: 0, scale: 0.9, duration: 0.5, ease: "power2.in" })
-          .to("#hero-personal", { opacity: 1, duration: 0.1 })
-          .from("#hero-personal", { filter: "blur(20px)", scale: 1.1, duration: 0.7, ease: "expo.out" }, "+=0.1")
-          .from(".hello-badge", { opacity: 0, y: -20, duration: 0.5 }, "-=0.5")
-          .from(personalText.words, { y: 40, opacity: 0, duration: 0.6, stagger: 0.02, ease: "power3.out" }, "-=0.5");
-
-        const readingText = new SplitType('.reading-text', { types: 'words' });
-        gsap.fromTo(readingText.words, { opacity: 0.2, color: "#aaa" }, { opacity: 1, color: "#fff", stagger: 0.05, scrollTrigger: { trigger: ".reading-text", start: "top 85%", end: "bottom 65%", scrub: true }});
-    </script>
+        const readingText = new SplitType('.reading-text', { types: 'words' });
+        gsap.fromTo(readingText.words, { opacity: 0.2, color: "#aaa" }, { opacity: 1, color: "#fff", stagger: 0.05, scrollTrigger: { trigger: ".reading-text", start: "top 85%", end: "bottom 65%", scrub: true }});
+    </script>
 </body>
 </html>

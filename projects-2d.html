@@ -3,72 +3,378 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2D Games | Abhilash Saji</title>
+    <title>Projects | Abhilash Saji</title>
+    
     <link href="https://api.fontshare.com/v2/css?f[]=clash-display@200,400,600,700&f[]=satoshi@300,400,500,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@1,600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/split-type"></script>
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
 
     <style>
-        :root { --bg: #050505; --text: #e1e1e1; --accent: #ff3333; --font-head: 'Clash Display', sans-serif; --font-body: 'Satoshi', sans-serif; }
+        /* --- THEME VARIABLES --- */
+        :root { 
+            --text: #e0d8c3; 
+            --accent: #e2c476; /* Golden Order - Change this to #ff0000 for Red */
+            --font-head: 'Cinzel', serif; 
+            --font-display: 'Clash Display', sans-serif;
+            --font-body: 'Satoshi', sans-serif; 
+            --font-code: 'Space Mono', monospace; 
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
-        body { background-color: var(--bg); color: var(--text); font-family: var(--font-body); }
-        .cursor { position: fixed; width: 12px; height: 12px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%); mix-blend-mode: difference; }
-        .cursor-follower { position: fixed; width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.3); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: 0.1s; }
+        ::selection { background: var(--accent); color: #000; }
         
-        nav { position: fixed; top: 0; width: 100%; padding: 2rem 5vw; display: flex; justify-content: space-between; align-items: center; z-index: 100; background: rgba(5,5,5,0.9); }
-        .logo { font-weight: 700; font-family: var(--font-head); text-transform: uppercase; font-size: 1.2rem; color: #fff; text-decoration: none; }
-        .back-link { font-family: var(--font-head); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; color: #999; text-decoration: none; transition: 0.3s; }
-        .back-link:hover { color: var(--accent); }
+        html, body { 
+            margin: 0; padding: 0; 
+            background: #050505 !important; 
+            color: var(--text); 
+            font-family: var(--font-body); 
+            overflow-x: hidden; 
+        }
 
-        .container { max-width: 1400px; margin: 0 auto; padding: 0 5vw; }
-        .header { padding-top: 20vh; padding-bottom: 5vh; border-bottom: 1px solid #222; margin-bottom: 5rem; }
-        h1 { font-family: var(--font-head); font-size: clamp(3rem, 8vw, 6rem); text-transform: uppercase; color: #fff; }
+        /* --- BACKGROUND --- */
+        #gamer-bg-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            z-index: -999;
+            overflow: hidden;
+            background: radial-gradient(circle at center, #1a150e 0%, #000000 100%);
+        }
 
-        .project-card { margin-bottom: 8rem; display: grid; grid-template-columns: 1.5fr 1fr; gap: 5rem; align-items: center; }
-        .project-card:nth-child(even) { direction: rtl; }
-        .project-card:nth-child(even) .project-info { direction: ltr; }
-        .project-img-wrap { height: 50vh; width: 100%; overflow: hidden; border-radius: 6px; background: #111; }
-        .project-img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; transition: 0.5s; }
-        .project-card:hover .project-img { opacity: 1; transform: scale(1.05); }
-        .project-info h3 { font-family: var(--font-head); font-size: 2.5rem; margin-bottom: 1rem; color: #fff; }
-        .project-info p { color: #888; line-height: 1.6; margin-bottom: 1.5rem; }
-        .tech-tag { border: 1px solid #333; padding: 6px 14px; border-radius: 50px; font-size: 0.75rem; text-transform: uppercase; margin-right: 8px; color: #777; display: inline-block; }
-        .btn-view { display: inline-block; margin-top: 2rem; font-family: var(--font-head); text-transform: uppercase; font-weight: 600; border-bottom: 1px solid var(--accent); padding-bottom: 5px; color: var(--accent); font-size: 0.9rem; text-decoration: none; }
-        @media (max-width: 768px) { .project-card, .project-card:nth-child(even) { grid-template-columns: 1fr; direction: ltr; gap: 2rem; } .project-img-wrap { height: 35vh; } }
+        #bg-image {
+            position: absolute; top: -10%; left: -10%; width: 120%; height: 120%;
+            background-image: url('https://images.unsplash.com/photo-1519074069444-1ba4fff66d16?q=80&w=2574&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.4; 
+            animation: majesticPan 60s infinite alternate ease-in-out;
+            filter: contrast(1.2) brightness(0.6) sepia(40%) hue-rotate(5deg);
+        }
+
+        @keyframes majesticPan {
+            0% { transform: scale(1) translate(0, 0); }
+            100% { transform: scale(1.1) translate(-20px, -10px); }
+        }
+
+        .vignette {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, transparent 30%, #000 100%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .grace-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to top, rgba(226, 196, 118, 0.1), transparent 50%, #000 100%);
+            z-index: 2;
+        }
+
+        /* --- UI ELEMENTS --- */
+        .cursor { position: fixed; width: 8px; height: 8px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%); box-shadow: 0 0 10px var(--accent); }
+        .cursor-follower { position: fixed; width: 50px; height: 50px; border: 1px solid rgba(226, 196, 118, 0.3); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: 0.15s; }
+
+        /* --- NAV --- */
+        nav { position: fixed; top: 0; width: 100%; padding: 2rem 5vw; display: flex; justify-content: space-between; align-items: center; z-index: 100; background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent); }
+        .logo { font-weight: 700; font-family: var(--font-head); text-transform: uppercase; letter-spacing: 2px; font-size: 1.3rem; text-decoration: none; color: #fff; text-shadow: 0 0 10px rgba(226, 196, 118, 0.5); }
+        .nav-links { display: flex; gap: 2rem; }
+        .nav-links a { font-family: var(--font-head); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; transition: color 0.3s; color: #bbb; text-decoration: none; }
+        .nav-links a:hover { color: var(--accent); text-shadow: 0 0 8px var(--accent); }
+
+        /* --- PAGE HEADER --- */
+        .page-header {
+            padding-top: 20vh;
+            padding-bottom: 10vh;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+        .page-cat { font-family: var(--font-code); color: var(--accent); letter-spacing: 4px; text-transform: uppercase; font-size: 0.8rem; margin-bottom: 1rem; display: block; }
+        .page-title { font-family: var(--font-head); font-size: clamp(3rem, 6vw, 5rem); text-transform: uppercase; color: #fff; text-shadow: 0 0 30px rgba(0,0,0,0.8); }
+
+        /* --- PROJECT ROW LAYOUT (MATCHING IMAGE) --- */
+        .project-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15vh; /* Large spacing between projects */
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 5vw 10vh 5vw;
+            position: relative;
+            z-index: 10;
+        }
+
+        .project-row {
+            display: flex;
+            align-items: center;
+            gap: 5vw;
+            opacity: 0; /* For animation */
+        }
+
+        /* TEXT CONTENT (LEFT) */
+        .project-info {
+            flex: 1;
+            position: relative;
+        }
+
+        /* Decorative Dot from image */
+        .deco-dot {
+            width: 10px;
+            height: 10px;
+            background-color: var(--accent); /* Red in your image */
+            border-radius: 50%;
+            margin-bottom: 2rem;
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        .p-title {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            line-height: 1.1;
+            color: #fff;
+            margin-bottom: 1.5rem;
+        }
+
+        .p-desc {
+            font-family: var(--font-body);
+            color: #888;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            max-width: 90%;
+        }
+
+        /* PILL TAGS */
+        .p-tags {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .p-tag {
+            font-family: var(--font-code);
+            font-size: 0.75rem;
+            color: #bbb;
+            background: transparent;
+            border: 1px solid #444;
+            padding: 8px 24px;
+            border-radius: 50px; /* Pill shape */
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+
+        .project-row:hover .p-tag {
+            border-color: var(--accent);
+            color: var(--accent);
+            box-shadow: 0 0 10px rgba(226, 196, 118, 0.1);
+        }
+
+        /* VIEW CASE STUDY LINK */
+        .p-link {
+            font-family: var(--font-head);
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--accent); /* Matches theme */
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+            position: relative;
+            padding-bottom: 5px;
+            display: inline-block;
+        }
+
+        .p-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+        
+        .p-link:hover::after { width: 50%; }
+
+        /* IMAGE CONTENT (RIGHT) */
+        .project-visual {
+            flex: 1.3;
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #000;
+            border: 1px solid #222;
+        }
+
+        .project-visual img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            filter: grayscale(100%) brightness(0.6);
+            transition: 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .project-row:hover .project-visual img {
+            filter: grayscale(0%) brightness(1);
+            transform: scale(1.03);
+        }
+
+        /* --- PRELOADER --- */
+        .preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #000; color: #fff; z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .preloader-center { text-align: center; }
+        .pre-sub { font-family: var(--font-code); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 6px; color: #666; margin-bottom: 5px; }
+        .pre-title { font-family: var(--font-head); font-size: 3rem; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; margin: 10px 0; text-shadow: 0 0 20px rgba(226, 196, 118, 0.2); }
+
+        /* --- FOOTER --- */
+        footer { padding: 8rem 5vw; border-top: 1px solid #222; background: #080808; margin-top: 5rem; position: relative; z-index: 5; }
+        .footer-headline { font-family: var(--font-head); font-size: clamp(3rem, 6vw, 5rem); line-height: 1; text-transform: uppercase; color: #e0d8c3; margin-bottom: 2rem; }
+        .email-link { font-size: 1.5rem; color: #666; text-decoration: none; transition: 0.3s; font-family: var(--font-head); display: block; margin-bottom: 2rem;}
+        .email-link:hover { color: #fff; }
+
+        @media (max-width: 900px) {
+            .project-row { flex-direction: column-reverse; gap: 2rem; }
+            .project-visual { width: 100%; }
+            .p-desc { max-width: 100%; }
+        }
     </style>
 </head>
 <body>
+
+    <div id="gamer-bg-container">
+        <div id="bg-image"></div>
+        <div class="vignette"></div>
+        <div class="grace-overlay"></div>
+    </div>
+    
     <div class="cursor"></div><div class="cursor-follower"></div>
-    <nav><a href="index.html" class="logo">Abhilash Saji.</a><a href="index.html" class="back-link">← Back Home</a></nav>
-    <div class="container">
-        
-        <header class="header">
-            <p style="color: var(--accent); margin-bottom: 1rem; letter-spacing: 2px;">COLLECTION</p>
-            <h1>2D Games</h1> 
-        </header>
-        
-        <article class="project-card">
-            <div class="project-img-wrap"><img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2670&auto=format&fit=crop" class="project-img"></div>
-            <div class="project-info">
-                <h3>Pixel Odyssey</h3><p>A precision-based 2D platformer. Implemented tight character controllers, wall-jumps, and a custom particle system.</p>
-                <div><span class="tech-tag">Unity 2D</span><span class="tech-tag">C#</span><span class="tech-tag">URP 2D</span></div>
-                <a href="#" class="btn-view">View Case Study</a>
-            </div>
-        </article>
-        
-        <article class="project-card">
-            <div class="project-img-wrap"><img src="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2670&auto=format&fit=crop" class="project-img"></div>
-            <div class="project-info">
-                <h3>Cyber Dash</h3><p>High-speed mobile runner. Features object pooling for infinite terrain and procedural obstacle placement.</p>
-                <div><span class="tech-tag">Mobile Opt</span><span class="tech-tag">Object Pooling</span></div>
-                <a href="#" class="btn-view">View Case Study</a>
-            </div>
-        </article>
+
+    <div class="preloader">
+        <div class="preloader-center">
+            <div class="pre-sub">Portfolio</div>
+            <h1 class="pre-title">Abhilash Saji</h1>
+            <div class="pre-sub">Unity Dev</div>
         </div>
+    </div>
+
+    <nav>
+        <a href="index.html" class="logo magnetic">Abhilash Saji</a>
+        <div class="nav-links">
+            <a href="index.html" class="magnetic">Home</a>
+            <a href="index.html#about" class="magnetic">About</a>
+            <a href="index.html#work" class="magnetic" style="color: var(--accent);">Projects</a>
+            <a href="index.html#contact" class="magnetic">Contact</a>
+        </div>
+    </nav>
+
+    <header class="page-header">
+        <span class="page-cat">Selected Works</span>
+        <h1 class="page-title">2D Games</h1> 
+    </header>
+
+    <section class="project-list">
+
+        <div class="project-row">
+            <div class="project-info">
+                <div class="deco-dot"></div> <h2 class="p-title">Pixel Odyssey</h2>
+                <p class="p-desc">A precision-based 2D platformer. Implemented tight character controllers, wall-jumps, and a custom particle system for atmospheric depth. Optimized for mobile performance.</p>
+                <div class="p-tags">
+                    <span class="p-tag">Unity 2D</span>
+                    <span class="p-tag">C#</span>
+                    <span class="p-tag">URP 2D</span>
+                </div>
+                <a href="#" class="p-link">View Case Study</a>
+            </div>
+            <div class="project-visual">
+                <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2670" alt="Pixel Odyssey">
+            </div>
+        </div>
+
+        <div class="project-row">
+            <div class="project-info">
+                <div class="deco-dot"></div>
+                <h2 class="p-title">Cyber Strike</h2>
+                <p class="p-desc">Top-down shooter featuring procedural level generation and enemy AI state machines. Includes a robust inventory system and dynamic lighting effects.</p>
+                <div class="p-tags">
+                    <span class="p-tag">AI Design</span>
+                    <span class="p-tag">Procedural Gen</span>
+                    <span class="p-tag">Lighting</span>
+                </div>
+                <a href="#" class="p-link">View Case Study</a>
+            </div>
+            <div class="project-visual">
+                <img src="https://images.unsplash.com/photo-1552820728-8b83bb6b773f?q=80&w=2670" alt="Cyber Strike">
+            </div>
+        </div>
+
+        <div class="project-row">
+            <div class="project-info">
+                <div class="deco-dot"></div>
+                <h2 class="p-title">Neon Racer</h2>
+                <p class="p-desc">High-speed endless runner. Focused on optimization, object pooling, and responsive touch controls. achieved 60fps on low-end devices.</p>
+                <div class="p-tags">
+                    <span class="p-tag">Mobile</span>
+                    <span class="p-tag">Optimization</span>
+                    <span class="p-tag">Physics</span>
+                </div>
+                <a href="#" class="p-link">View Case Study</a>
+            </div>
+            <div class="project-visual">
+                <img src="https://images.unsplash.com/photo-1614726365723-49cfae92782f?q=80&w=2669" alt="Neon Racer">
+            </div>
+        </div>
+
+    </section>
+
+    <footer id="contact">
+        <div>
+            <p style="font-family: var(--font-code); color: #666; margin-bottom: 1rem;">SUMMON SIGN</p>
+            <h2 class="footer-headline">Let's Create<br>The Unknown.</h2>
+            <a href="mailto:abhilashsaji.dev@gmail.com" class="email-link magnetic">abhilashsaji.dev@gmail.com</a>
+            <div class="social-row">
+                <a href="https://www.linkedin.com/in/AbhilashSaji" target="_blank" class="magnetic">LinkedIn</a>
+                <a href="https://wa.me/917511104768" target="_blank" class="magnetic">WhatsApp</a>
+            </div>
+        </div>
+    </footer>
+
     <script>
         const lenis = new Lenis({ duration: 1.2, smooth: true });
         function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
         requestAnimationFrame(raf);
+        
+        // Remove Preloader
+        gsap.to(".preloader", { y: "-100%", duration: 0.8, delay: 0.5, ease: "power2.inOut" });
+
+        // Scroll Animations for Rows
+        const rows = document.querySelectorAll('.project-row');
+        rows.forEach(row => {
+            gsap.fromTo(row, 
+                { opacity: 0, y: 50 },
+                { 
+                    opacity: 1, 
+                    y: 0, 
+                    duration: 1, 
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: row,
+                        start: "top 80%", // Animation starts when top of row hits 80% of viewport
+                        toggleActions: "play none none reverse"
+                    }
+                }
+            );
+        });
+
+        // Background Parallax
+        document.addEventListener('mousemove', (e) => {
+            const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
+            const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
+            gsap.to('#bg-image', { x: moveX, y: moveY, duration: 1, ease: "power2.out" });
+        });
+
+        // Cursor
         const cursor = document.querySelector('.cursor');
         const follower = document.querySelector('.cursor-follower');
         window.addEventListener('mousemove', (e) => {

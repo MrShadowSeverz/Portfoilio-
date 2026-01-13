@@ -21,51 +21,65 @@
         html { scroll-behavior: auto; }
         body { background-color: var(--bg); color: var(--text); font-family: var(--font-body); overflow-x: hidden; }
 
-        /* --- NEW GAMER BACKGROUND (Added) --- */
+        /* --- VISUALIZED GAMER BACKGROUND --- */
         #gamer-bg-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-            z-index: -1; overflow: hidden; background: #020202;
+            z-index: -1; overflow: hidden;
+            /* Added a visible background image to look like a game level */
+            background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1635322966219-b75ed372eb01?q=80&w=2664&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
             pointer-events: none;
         }
 
-        /* The 3D Grid Floor */
+        /* The 3D Grid Floor - Much brighter now */
         .retro-grid {
             position: absolute; width: 200vw; height: 200vh;
-            left: -50%; top: -50%;
+            left: -50%; top: -25%; /* Raised up to see more floor */
             background-image: 
-                linear-gradient(rgba(255, 51, 51, 0.15) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 51, 51, 0.15) 1px, transparent 1px);
-            background-size: 100px 100px;
-            transform: perspective(500px) rotateX(60deg);
-            animation: moveGrid 15s linear infinite;
-            mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 80%);
-            -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 80%);
+                linear-gradient(rgba(255, 51, 51, 0.4) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 51, 51, 0.4) 1px, transparent 1px);
+            background-size: 80px 80px;
+            transform: perspective(300px) rotateX(60deg); /* Aggressive perspective */
+            animation: moveGrid 8s linear infinite;
+            /* Gradient Mask to fade into horizon */
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 20%, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 80%);
+            -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 20%, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 80%);
+            /* Glow effect */
+            filter: drop-shadow(0 0 5px rgba(255, 51, 51, 0.5));
         }
 
         @keyframes moveGrid {
-            0% { transform: perspective(500px) rotateX(60deg) translateY(0); }
-            100% { transform: perspective(500px) rotateX(60deg) translateY(100px); }
+            0% { transform: perspective(300px) rotateX(60deg) translateY(0); }
+            100% { transform: perspective(300px) rotateX(60deg) translateY(80px); }
         }
 
-        /* Vignette & Noise overlay for cinematic feel */
-        .vignette-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, transparent 0%, #050505 90%);
-            z-index: 2;
-        }
-        
-        .noise-layer {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            opacity: 0.03; z-index: 3;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        /* Floating Cubes (Game Objects) */
+        .cube-floater {
+            position: absolute; 
+            border: 2px solid rgba(255, 51, 51, 0.6);
+            background: rgba(255, 51, 51, 0.1);
+            z-index: 1;
+            box-shadow: 0 0 15px rgba(255, 51, 51, 0.2);
         }
 
-        /* Floating "Game Object" Particles */
-        .floater {
-            position: absolute; background: rgba(255, 51, 51, 0.1);
-            border: 1px solid rgba(255, 51, 51, 0.3);
-            width: 20px; height: 20px; z-index: 1;
-            box-shadow: 0 0 10px rgba(255, 51, 51, 0.1);
+        /* Horizon Glow */
+        .horizon-glow {
+            position: absolute; top: 40%; left: 0; width: 100%; height: 2px;
+            background: var(--accent);
+            box-shadow: 0 0 40px 20px rgba(255, 51, 51, 0.3);
+            opacity: 0.5;
+            z-index: 0;
+        }
+
+        /* Scanline Overlay */
+        .scanlines {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2));
+            background-size: 100% 4px;
+            z-index: 50;
+            opacity: 0.15;
+            pointer-events: none;
         }
 
         /* --- UI ELEMENTS --- */
@@ -95,8 +109,7 @@
             font-weight: 700; 
             letter-spacing: -2px;
             color: #fff;
-            /* Added gentle shadow for readability over particles */
-            text-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            text-shadow: 0 10px 30px rgba(0,0,0,1); /* Stronger shadow for readability */
         }
         
         #hero-personal { 
@@ -104,7 +117,7 @@
             top: 50%; left: 50%; transform: translate(-50%, -50%);
             opacity: 0; z-index: 1; text-align: center; display: flex; flex-direction: column; align-items: center; 
         }
-        .hello-badge { font-family: var(--font-code); font-size: 0.8rem; margin-bottom: 2rem; border: 1px solid #333; padding: 8px 20px; border-radius: 50px; color: #888; text-transform: uppercase; letter-spacing: 3px; background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(5px); }
+        .hello-badge { font-family: var(--font-code); font-size: 0.8rem; margin-bottom: 2rem; border: 1px solid #333; padding: 8px 20px; border-radius: 50px; color: #888; text-transform: uppercase; letter-spacing: 3px; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px); }
         
         .personal-text { 
             font-family: var(--font-head); 
@@ -115,7 +128,7 @@
             color: #fff; 
             margin: 0 auto; 
             text-align: center; 
-            text-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            text-shadow: 0 10px 30px rgba(0,0,0,1);
         }
         
         .highlight-italic { 
@@ -132,21 +145,21 @@
         .about-section { padding: 8rem 0 2rem 0; position: relative; z-index: 2; }
         
         .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem; border-bottom: 1px solid #222; padding-bottom: 2rem; }
-        .section-title { font-family: var(--font-head); font-size: 4rem; text-transform: uppercase; color: var(--accent); font-weight: 700; line-height: 1; }
-        .reading-text { font-size: clamp(1.2rem, 2.5vw, 2rem); line-height: 1.5; color: #888; max-width: 100%; }
+        .section-title { font-family: var(--font-head); font-size: 4rem; text-transform: uppercase; color: var(--accent); font-weight: 700; line-height: 1; text-shadow: 0 0 20px rgba(255, 51, 51, 0.4); }
+        .reading-text { font-size: clamp(1.2rem, 2.5vw, 2rem); line-height: 1.5; color: #aaa; max-width: 100%; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
         .reading-text .word.active { color: #fff; }
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 5rem; }
-        .stat-box h4 { font-size: 4rem; color: var(--accent); font-family: var(--font-head); line-height: 1; margin-bottom: 0.5rem; }
-        .stat-box p { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: #666; }
+        .stat-box h4 { font-size: 4rem; color: var(--accent); font-family: var(--font-head); line-height: 1; margin-bottom: 0.5rem; text-shadow: 0 0 15px rgba(255, 51, 51, 0.4); }
+        .stat-box p { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: #ccc; }
 
         /* --- WORKS AREA (3 COLUMNS) --- */
         .works-area { margin-top: 2rem; width: 100%; position: relative; z-index: 2; }
         
         .work-header { display: flex; justify-content: center; align-items: center; flex-direction: column; margin-bottom: 2rem; }
-        .work-header h2 { font-family: var(--font-head); font-size: 4rem; text-transform: uppercase; line-height: 1; margin: 0; color: #fff; }
-        .work-header span { font-family: var(--font-code); color: #666; margin-top: 10px; letter-spacing: 2px; }
+        .work-header h2 { font-family: var(--font-head); font-size: 4rem; text-transform: uppercase; line-height: 1; margin: 0; color: #fff; text-shadow: 0 0 20px rgba(255,255,255,0.2); }
+        .work-header span { font-family: var(--font-code); color: #888; margin-top: 10px; letter-spacing: 2px; }
 
-        .work-gateway { display: flex; height: 70vh; width: 100%; overflow: hidden; background: #000; gap: 2px; }
+        .work-gateway { display: flex; height: 70vh; width: 100%; overflow: hidden; background: #000; gap: 2px; border: 1px solid #333; }
         .work-col { display: block; flex: 1; position: relative; transition: flex 0.6s cubic-bezier(0.25, 1, 0.5, 1), filter 0.4s; overflow: hidden; border-right: 1px solid rgba(255,255,255,0.1); text-decoration: none; }
         .work-col:last-child { border-right: none; }
         .work-col img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) brightness(0.4); transition: transform 0.8s ease, filter 0.5s ease; }
@@ -163,10 +176,10 @@
 
         /* --- RESUME BOX --- */
         .resume-container { margin-top: 3rem; width: 100%; position: relative; z-index: 2; }
-        .resume-box { display: flex; justify-content: space-between; align-items: center; padding: 4rem; border: 1px solid #222; text-decoration: none; transition: all 0.4s ease; background: rgba(5, 5, 5, 0.6); backdrop-filter: blur(5px); }
-        .resume-box:hover { border-color: var(--accent); background: rgba(255, 51, 51, 0.05); }
+        .resume-box { display: flex; justify-content: space-between; align-items: center; padding: 4rem; border: 1px solid #333; text-decoration: none; transition: all 0.4s ease; background: rgba(10, 10, 10, 0.8); backdrop-filter: blur(10px); }
+        .resume-box:hover { border-color: var(--accent); background: rgba(255, 51, 51, 0.1); }
         .resume-info h3 { font-family: var(--font-head); font-size: 2.5rem; text-transform: uppercase; color: #fff; margin-bottom: 0.5rem; }
-        .resume-info p { font-family: var(--font-code); color: #666; font-size: 0.9rem; }
+        .resume-info p { font-family: var(--font-code); color: #888; font-size: 0.9rem; }
         .resume-action { background: #fff; color: #000; padding: 15px 30px; border-radius: 50px; font-family: var(--font-head); font-weight: 600; text-transform: uppercase; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; transition: 0.3s; }
         .resume-box:hover .resume-action { background: var(--accent); color: #fff; }
 
@@ -190,14 +203,15 @@
             .col-overlay { transform: translateY(0); }
             .resume-box { flex-direction: column; align-items: flex-start; gap: 2rem; padding: 2rem; }
             .stats-grid { grid-template-columns: 1fr; gap: 3rem; }
+            #gamer-bg-container { background-image: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1635322966219-b75ed372eb01?q=80&w=2664&auto=format&fit=crop'); }
         }
     </style>
 </head>
 <body>
+    <div class="scanlines"></div>
     <div id="gamer-bg-container">
+        <div class="horizon-glow"></div>
         <div class="retro-grid"></div>
-        <div class="vignette-overlay"></div>
-        <div class="noise-layer"></div>
         <div id="particles-container"></div>
     </div>
     <div class="cursor"></div><div class="cursor-follower"></div>
@@ -227,7 +241,7 @@
                 <span style="color: var(--accent);">Immersive</span><br>
                 Realities
             </h1>
-            <p style="margin-top: 2rem; max-width: 400px; color: #888; line-height: 1.6;" id="hero-sub">Bridging the gap between technical code and artistic vision.</p>
+            <p style="margin-top: 2rem; max-width: 400px; color: #aaa; line-height: 1.6; text-shadow: 0 1px 3px rgba(0,0,0,1);" id="hero-sub">Bridging the gap between technical code and artistic vision.</p>
         </div>
         
         <div id="hero-personal">
@@ -241,7 +255,7 @@
     <section id="about" class="container about-section">
         <div class="section-header">
             <h2 class="section-title">PROFILE</h2>
-            <span style="font-family: var(--font-code); color: #555;">ABOUT</span>
+            <span style="font-family: var(--font-code); color: #888;">ABOUT</span>
         </div>
         <div>
             <p class="reading-text" style="font-size: clamp(1rem, 2vw, 1.35rem);">
@@ -334,39 +348,41 @@
         requestAnimationFrame(raf);
         gsap.registerPlugin(ScrollTrigger);
 
-        /* --- BACKGROUND PARTICLE SCRIPT (Added) --- */
-        // This spawns small tech-squares floating up like a Unity scene
+        /* --- UPDATED VISUALS SCRIPT --- */
+        // Spawns 3D-looking cubes instead of small dots
         const particleContainer = document.getElementById('particles-container');
-        const particleCount = 15;
+        const particleCount = 12;
 
         for (let i = 0; i < particleCount; i++) {
             let p = document.createElement('div');
-            p.classList.add('floater');
+            p.classList.add('cube-floater');
             
             // Random positioning
             let x = Math.random() * 100;
-            let duration = 10 + Math.random() * 20; // 10s to 30s float speed
-            let delay = Math.random() * -20; // Start at different times
-            let size = 5 + Math.random() * 20;
+            let duration = 8 + Math.random() * 15;
+            let delay = Math.random() * -20; 
+            let size = 20 + Math.random() * 60; // Bigger squares
             
             p.style.left = x + 'vw';
             p.style.width = size + 'px';
             p.style.height = size + 'px';
             
-            // GSAP Animation for smooth floating
+            // GSAP Animation for floating and rotating
             gsap.to(p, {
                 y: '-110vh',
-                rotation: 360,
+                rotation: 180 + Math.random() * 360,
+                scale: 0.5,
+                opacity: 0,
                 duration: duration,
                 delay: delay,
                 repeat: -1,
-                ease: "none",
-                startAt: { y: '110vh' }
+                ease: "power1.inOut",
+                startAt: { y: '110vh', rotation: 0, opacity: 0.8, scale: 1 }
             });
             
             particleContainer.appendChild(p);
         }
-        /* --- END BACKGROUND SCRIPT --- */
+        /* --- END VISUALS SCRIPT --- */
 
         const cursor = document.querySelector('.cursor');
         const follower = document.querySelector('.cursor-follower');
@@ -394,7 +410,7 @@
           .from(personalText.words, { y: 40, opacity: 0, duration: 0.6, stagger: 0.02, ease: "power3.out" }, "-=0.5");
 
         const readingText = new SplitType('.reading-text', { types: 'words' });
-        gsap.fromTo(readingText.words, { opacity: 0.2, color: "#333" }, { opacity: 1, color: "#e1e1e1", stagger: 0.05, scrollTrigger: { trigger: ".reading-text", start: "top 85%", end: "bottom 65%", scrub: true }});
+        gsap.fromTo(readingText.words, { opacity: 0.2, color: "#aaa" }, { opacity: 1, color: "#fff", stagger: 0.05, scrollTrigger: { trigger: ".reading-text", start: "top 85%", end: "bottom 65%", scrub: true }});
     </script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Dominions | Abhilash Saji</title>
+    <title>Phantom Visions | Abhilash Saji</title>
     
     <link href="https://api.fontshare.com/v2/css?f[]=clash-display@200,400,600,700&f[]=satoshi@300,400,500,700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@1,600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@
         ::selection { background: var(--accent); color: #000; }
         html, body { margin: 0; padding: 0; background: transparent !important; color: var(--text); font-family: var(--font-head); overflow-x: hidden; }
 
-        /* SAME BACKGROUND SYSTEM AS 2D PAGE */
+        /* SAME BACKGROUND AS 2D PAGE */
         #gamer-bg-container { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: -999; overflow: hidden; background: radial-gradient(circle at center, #1a150e 0%, #000000 100%); }
         #bg-image { position: absolute; top: -10%; left: -10%; width: 120%; height: 120%; background-image: url('https://images.unsplash.com/photo-1519074069444-1ba4fff66d16?q=80&w=2574&auto=format&fit=crop'); background-size: cover; background-position: center; opacity: 0.5; animation: majesticPan 60s infinite alternate ease-in-out; will-change: transform; }
         @keyframes majesticPan { 0% { transform: scale(1) translate(0, 0); } 100% { transform: scale(1.1) translate(-20px, -10px); } }
@@ -45,7 +45,6 @@
         .page-title { font-family: var(--font-head); font-size: clamp(4rem, 8vw, 6rem); text-transform: uppercase; color: #fff; text-shadow: 0 0 30px rgba(0,0,0,0.8); margin-bottom: 1.5rem; }
         .page-desc { font-family: var(--font-body); color: #bbb; font-size: 1.1rem; line-height: 1.6; max-width: 700px; margin: 0 auto; }
 
-        /* ITEM GRID STYLES */
         .project-list { display: flex; flex-direction: column; gap: 8vh; max-width: 1400px; margin: 0 auto; padding: 0 5vw 15vh 5vw; position: relative; z-index: 10; }
         .project-row { display: flex; align-items: flex-start; gap: 5vw; padding: 3rem; opacity: 0; border: 2px solid #333; background: rgba(10, 10, 10, 0.4); position: relative; transition: all 0.4s ease; }
         .project-row::before, .project-row::after { content: ''; position: absolute; width: 20px; height: 20px; border: 2px solid var(--accent); transition: all 0.3s ease; opacity: 0.5; }
@@ -109,8 +108,8 @@
 
     <header class="page-header">
         <span class="page-cat">Selected Works</span>
-        <h1 class="page-title">3D Dominions</h1> 
-        <p class="page-desc">High-fidelity 3D assets, environmental sculptures, and character models forged for immersive worlds.</p>
+        <h1 class="page-title">Phantom Visions</h1> 
+        <p class="page-desc">Exploring illusory realities and augmented overlays through immersive AR/VR experiences.</p>
     </header>
 
     <section class="project-list">
@@ -118,66 +117,66 @@
         <div class="project-row">
             <div class="border-deco-inner"></div> 
             <div class="project-info">
-                <div class="item-type">Colossal Weapon</div>
-                <h2 class="p-title">The Ancient Forge</h2>
+                <div class="item-type">Spirit Ash</div>
+                <h2 class="p-title">VR Training Sim</h2>
                 <div class="golden-separator"></div>
-                <p class="p-desc">A highly detailed 3D environment scene created in Unreal Engine 5. Featuring procedural texturing, Nanite geometry, and Lumen lighting for real-time realism.</p>
+                <p class="p-desc">A fully immersive VR simulation for industrial training. Includes realistic physics interactions, hand tracking, and spatial audio for deep presence.</p>
                 <div class="attributes-box">
-                    <div class="attr-header">Passive Effects (Tools)</div>
+                    <div class="attr-header">Passive Effects (Tech Stack)</div>
                     <div class="p-tags">
-                        <span class="p-tag">Unreal Engine 5</span>
-                        <span class="p-tag">Blender</span>
-                        <span class="p-tag">Substance Painter</span>
+                        <span class="p-tag">Unity XR</span>
+                        <span class="p-tag">Oculus SDK</span>
+                        <span class="p-tag">C#</span>
                     </div>
                 </div>
-                <a href="#" class="p-link">View Render &rarr;</a>
+                <a href="#" class="p-link">View Case Study &rarr;</a>
             </div>
             <div class="project-visual">
-                <img src="https://images.unsplash.com/photo-1633511090164-b43840ea901d?q=80&w=2574" alt="3D Environment">
+                <img src="https://images.unsplash.com/photo-1622979135225-d2ba269fb1ac?q=80&w=2670" alt="VR Headset">
             </div>
         </div>
 
         <div class="project-row">
             <div class="border-deco-inner"></div>
             <div class="project-info">
-                <div class="item-type">Remembrance</div>
-                <h2 class="p-title">Cybernetic Sentinel</h2>
+                <div class="item-type">Incantation</div>
+                <h2 class="p-title">AR Museum Guide</h2>
                 <div class="golden-separator"></div>
-                <p class="p-desc">Hard-surface character modeling and rigging. Focused on topology optimization for animation and PBR material workflows.</p>
+                <p class="p-desc">An Augmented Reality application that brings history to life. Users point their phones at exhibits to reveal animated 3D overlays and lore descriptions.</p>
                 <div class="attributes-box">
-                    <div class="attr-header">Passive Effects (Tools)</div>
+                    <div class="attr-header">Passive Effects (Tech Stack)</div>
                     <div class="p-tags">
-                        <span class="p-tag">ZBrush</span>
-                        <span class="p-tag">Maya</span>
-                        <span class="p-tag">Marmoset Toolbag</span>
+                        <span class="p-tag">ARCore</span>
+                        <span class="p-tag">Vuforia</span>
+                        <span class="p-tag">Mobile</span>
                     </div>
                 </div>
-                <a href="#" class="p-link">View Render &rarr;</a>
+                <a href="#" class="p-link">View Case Study &rarr;</a>
             </div>
             <div class="project-visual">
-                <img src="https://images.unsplash.com/photo-1615840287214-7ff58ee04996?q=80&w=2574" alt="3D Character">
+                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2670" alt="AR Phone">
             </div>
         </div>
 
         <div class="project-row">
             <div class="border-deco-inner"></div>
             <div class="project-info">
-                <div class="item-type">Talisman</div>
-                <h2 class="p-title">Isometric Room</h2>
+                <div class="item-type">Crystal Tear</div>
+                <h2 class="p-title">Metaverse Social Hub</h2>
                 <div class="golden-separator"></div>
-                <p class="p-desc">A stylized low-poly isometric room design. Created with efficient UV mapping and baked lighting for mobile game assets.</p>
+                <p class="p-desc">A multiplayer virtual space where users can interact via avatars. Features real-time voice chat, custom avatar support, and synchronized mini-games.</p>
                 <div class="attributes-box">
-                    <div class="attr-header">Passive Effects (Tools)</div>
+                    <div class="attr-header">Passive Effects (Tech Stack)</div>
                     <div class="p-tags">
-                        <span class="p-tag">Blender 3D</span>
-                        <span class="p-tag">Cycles Render</span>
-                        <span class="p-tag">Photoshop</span>
+                        <span class="p-tag">Photon PUN 2</span>
+                        <span class="p-tag">WebGL</span>
+                        <span class="p-tag">Networking</span>
                     </div>
                 </div>
-                <a href="#" class="p-link">View Render &rarr;</a>
+                <a href="#" class="p-link">View Case Study &rarr;</a>
             </div>
             <div class="project-visual">
-                <img src="https://images.unsplash.com/photo-1626379953822-baec19c3accd?q=80&w=2670" alt="Low Poly Art">
+                <img src="https://images.unsplash.com/photo-1614727187346-ef3768cfa012?q=80&w=2669" alt="Virtual World">
             </div>
         </div>
 
@@ -189,16 +188,17 @@
         requestAnimationFrame(raf);
         gsap.registerPlugin(ScrollTrigger);
 
-        /* --- SMART BACK BUTTON: SKIP LOADING SCREEN --- */
+        /* --- SMART BACK BUTTON LOGIC --- */
         const smartBackBtn = document.getElementById('smartBackBtn');
         smartBackBtn.addEventListener('click', (e) => {
-            // Check if user came from index.html
-            // If yes, execute 'history.back()' to go to the cached state
+            // Check if user came from index.html (Checking Referrer)
+            // If yes, we use history.back() to execute a browser "Undo"
+            // This restores the previous page state from cache WITHOUT reloading
             if (document.referrer.indexOf(window.location.hostname) !== -1) {
                 e.preventDefault(); 
                 history.back(); 
             }
-            // Otherwise, it proceeds to index.html#work normally
+            // If opened directly, it follows the link href to load fresh
         });
 
         const xTo = gsap.quickTo("#bg-image", "x", {duration: 0.5, ease: "power3"});

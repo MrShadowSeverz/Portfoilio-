@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phantom Visions | Abhilash Saji</title>
+    <title>2D Realms | Abhilash Saji</title>
     
     <link href="https://api.fontshare.com/v2/css?f[]=clash-display@200,400,600,700&f[]=satoshi@300,400,500,700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@1,600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -14,75 +15,255 @@
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
 
     <style>
-        :root { --text: #e0d8c3; --accent: #e2c476; --font-head: 'Cinzel', serif; --font-body: 'Satoshi', sans-serif; --font-tech: 'Space Mono', monospace; }
+        /* --- THEME VARIABLES --- */
+        :root { 
+            --text: #e0d8c3; 
+            --accent: #e2c476; /* ELDEN RING GOLD */
+            --font-head: 'Cinzel', serif; 
+            --font-body: 'Satoshi', sans-serif; 
+            --font-tech: 'Space Mono', monospace; 
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
         ::selection { background: var(--accent); color: #000; }
-        html, body { margin: 0; padding: 0; background: transparent !important; color: var(--text); font-family: var(--font-head); overflow-x: hidden; }
+        
+        html, body { 
+            margin: 0; padding: 0; 
+            background: transparent !important; 
+            color: var(--text); 
+            font-family: var(--font-head);
+            overflow-x: hidden; 
+        }
 
-        /* SAME BACKGROUND AS 2D PAGE */
-        #gamer-bg-container { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: -999; overflow: hidden; background: radial-gradient(circle at center, #1a150e 0%, #000000 100%); }
-        #bg-image { position: absolute; top: -10%; left: -10%; width: 120%; height: 120%; background-image: url('https://images.unsplash.com/photo-1519074069444-1ba4fff66d16?q=80&w=2574&auto=format&fit=crop'); background-size: cover; background-position: center; opacity: 0.5; animation: majesticPan 60s infinite alternate ease-in-out; will-change: transform; }
-        @keyframes majesticPan { 0% { transform: scale(1) translate(0, 0); } 100% { transform: scale(1.1) translate(-20px, -10px); } }
-        .vignette { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, transparent 30%, #000 100%); z-index: 1; pointer-events: none; }
-        .grace-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to top, rgba(226, 196, 118, 0.1), transparent 50%, #000 100%); z-index: 2; }
-        .golden-rune { position: absolute; background: var(--accent); border-radius: 50%; box-shadow: 0 0 15px var(--accent); z-index: 3; pointer-events: none; opacity: 0; }
+        /* --- BACKGROUND SYSTEM --- */
+        #gamer-bg-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            z-index: -999;
+            overflow: hidden;
+            background: radial-gradient(circle at center, #1a150e 0%, #000000 100%);
+        }
 
+        #bg-image {
+            position: absolute; top: -10%; left: -10%; width: 120%; height: 120%;
+            background-image: url('https://images.unsplash.com/photo-1519074069444-1ba4fff66d16?q=80&w=2574&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.5; 
+            animation: majesticPan 60s infinite alternate ease-in-out;
+            will-change: transform;
+        }
+
+        @keyframes majesticPan {
+            0% { transform: scale(1) translate(0, 0); }
+            100% { transform: scale(1.1) translate(-20px, -10px); }
+        }
+
+        .vignette {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, transparent 30%, #000 100%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .grace-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to top, rgba(226, 196, 118, 0.1), transparent 50%, #000 100%);
+            z-index: 2;
+        }
+
+        /* --- PARTICLES --- */
+        .golden-rune {
+            position: absolute; 
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 15px var(--accent);
+            z-index: 3;
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        /* --- UI ELEMENTS --- */
         .cursor { position: fixed; width: 8px; height: 8px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%); box-shadow: 0 0 10px var(--accent); }
         .cursor-follower { position: fixed; width: 50px; height: 50px; border: 1px solid rgba(226, 196, 118, 0.3); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: transform 0.1s; will-change: transform; }
 
-        .back-btn { position: fixed; top: 3rem; left: 5vw; z-index: 100; color: #888; font-family: var(--font-head); text-transform: uppercase; text-decoration: none; display: flex; align-items: center; gap: 10px; font-size: 0.8rem; letter-spacing: 2px; transition: 0.3s ease; }
+        /* --- BUTTONS --- */
+        .back-btn {
+            position: fixed; top: 3rem; left: 5vw; z-index: 100;
+            color: #888; font-family: var(--font-head); text-transform: uppercase; text-decoration: none;
+            display: flex; align-items: center; gap: 10px; font-size: 0.8rem; letter-spacing: 2px; transition: 0.3s ease;
+        }
         .back-btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; transition: transform 0.3s ease; }
         .back-btn:hover { color: var(--accent); text-shadow: 0 0 10px var(--accent); }
         .back-btn:hover svg { transform: translateX(-5px); }
 
-        #scrollTopBtn { position: fixed; bottom: 3rem; right: 3rem; z-index: 99; width: 50px; height: 50px; background: rgba(0,0,0,0.8); border: 1px solid var(--accent); border-radius: 50%; color: var(--accent); display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: all 0.4s ease; cursor: pointer; transform: translateY(20px); }
+        #scrollTopBtn {
+            position: fixed; bottom: 3rem; right: 3rem; z-index: 99;
+            width: 50px; height: 50px; background: rgba(0,0,0,0.8); border: 1px solid var(--accent); border-radius: 50%;
+            color: var(--accent); display: flex; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none; transition: all 0.4s ease; cursor: pointer; transform: translateY(20px);
+        }
         #scrollTopBtn.visible { opacity: 1; pointer-events: all; transform: translateY(0); }
         #scrollTopBtn:hover { background: var(--accent); color: #000; box-shadow: 0 0 15px var(--accent); }
         #scrollTopBtn svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; }
 
+        /* --- PAGE HEADER --- */
         .page-header { padding-top: 18vh; padding-bottom: 8vh; text-align: center; position: relative; z-index: 10; }
         .page-cat { font-family: var(--font-code); color: var(--accent); letter-spacing: 4px; text-transform: uppercase; font-size: 0.8rem; margin-bottom: 1rem; display: block; }
         .page-title { font-family: var(--font-head); font-size: clamp(4rem, 8vw, 6rem); text-transform: uppercase; color: #fff; text-shadow: 0 0 30px rgba(0,0,0,0.8); margin-bottom: 1.5rem; }
         .page-desc { font-family: var(--font-body); color: #bbb; font-size: 1.1rem; line-height: 1.6; max-width: 700px; margin: 0 auto; }
 
-        .project-list { display: flex; flex-direction: column; gap: 8vh; max-width: 1400px; margin: 0 auto; padding: 0 5vw 15vh 5vw; position: relative; z-index: 10; }
-        .project-row { display: flex; align-items: flex-start; gap: 5vw; padding: 3rem; opacity: 0; border: 2px solid #333; background: rgba(10, 10, 10, 0.4); position: relative; transition: all 0.4s ease; }
-        .project-row::before, .project-row::after { content: ''; position: absolute; width: 20px; height: 20px; border: 2px solid var(--accent); transition: all 0.3s ease; opacity: 0.5; }
+        /* --- PROJECT ROW SYSTEM --- */
+        .project-list {
+            display: flex; flex-direction: column; gap: 8vh;
+            max-width: 1400px; margin: 0 auto; padding: 0 5vw 15vh 5vw;
+            position: relative; z-index: 10;
+        }
+
+        /* --- ELDEN RING STYLE CARD BORDER --- */
+        .project-row {
+            display: flex; 
+            align-items: flex-start; 
+            gap: 5vw;
+            padding: 3rem; 
+            opacity: 0; 
+            border: 2px solid #333; 
+            background: rgba(10, 10, 10, 0.4); 
+            position: relative;
+            transition: all 0.4s ease;
+        }
+
+        /* Elaborate Corner Design */
+        .project-row::before, .project-row::after {
+            content: ''; position: absolute; width: 20px; height: 20px;
+            border: 2px solid var(--accent); transition: all 0.3s ease; opacity: 0.5;
+        }
         .project-row::before { top: -2px; left: -2px; border-bottom: none; border-right: none; }
         .project-row::after { bottom: -2px; right: -2px; border-top: none; border-left: none; }
-        .border-deco-inner { position: absolute; top: 10px; bottom: 10px; left: 10px; right: 10px; border: 1px solid rgba(226, 196, 118, 0.15); pointer-events: none; }
-        .project-row:hover { border-color: rgba(226, 196, 118, 0.6); background: rgba(15, 15, 15, 0.7); box-shadow: 0 0 30px rgba(0,0,0,0.5); transform: translateY(-5px); }
-        .project-row:hover::before, .project-row:hover::after { width: 40px; height: 40px; opacity: 1; box-shadow: 0 0 10px var(--accent); }
+
+        .border-deco-inner {
+            position: absolute; top: 10px; bottom: 10px; left: 10px; right: 10px;
+            border: 1px solid rgba(226, 196, 118, 0.15); pointer-events: none;
+        }
+
+        .project-row:hover {
+            border-color: rgba(226, 196, 118, 0.6); 
+            background: rgba(15, 15, 15, 0.7);
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            transform: translateY(-5px);
+        }
+
+        .project-row:hover::before, .project-row:hover::after {
+            width: 40px; height: 40px; opacity: 1; box-shadow: 0 0 10px var(--accent);
+        }
 
         .project-info { flex: 1; position: relative; padding-top: 1rem; }
-        .item-type { font-family: var(--font-head); font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 10px; }
+
+        .item-type {
+            font-family: var(--font-head); font-size: 0.75rem; color: #888;
+            text-transform: uppercase; letter-spacing: 2px; margin-bottom: 0.5rem;
+            display: flex; align-items: center; gap: 10px;
+        }
         .item-type::before { content: ''; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 8px var(--accent); }
-        .p-title { font-family: var(--font-head); font-weight: 700; font-size: clamp(2.5rem, 4vw, 3.5rem); line-height: 1.1; color: #fff; margin-bottom: 1rem; text-transform: uppercase; text-shadow: 0 5px 20px rgba(0,0,0,0.8); }
-        .golden-separator { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--accent), transparent); margin-bottom: 2rem; opacity: 0.6; }
-        .p-desc { font-family: var(--font-body); color: #d0d0d0; font-size: 1.05rem; line-height: 1.7; margin-bottom: 2rem; max-width: 90%; font-weight: 300; }
-        
-        .attributes-box { background: rgba(20, 20, 20, 0.6); border: 1px solid #333; padding: 1.5rem; margin-bottom: 2rem; max-width: 90%; }
-        .attr-header { font-family: var(--font-head); font-size: 0.8rem; color: var(--accent); text-transform: uppercase; margin-bottom: 1rem; letter-spacing: 1px; border-bottom: 1px solid #444; padding-bottom: 5px; }
+
+        .p-title {
+            font-family: var(--font-head); font-weight: 700;
+            font-size: clamp(2.5rem, 4vw, 3.5rem); line-height: 1.1; color: #fff;
+            margin-bottom: 1rem; text-transform: uppercase;
+            text-shadow: 0 5px 20px rgba(0,0,0,0.8);
+        }
+
+        .golden-separator {
+            width: 100%; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            margin-bottom: 2rem; opacity: 0.6;
+        }
+
+        .p-desc {
+            font-family: var(--font-body); 
+            color: #d0d0d0; font-size: 1.05rem; line-height: 1.7;
+            margin-bottom: 2rem; max-width: 90%; font-weight: 300;
+        }
+
+        .attributes-box {
+            background: rgba(20, 20, 20, 0.6); border: 1px solid #333;
+            padding: 1.5rem; margin-bottom: 2rem; max-width: 90%;
+        }
+        .attr-header {
+            font-family: var(--font-head); font-size: 0.8rem; color: var(--accent);
+            text-transform: uppercase; margin-bottom: 1rem; letter-spacing: 1px;
+            border-bottom: 1px solid #444; padding-bottom: 5px;
+        }
+
         .p-tags { display: flex; gap: 10px; flex-wrap: wrap; }
-        .p-tag { font-family: var(--font-head); font-size: 0.7rem; color: #bbb; padding: 5px 0; margin-right: 15px; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 5px; }
+        .p-tag {
+            font-family: var(--font-head); font-size: 0.7rem; color: #bbb; 
+            padding: 5px 0; margin-right: 15px; text-transform: uppercase; letter-spacing: 1px;
+            display: flex; align-items: center; gap: 5px;
+        }
         .p-tag::before { content: '♦'; color: var(--accent); font-size: 0.6rem; }
 
-        .p-link { font-family: var(--font-head); font-weight: 700; font-size: 0.9rem; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; text-decoration: none; position: relative; padding-bottom: 5px; display: inline-block; margin-top: 1rem; }
-        .p-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background: var(--accent); transition: width 0.3s ease; }
+        .p-link {
+            font-family: var(--font-head); font-weight: 700; font-size: 0.9rem;
+            color: var(--accent); text-transform: uppercase; letter-spacing: 1px;
+            text-decoration: none; position: relative; padding-bottom: 5px;
+            display: inline-block; margin-top: 1rem;
+        }
+        .p-link::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px;
+            background: var(--accent); transition: width 0.3s ease;
+        }
         .p-link:hover::after { width: 50%; }
 
-        .project-visual { flex: 1.3; position: relative; border-radius: 2px; overflow: hidden; background: #000; border: 1px solid #333; height: 400px; box-shadow: 0 0 30px rgba(0,0,0,0.5); opacity: 0; transform: scaleX(0); transform-origin: left; }
-        .project-visual img { width: 100%; height: 100%; object-fit: cover; display: block; filter: grayscale(100%) sepia(20%) brightness(0.6); transition: all 0.5s ease; animation: eternalBreath 15s infinite alternate ease-in-out; }
-        @keyframes eternalBreath { 0% { transform: scale(1.0); } 100% { transform: scale(1.15) translate(-10px, -5px); } }
-        .project-row:hover .project-visual img { filter: grayscale(0%) sepia(0%) brightness(1); animation-play-state: paused; transform: scale(1.05); }
-        .project-visual::before { content: ''; position: absolute; top: 0; left: -150%; width: 50%; height: 100%; background: linear-gradient(to right, transparent, rgba(226, 196, 118, 0.6), transparent); transform: skewX(-25deg); z-index: 2; pointer-events: none; }
-        .project-row:hover .project-visual::before { animation: shine 0.75s ease-in-out; }
-        @keyframes shine { 0% { left: -150%; opacity: 0; } 50% { opacity: 1; } 100% { left: 150%; opacity: 0; } }
-        .project-visual::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--accent); opacity: 0; pointer-events: none; transition: opacity 0.3s; mix-blend-mode: overlay; }
-        .project-row:hover .project-visual::after { opacity: 0.1; }
+        .project-visual {
+            flex: 1.3; position: relative; border-radius: 2px; overflow: hidden;
+            background: #000; border: 1px solid #333; height: 400px; 
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            
+            opacity: 0;
+            transform: scaleX(0); 
+            transform-origin: left;
+        }
 
-        .page-transition { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #000; z-index: 99999; transform-origin: top; }
-        @media (max-width: 900px) { .project-row { flex-direction: column-reverse; gap: 2rem; padding: 1.5rem; } .project-visual { width: 100%; height: 200px; } .back-btn { top: 2rem; left: 5vw; } }
+        .project-visual img {
+            width: 100%; height: 100%; object-fit: cover; display: block;
+            filter: grayscale(100%) sepia(20%) brightness(0.6);
+            transition: all 0.5s ease;
+            animation: eternalBreath 15s infinite alternate ease-in-out;
+        }
+
+        @keyframes eternalBreath {
+            0% { transform: scale(1.0); }
+            100% { transform: scale(1.15) translate(-10px, -5px); }
+        }
+
+        .project-row:hover .project-visual img {
+            filter: grayscale(0%) sepia(0%) brightness(1); 
+            animation-play-state: paused; transform: scale(1.05);
+        }
+        
+        /* SHEEN EFFECT */
+        .project-visual::before {
+            content: ''; position: absolute; top: 0; left: -150%; width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(226, 196, 118, 0.6), transparent);
+            transform: skewX(-25deg); z-index: 2; pointer-events: none;
+        }
+        .project-row:hover .project-visual::before { animation: shine 0.75s ease-in-out; }
+        
+        @keyframes shine {
+            0% { left: -150%; opacity: 0; }
+            50% { opacity: 1; }
+            100% { left: 150%; opacity: 0; }
+        }
+
+        .page-transition {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background: #000; z-index: 99999; transform-origin: top;
+        }
+
+        @media (max-width: 900px) {
+            .project-row { flex-direction: column-reverse; gap: 2rem; padding: 1.5rem; }
+            .project-visual { width: 100%; height: 200px; }
+            .back-btn { top: 2rem; left: 5vw; }
+        }
     </style>
 </head>
 <body>
@@ -95,6 +276,7 @@
     </div>
     
     <div class="cursor"></div><div class="cursor-follower"></div>
+
     <div class="page-transition"></div>
 
     <a href="index.html#work" class="back-btn" id="smartBackBtn">
@@ -108,8 +290,8 @@
 
     <header class="page-header">
         <span class="page-cat">Selected Works</span>
-        <h1 class="page-title">Phantom Visions</h1> 
-        <p class="page-desc">Exploring illusory realities and augmented overlays through immersive AR/VR experiences.</p>
+        <h1 class="page-title">2D Realms</h1> 
+        <p class="page-desc">A collection of 2D experiences crafted with precision, pixel art, and physics-based mechanics.</p>
     </header>
 
     <section class="project-list">
@@ -117,66 +299,75 @@
         <div class="project-row">
             <div class="border-deco-inner"></div> 
             <div class="project-info">
-                <div class="item-type">Spirit Ash</div>
-                <h2 class="p-title">VR Training Sim</h2>
+                <div class="item-type">Legendary Armament</div>
+                <h2 class="p-title">Pixel Odyssey</h2>
                 <div class="golden-separator"></div>
-                <p class="p-desc">A fully immersive VR simulation for industrial training. Includes realistic physics interactions, hand tracking, and spatial audio for deep presence.</p>
+                
+                <p class="p-desc">A precision-based 2D platformer. Implemented tight character controllers, wall-jumps, and a custom particle system for atmospheric depth. Optimized for mobile performance.</p>
+                
                 <div class="attributes-box">
                     <div class="attr-header">Passive Effects (Tech Stack)</div>
                     <div class="p-tags">
-                        <span class="p-tag">Unity XR</span>
-                        <span class="p-tag">Oculus SDK</span>
-                        <span class="p-tag">C#</span>
+                        <span class="p-tag">Unity 2D</span>
+                        <span class="p-tag">C# Scripting</span>
+                        <span class="p-tag">URP 2D</span>
                     </div>
                 </div>
+
                 <a href="#" class="p-link">View Case Study &rarr;</a>
             </div>
             <div class="project-visual">
-                <img src="https://images.unsplash.com/photo-1622979135225-d2ba269fb1ac?q=80&w=2670" alt="VR Headset">
+                <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2670" alt="Pixel Odyssey">
             </div>
         </div>
 
         <div class="project-row">
             <div class="border-deco-inner"></div>
             <div class="project-info">
-                <div class="item-type">Incantation</div>
-                <h2 class="p-title">AR Museum Guide</h2>
+                <div class="item-type">Sorcery</div>
+                <h2 class="p-title">Cyber Strike</h2>
                 <div class="golden-separator"></div>
-                <p class="p-desc">An Augmented Reality application that brings history to life. Users point their phones at exhibits to reveal animated 3D overlays and lore descriptions.</p>
+
+                <p class="p-desc">Top-down shooter featuring procedural level generation and enemy AI state machines. Includes a robust inventory system and dynamic lighting effects.</p>
+                
                 <div class="attributes-box">
                     <div class="attr-header">Passive Effects (Tech Stack)</div>
                     <div class="p-tags">
-                        <span class="p-tag">ARCore</span>
-                        <span class="p-tag">Vuforia</span>
+                        <span class="p-tag">AI Design</span>
+                        <span class="p-tag">Procedural Gen</span>
+                        <span class="p-tag">Lighting</span>
+                    </div>
+                </div>
+
+                <a href="#" class="p-link">View Case Study &rarr;</a>
+            </div>
+            <div class="project-visual">
+                <img src="https://images.unsplash.com/photo-1552820728-8b83bb6b773f?q=80&w=2670" alt="Cyber Strike">
+            </div>
+        </div>
+
+        <div class="project-row">
+            <div class="border-deco-inner"></div>
+            <div class="project-info">
+                <div class="item-type">Key Item</div>
+                <h2 class="p-title">Neon Racer</h2>
+                <div class="golden-separator"></div>
+
+                <p class="p-desc">High-speed endless runner. Focused on optimization, object pooling, and responsive touch controls. achieved 60fps on low-end devices.</p>
+                
+                <div class="attributes-box">
+                    <div class="attr-header">Passive Effects (Tech Stack)</div>
+                    <div class="p-tags">
                         <span class="p-tag">Mobile</span>
+                        <span class="p-tag">Optimization</span>
+                        <span class="p-tag">Physics</span>
                     </div>
                 </div>
-                <a href="#" class="p-link">View Case Study &rarr;</a>
-            </div>
-            <div class="project-visual">
-                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2670" alt="AR Phone">
-            </div>
-        </div>
 
-        <div class="project-row">
-            <div class="border-deco-inner"></div>
-            <div class="project-info">
-                <div class="item-type">Crystal Tear</div>
-                <h2 class="p-title">Metaverse Social Hub</h2>
-                <div class="golden-separator"></div>
-                <p class="p-desc">A multiplayer virtual space where users can interact via avatars. Features real-time voice chat, custom avatar support, and synchronized mini-games.</p>
-                <div class="attributes-box">
-                    <div class="attr-header">Passive Effects (Tech Stack)</div>
-                    <div class="p-tags">
-                        <span class="p-tag">Photon PUN 2</span>
-                        <span class="p-tag">WebGL</span>
-                        <span class="p-tag">Networking</span>
-                    </div>
-                </div>
                 <a href="#" class="p-link">View Case Study &rarr;</a>
             </div>
             <div class="project-visual">
-                <img src="https://images.unsplash.com/photo-1614727187346-ef3768cfa012?q=80&w=2669" alt="Virtual World">
+                <img src="https://images.unsplash.com/photo-1614726365723-49cfae92782f?q=80&w=2669" alt="Neon Racer">
             </div>
         </div>
 
@@ -186,57 +377,119 @@
         const lenis = new Lenis({ duration: 1.2, smooth: true });
         function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
         requestAnimationFrame(raf);
+        
         gsap.registerPlugin(ScrollTrigger);
 
         /* --- SMART BACK BUTTON LOGIC --- */
         const smartBackBtn = document.getElementById('smartBackBtn');
         smartBackBtn.addEventListener('click', (e) => {
-            // Check if user came from index.html (Checking Referrer)
-            // If yes, we use history.back() to execute a browser "Undo"
-            // This restores the previous page state from cache WITHOUT reloading
-            if (document.referrer.indexOf(window.location.hostname) !== -1) {
+            // Check if user came from index.html (This prevents reloading)
+            if (document.referrer.includes('index.html')) {
                 e.preventDefault(); 
-                history.back(); 
+                history.back(); // Use Browser History (Instant, skips load)
             }
-            // If opened directly, it follows the link href to load fresh
         });
 
+        /* --- MOUSE PARALLAX --- */
         const xTo = gsap.quickTo("#bg-image", "x", {duration: 0.5, ease: "power3"});
         const yTo = gsap.quickTo("#bg-image", "y", {duration: 0.5, ease: "power3"});
+        
         window.addEventListener("mousemove", e => {
             const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
             const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
-            xTo(moveX); yTo(moveY);
+            xTo(moveX);
+            yTo(moveY);
+
             gsap.to(".cursor", { x: e.clientX, y: e.clientY, duration: 0.1 });
             gsap.to(".cursor-follower", { x: e.clientX, y: e.clientY, duration: 0.3 });
         });
 
+        /* --- PARTICLES --- */
         const particleContainer = document.getElementById('particles-container');
-        for (let i = 0; i < 20; i++) {
+        const particleCount = 20;
+
+        for (let i = 0; i < particleCount; i++) {
             let p = document.createElement('div');
             p.classList.add('golden-rune');
-            gsap.set(p, { left: Math.random() * 100 + 'vw', width: Math.random() * 6 + 2, height: Math.random() * 6 + 2 });
-            gsap.to(p, { y: '-100vh', x: '+=' + (Math.random() * 200 - 100), opacity: 0, duration: Math.random() * 12 + 6, delay: Math.random() * -10, repeat: -1, ease: "none", startAt: { y: '100vh', opacity: Math.random() * 0.8 + 0.2 } });
+            let x = Math.random() * 100;
+            let duration = 6 + Math.random() * 12;
+            let delay = Math.random() * -10; 
+            let size = 2 + Math.random() * 6; 
+            p.style.left = x + 'vw';
+            p.style.width = size + 'px';
+            p.style.height = size + 'px';
+            
+            gsap.to(p, {
+                y: '-100vh',
+                x: '+=' + (Math.random() * 200 - 100), 
+                opacity: 0,
+                duration: duration,
+                delay: delay,
+                repeat: -1,
+                ease: "none",
+                startAt: { y: '100vh', opacity: Math.random() * 0.8 + 0.2 }
+            });
             particleContainer.appendChild(p);
         }
 
+        /* --- IMAGE REVEAL ANIMATION (Curtain Effect) --- */
         const visuals = document.querySelectorAll('.project-visual');
         visuals.forEach(vis => {
-            gsap.to(vis, { opacity: 1, scaleX: 1, duration: 1.2, ease: "power4.out", scrollTrigger: { trigger: vis, start: "top 80%" } });
+            gsap.to(vis, { 
+                opacity: 1, 
+                scaleX: 1, 
+                duration: 1.2, 
+                ease: "power4.out",
+                scrollTrigger: {
+                    trigger: vis,
+                    start: "top 80%"
+                }
+            });
         });
 
+        /* --- TEXT ANIMATION --- */
         const rows = document.querySelectorAll('.project-row');
         rows.forEach(row => {
-            gsap.fromTo(row, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.8, ease: "power2.out", scrollTrigger: { trigger: row, start: "top 80%" } });
+            gsap.fromTo(row, 
+                { opacity: 0, y: 50 },
+                { 
+                    opacity: 1, 
+                    y: 0, 
+                    duration: 0.8, 
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: row,
+                        start: "top 85%", 
+                        toggleActions: "play none none reverse"
+                    }
+                }
+            );
         });
 
         const tl = gsap.timeline();
-        tl.to(".page-transition", { scaleY: 0, duration: 1, ease: "expo.inOut", delay: 0.2 })
-          .from(".page-title", { y: 50, opacity: 0, duration: 1, ease: "power3.out" }, "-=0.5");
+        tl.to(".page-transition", {
+            scaleY: 0,
+            duration: 1,
+            ease: "expo.inOut",
+            delay: 0.2
+        })
+        .from(".page-title", {
+            y: 50,
+            opacity: 0,
+            duration: 1,
+            ease: "power3.out"
+        }, "-=0.5");
 
+        /* --- SCROLL BTN --- */
         const scrollBtn = document.getElementById('scrollTopBtn');
-        window.addEventListener('scroll', () => { if (window.scrollY > 300) scrollBtn.classList.add('visible'); else scrollBtn.classList.remove('visible'); });
-        scrollBtn.addEventListener('click', () => { lenis.scrollTo(0); });
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) scrollBtn.classList.add('visible');
+            else scrollBtn.classList.remove('visible');
+        });
+
+        scrollBtn.addEventListener('click', () => {
+            lenis.scrollTo(0);
+        });
     </script>
 </body>
 </html>
